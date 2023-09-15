@@ -24,10 +24,9 @@ const exampleDinosaurData = require('../data/dinosaurs');
  */
 function getLongestDinosaur(dinosaurs) {
   const maxLength =  Math.max(...dinosaurs.map(dino => dino.lengthInMeters))
-  const maxDino = dinosaurs.find(dino => dino.lengthInMeters===maxLength, maxLength);
-
+  const maxDino = dinosaurs.find(dino => dino.lengthInMeters === maxLength, maxLength)
   if(maxLength===-Infinity)
-    return {};
+    return {}
   return {[maxDino.name]:maxLength*3.281}
 }
 
@@ -51,7 +50,13 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let dino = dinosaurs.find(({dinosaurId}) => dinosaurId === id)
+  if(dino===undefined)
+    return `A dinosaur with an ID of ${id} cannot be found.`
+  return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the `+ 
+          `${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+}
 
 /**
  * getDinosaursAliveMya()
