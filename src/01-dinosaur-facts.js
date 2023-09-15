@@ -27,6 +27,8 @@ function getLongestDinosaur(dinosaurs) {
 
   dinosaurs.forEach((dino) => arr.push(dino.lengthInMeters));
 
+  const maxLength = Math.max(...arr);
+
 }
 
 /**
