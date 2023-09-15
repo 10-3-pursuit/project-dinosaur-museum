@@ -73,6 +73,7 @@ function getDinosaurDescription(dinosaurs, id) {
     return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${Math.min(...dinosaur.mya)} million years ago.`
   }
 
+  return `A dinosaur with an ID of '${id}' cannot be found.`
 }
 
 /**
