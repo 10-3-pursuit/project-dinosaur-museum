@@ -67,6 +67,9 @@ function getDinosaurDescription(dinosaurs, id) {
   
   dinosaurs.forEach(dino => arr.push(dino.dinosaurId));
 
+  const dinosaur = dinosaurs.find(dino => dino.dinosaurId === id)
+  
+ 
 }
 
 /**
