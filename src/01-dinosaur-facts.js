@@ -65,6 +65,8 @@ function getDinosaurDescription(dinosaurs, id) {
   let arr = []
   let myaYear = 0
   
+  dinosaurs.forEach(dino => arr.push(dino.dinosaurId));
+
 }
 
 /**
