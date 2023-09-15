@@ -101,7 +101,25 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const result = []
+  for(let dino of dinosaurs){
+    if(dino.mya.includes(mya)){
+      if(key && dino.hasOwnProperty(key)){
+        result.push(dino[key])
+      } else {
+        result.push(dino.dinosaurId)
+      }
+    }
+  }
+
+  // if key exists but doesn't match, return ids
+  // if key exists, replace ids with value of key
+  // if mya doesnt match any, return []
+  // should include dinosaurs with only one mya
+  // return ids of dinos alive during mya 
+  return result
+}
 
 module.exports = {
   getLongestDinosaur,
