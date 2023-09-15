@@ -22,7 +22,26 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // an empty object to store the longest dinosaur
+  let longestDinosaur = {}
+  // a variable to keep track of the current longest dinosaur length
+  let currentDinoLength = 0
+  // Iterate through the dinosaurs array
+  for (let i = 0; i < dinosaurs.length; i++) {
+    // Check if the length of the current dinosaur is greater than the current longest
+    if (dinosaurs[i].lengthInMeters > currentDinoLength) {
+      // Update the current longest dinosaur length
+      currentDinoLength = dinosaurs[i].lengthInMeters
+      // Create a new object with the current dinosaur's name as the key and its length in feet as the value, and assign it to longestDinosaur
+      longestDinosaur = {
+        [dinosaurs[i].name]: dinosaurs[i].lengthInMeters * 3.281
+      }
+    }
+  }
+  // Return the object containing the longest dinosaur
+  return longestDinosaur
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +63,14 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // return an object tallest dinosaur name value feet
+  // return empty object for no dinosaurs if object is empty or if there is no dinosaur argument
+  // return first dinosaur for object
+
+
+
+}
 
 /**
  * getDinosaursAliveMya()
