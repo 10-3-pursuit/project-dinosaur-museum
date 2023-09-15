@@ -69,7 +69,10 @@ function getDinosaurDescription(dinosaurs, id) {
 
   const dinosaur = dinosaurs.find(dino => dino.dinosaurId === id)
   
- 
+  if(dinosaur) {
+    return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${Math.min(...dinosaur.mya)} million years ago.`
+  }
+
 }
 
 /**
