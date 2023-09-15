@@ -22,7 +22,27 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  let result = {}; // creates a result object to format output correctly (the key should be dinosaur name )
+  if (dinosaurs.length === 0) { // checks if there are no dinosaurs
+    return result; // if no dinosaurs returns empty object. If not empty then it will continue to next line of code
+  }
+//initializing variables to keep track of longest dinosaur we have found so far before iterating. Starting point is necessary for comparison of what we have so far to current value
+  let longestDino = null; // value is set to null because initially there are no values to compare
+  let maxLengthInFeet = 0; // value is a number and set to 0 to initiate starting point as we iterate through the list
+
+  for (let dino of dinosaurs) { // iterate to get to the objects inside the dinosaurs array
+    let lengthInFeet = dino.lengthInMeters * 3.281; // converts meters to feet (required for this function in particular to keep units consistent)
+    if (lengthInFeet > maxLengthInFeet) { // if this dino is longer than the longest one found so far - this allows us to update our tracking variables
+      maxLengthInFeet = lengthInFeet; // whenever new longest dinosaur is found maxLengthInFeet is updated to reflect this (updates to length in feet)
+      longestDino = dino.name; // this will update it to the name of the dinosaur that has the new longest length
+    }
+  }
+  result[longestDino] = maxLengthInFeet; // formats output as an object where the key is the dinosaur name with longest length and the value is the maximum length in feet
+
+  return result; // result object makes function defined so when invoked it produces output. Output is an object where the key is the dinosaur name with longest length and the value is the maximum length in feet.
+};
+console.log(getLongestDinosaur(exampleDinosaurData));
 
 /**
  * getDinosaurDescription()
