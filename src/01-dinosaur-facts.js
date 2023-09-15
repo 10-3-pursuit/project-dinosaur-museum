@@ -37,6 +37,8 @@ function getLongestDinosaur(dinosaurs) {
     }
     return newObj
   }
+
+  return {};
 }
 
 /**
