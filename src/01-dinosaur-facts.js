@@ -107,7 +107,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     if(dino.mya.includes(mya)){
       if(key && dino.hasOwnProperty(key)){
         result.push(dino[key])
-      } else {
+      } else if(key && !dino.hasOwnProperty(key)){
         result.push(dino.dinosaurId)
       }
     }
