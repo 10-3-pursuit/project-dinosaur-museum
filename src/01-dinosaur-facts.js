@@ -22,7 +22,26 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  //should return an empty object if there are no dinosaurs
+  if (!dinosaurs || dinosaurs.length === 0) {
+    return {}; 
+  }
+  /*if the value is equal to the one it is iterateing to check for the greates hight 
+  in meters it will take the first one becuase if they are equal it does not change with > */
+  // should return the first dinosaur if there are multiples with the same length
+  const longestDinosaur = dinosaurs.reduce((currentLongest, currentDinosaur) => {
+    if (currentDinosaur.lengthInMeters > currentLongest.lengthInMeters) {
+      return currentDinosaur;
+    } else {
+    return currentLongest;
+    }
+  });
+  // Convert length from meters to feet had to google it
+  const lengthInFeet = longestDinosaur.lengthInMeters * 3.28084; 
+  // should return an object where the key is the tallest dinosaur name and the value is the length in feet
+  return {[longestDinosaur.name]:lengthInFeet };
+}
 
 /**
  * getDinosaurDescription()
