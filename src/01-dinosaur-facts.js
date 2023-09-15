@@ -65,7 +65,21 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+function getDinosaurDescription(dinosaurs, id) {
+  // Created a variable to hold a default error message in case the ID is not found.
+  let dinoInfo = `A dinosaur with an ID of '${id}' cannot be found.`
+  // Iterate through the 'dinosaurs' array using .forEach().
+  dinosaurs.forEach((dinosaur) => {
+    // Check if the current dinosaur's 'dinosaurId' matches the original 'id' parameter.
+    if (dinosaur.dinosaurId === id) {
+      // If there is a match, update 'dinoInfo' with the dinosaur's information.
+      dinoInfo = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`
+    }
+  })
+  // Return 'dinoInfo', which either contains the dinosaur's information or the default error message.
+  return dinoInfo
+}
 
 /**
  * getDinosaursAliveMya()
