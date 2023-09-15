@@ -31,6 +31,12 @@ function getLongestDinosaur(dinosaurs) {
 
   const longestDino = dinosaurs.find((dino) => dino.lengthInMeters === maxLength)
 
+  if(longestDino) {
+    const newObj = {
+      [longestDino.name]: longestDino.lengthInMeters * 3.281
+    }
+    return newObj
+  }
 }
 
 /**
