@@ -103,7 +103,20 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   const result = []
+  const oneMyaYear = dinosaurs.filter(dino => dino.mya.length === 1)
+
+  const mappedDinos = oneMyaYear.map((dino1) => {
+    if(mya === dino1.mya || mya === dino1.mya - 1){
+      result.push(dino1.dinosaurId)
+    }
+  })
+  
   for(let dino of dinosaurs){
+  //   if(dino.mya.length === 1){
+  //     if(dino.mya[0] >= mya && dino.mya[0]-1 <= mya){
+  //       result.push(dino.dinosaurId)
+  //     }
+    // }
     if(dino.mya.includes(mya)){
       if(key && dino.hasOwnProperty(key)){
         result.push(dino[key])
@@ -112,9 +125,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       }
     }
   }
-
-  // if key exists but doesn't match, return ids
-  // if key exists, replace ids with value of key
+  // if key exists but doesn't match, return ids - done
+  // if key exists, replace ids with value of key - done
   // if mya doesnt match any, return []
   // should include dinosaurs with only one mya
   // return ids of dinos alive during mya 
