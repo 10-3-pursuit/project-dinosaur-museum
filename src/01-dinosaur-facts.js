@@ -27,7 +27,7 @@ function getLongestDinosaur(dinosaurs) {
   if (!dinosaurs || dinosaurs.length === 0) {
     return {}; 
   }
-  /*if the value is equal to the one it is iterateing to check for the greates hight 
+  /*if the value is equal to the one it is iterateing to check for the greatest hight 
   in meters it will take the first one becuase if they are equal it does not change with > */
   // should return the first dinosaur if there are multiples with the same length
   const longestDinosaur = dinosaurs.reduce((currentLongest, currentDinosaur) => {
@@ -63,7 +63,29 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const dinosaurFound = dinosaurs.find((dinosaur)=> dinosaur.dinosaurId === id);
+  
+  // ✕ should return a string description of a dinosaur, by ID (1 ms)
+    // ✕ should work for dinosaurs with only one value in `mya`
+  if(dinosaurFound){
+    // deconstruct dinosaurFound
+    const {name ,pronunciation, info ,period , mya} = dinosaurFound;
+    
+    // ✕ should work for dinosaurs with only one value in `mya`
+    if(mya.length ===1){
+      const newMya =mya[0]
+      return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${newMya} million years ago.`;
+    }else{
+      return `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${mya[1]} million years ago.`;
+    }
+
+  }else{
+  // ✕ should return an error message if the dinosaur cannot be found (1 ms)
+  return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+
+}
 
 /**
  * getDinosaursAliveMya()
