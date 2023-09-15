@@ -51,9 +51,9 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  let dino = dinosaurs.find(({dinosaurId}) => dinosaurId === id)
+  const dino = dinosaurs.find(({dinosaurId}) => dinosaurId === id)
   if(dino===undefined)
-    return `A dinosaur with an ID of ${id} cannot be found.`
+    return `A dinosaur with an ID of '${id}' cannot be found.`
   return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the `+ 
           `${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
 }
@@ -83,7 +83,20 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const wantedDinos = dinosaurs.filter(dino => {
+      if( (mya >= dino.mya[0]-1 && mya <= dino.mya[0]) && dino.mya.length===1 )
+        return dino
+      else if( mya <= dino.mya[0]  && mya >= dino.mya[1]  )
+        return dino
+  })
+  const formattedDinos = wantedDinos.map(dino => {
+      if(key === undefined || dino[key] === undefined)
+        return dino.dinosaurId
+      return dino[key]
+  }, key)
+  return formattedDinos
+}
 
 module.exports = {
   getLongestDinosaur,
