@@ -22,7 +22,28 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // Initialize variables to store the longest dinosaur length and a new dinosaur object
+  let longestDinosaur = 0
+  let newDinosaurObj = {}
+  // Iterate through the array of dinosaurs using .forEach()
+  dinosaurs.forEach((dinosaur) => {
+    // Check if the current dinosaur's length is greater than 'longestDinosaur'
+    if (dinosaur.lengthInMeters > longestDinosaur) {
+      // If it is, update longestDinosaur
+      longestDinosaur = dinosaur.lengthInMeters
+      /* Create a new dinosaur object with the dinosaur name as the key
+      and its length converted to feet as the value. If the next dinosaur is longer, 
+      the object is updated. */
+      newDinosaurObj = {
+        [dinosaur.name]: dinosaur.lengthInMeters * 3.281
+      }
+    }
+  })
+  /* Return the new dinosaur object with the longest dinosaur. If there are no dinosaurs, 
+  returns empty object. */
+  return newDinosaurObj
+}
 
 /**
  * getDinosaurDescription()
