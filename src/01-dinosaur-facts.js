@@ -27,11 +27,11 @@ function getLongestDinosaur(dinosaurs) {
   let longestDinosaur = {}
   // a variable to keep track of the current longest dinosaur length
   let currentDinoLength = 0
-  // Iterate through the dinosaurs array
+  // go through the dinosaurs array
   for (let i = 0; i < dinosaurs.length; i++) {
     // Check if the length of the current dinosaur is greater than the current longest
     if (dinosaurs[i].lengthInMeters > currentDinoLength) {
-      // Update the current longest dinosaur length
+      // Updates currentDinoLength
       currentDinoLength = dinosaurs[i].lengthInMeters
       // Create a new object with the current dinosaur's name as the key and its length in feet as the value, and assign it to longestDinosaur
       longestDinosaur = {
@@ -64,12 +64,16 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  // return an object tallest dinosaur name value feet
-  // return empty object for no dinosaurs if object is empty or if there is no dinosaur argument
-  // return first dinosaur for object
-
-
-
+  // use .find() method to search for a dinosaur in the array if the 'dinosaurId' matches the 'id'
+  const foundDino = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id)
+  // Check if a dinosaur with the 'id' was found
+  if (foundDino) {
+  // If a matching dinosaur was found, construct a description string including the dinosaur's name, pronunciation, information, period, and mya
+    return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length-1]} million years ago.`
+  } else {
+  // If no matching dinosaur was found, return an error message
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
 }
 
 /**
