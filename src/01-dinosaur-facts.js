@@ -105,7 +105,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     }
   })
 }
-console.log(getDinosaursAliveMya(exampleDinosaurData,65))
+
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
