@@ -5,7 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
-const exampleDinosaurData = require('../data/dinosaurs');
+const exampleDinosaurData = require("../data/dinosaurs");
 // Do not change the line above.
 
 /**
@@ -22,8 +22,22 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+//if the dino array is empty return an empty array
+//first sort the data by the dino length (highest length goes first)
+//then return the first element in the newly sorted array
 
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length < 1) {
+    return {};
+  }
+  const sortedByTallestDino = dinosaurs.sort(
+    (a, b) => b.lengthInMeters - a.lengthInMeters
+  );
+  const tallestObject = sortedByTallestDino[0];
+  return { [tallestObject.name]: tallestObject.lengthInMeters * 3.281 };
+  // return sortedByTallestDino[0];
+}
+// console.log(getLongestDinosaur(dinosaurs));
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -76,5 +90,5 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {}
 module.exports = {
   getLongestDinosaur,
   getDinosaurDescription,
-  getDinosaursAliveMya
+  getDinosaursAliveMya,
 };
