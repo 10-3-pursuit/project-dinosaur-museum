@@ -54,7 +54,14 @@ return largestDino||{}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const searchedDino = dinosaurs.find(dino => dino.dinosaurId === id)
+  if(searchedDino){
+    return `${searchedDino.name} (${searchedDino.pronunciation})\n${searchedDino.info} It lived in the ${searchedDino.period} period, over ${Math.min(...searchedDino.mya)} million years ago.`
+  }else{
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
