@@ -24,7 +24,9 @@ const exampleDinosaurData = require("../data/dinosaurs");
  */
 //if the dino array is empty return an empty array
 //first sort the data by the dino length (highest length goes first)
-//then return the first element in the newly sorted array
+//grab the first element in that newly sorted array
+//return an object where the key is the dino name and value is the length in feet
+//*NOTE* you MUSt convert meters into feet => multiply by 3.281
 
 function getLongestDinosaur(dinosaurs) {
   if (dinosaurs.length < 1) {
@@ -35,9 +37,8 @@ function getLongestDinosaur(dinosaurs) {
   );
   const tallestObject = sortedByTallestDino[0];
   return { [tallestObject.name]: tallestObject.lengthInMeters * 3.281 };
-  // return sortedByTallestDino[0];
 }
-// console.log(getLongestDinosaur(dinosaurs));
+
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -56,9 +57,25 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
- *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found".
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //use .find to find the dino object that matches the inputted id
+  //if the dinosaurId in the object does not match the inputted id then return an error message
+  //if they DO match return a formatted message using template literals
+
+  const foundDinoById = dinosaurs.find((dino) => {
+    return dino.dinosaurId === id;
+  });
+
+  if (!foundDinoById) {
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+  } else if (foundDinoById.mya.length === 1) {
+    return `${foundDinoById.name} (${foundDinoById.pronunciation})\n${foundDinoById.info} It lived in the ${foundDinoById.period} period, over ${foundDinoById.mya[0]} million years ago.`;
+  }
+  //foundDinoById.name
+  return `${foundDinoById.name} (${foundDinoById.pronunciation})\n${foundDinoById.info} It lived in the ${foundDinoById.period} period, over ${foundDinoById.mya[1]} million years ago.`;
+}
 
 /**
  * getDinosaursAliveMya()
