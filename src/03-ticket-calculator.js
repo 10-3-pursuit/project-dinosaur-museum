@@ -54,77 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
-  const ticketDataTicketTypes = Object.keys(ticketData)
-  const ticketType = ticketInfo.ticketType
-  const ticketDataEntrantTypes = ['child','adult','senior']
-  const ticketEntrantType = ticketInfo.entrantType
-  const ticketDataExtras = ['movie','education','terrace']
-  const ticketExtras = ticketInfo.extras
-  let finalPrice = 0
-  
-  if(!ticketDataTicketTypes.includes(ticketType)){
-    return `Ticket type '${ticketType}' cannot be found.`
-  }else if(!ticketDataEntrantTypes.includes(ticketEntrantType)){
-    return `Entrant type '${ticketEntrantType}' cannot be found.`
-  }else{
-    const incorrectTypes = ticketExtras.filter(extra => !ticketDataExtras.includes(extra))
-    if(incorrectTypes.length > 0){
-      return `Extra type '${incorrectTypes[0]}' cannot be found.`
+  function calculateTicketPrice(ticketData, ticketInfo) {
+      const { ticketType, entrantType, extras } = ticketInfo;
+      const incorrectExtra = extras.find(extra => !Object.keys(ticketData.extras).includes(extra))
+      
+      
+      if(!Object.keys(ticketData).includes(ticketType)){
+        return `Ticket type '${ticketType}' cannot be found.`
+      }else if(!Object.keys(ticketData.general.priceInCents).includes(entrantType)){
+        return `Entrant type '${entrantType}' cannot be found.`
+      }else if(!extras.every(extra => Object.keys(ticketData.extras).includes(extra))){
+        return `Extra type '${incorrectExtra}' cannot be found.`
+      }
+
+      const basePrice = ticketData[ticketType]['priceInCents'][entrantType]
+      const costOfExtras = {
+        movie: 1000,
+        education: entrantType === "child" ? 1000 : 1200,
+        terrace: entrantType === "child" ? 500 : 1000,
+      };
+    
+      const totalPrice = extras.reduce((acc, extra) =>  acc + costOfExtras[extra], basePrice);
+      return totalPrice
     }
-  }
   
-  switch(true){
-    case ticketType === "general":
-      switch(true){
-        case ticketEntrantType === 'child':
-          finalPrice += 2000
-          break;
-        case ticketEntrantType === 'adult':
-          finalPrice += 3000
-          break;
-        case ticketEntrantType === 'senior':
-          finalPrice += 2500
-          break;
-      }
-      break;
-    case ticketType === "membership":
-      switch(true){
-        case ticketEntrantType === 'child':
-        finalPrice += 1500
-          break;
-        case ticketEntrantType === 'adult':
-          finalPrice += 2800
-          break;
-        case ticketEntrantType === 'senior':
-          finalPrice += 2300
-          break;
-      }
-      break;
-  }
-  if(ticketExtras.length > 0){
-    for(let extra of ticketExtras){
-      switch(true){
-        case extra === "movie":
-          finalPrice += 1000
-          break;
-        case extra === "education" && ticketEntrantType === 'child':
-          finalPrice += 1000 
-          break;
-        case extra === "education" && ticketEntrantType !== 'child':
-          finalPrice += 1200
-          break;
-        case extra === "terrace" && ticketEntrantType === 'child':
-          finalPrice += 500
-          break;
-        case extra === "terrace" && ticketEntrantType !== 'child':
-          finalPrice +=1000
-          break;
-      }
-    }
-  }
-  return finalPrice
-}
 
 /**
  * purchaseTickets()
@@ -181,18 +134,18 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
     const error = purchases.find(purchase => typeof(calculateTicketPrice(ticketData,purchase)) === 'string')
+    const thankYou = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+   
     if(error){
       return calculateTicketPrice(ticketData,error)
-    }else{
-  
     }
-  
-  let finalCost = purchases.map((purchase)=>{
+    
+    let finalCost = purchases.map((purchase)=>{
     return calculateTicketPrice(ticketData,purchase)
     })
     .reduce((acc,cost)=> acc + cost,0)
     finalCost = (finalCost/100).toFixed(2)
-    const thankYou = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+    
     const receipt = purchases.reduce((receiptStr,purchase) => {
       const ticketEntrantType = purchase.entrantType.slice(0,1).toUpperCase() + purchase.entrantType.slice(1)
       const ticketType = purchase.ticketType.slice(0,1).toUpperCase() + purchase.ticketType.slice(1)
@@ -211,8 +164,7 @@ function purchaseTickets(ticketData, purchases) {
       return receiptStr
     },'')
   
-    return `${thankYou}${receipt}\n-------------------------------------------\nTOTAL: $${finalCost}`
-
+  return `${thankYou}${receipt}\n-------------------------------------------\nTOTAL: $${finalCost}`
 }
 
 
