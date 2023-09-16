@@ -67,16 +67,18 @@ function getConnectedRoomNamesById(rooms, id) {
   // if no connected room id, return `Room with ID of '${id}' could not be found.`
   // return room name of all rooms connected to roomId 
   const roomObj = rooms.find((room) => room.roomId === id)
-  if(roomObj === undefined){
+  if(!roomObj){
     return `Room with ID of '${id}' could not be found.`
   }
-  const connectedRoomIds = []
-  roomObj.connectsTo.forEach(roomId => connectedRoomIds.push(roomId)) 
+  const connectedRoomIds = roomObj.connectsTo
 
   const resultRoomObj = rooms.filter((room) => connectedRoomIds.includes(room.roomId))
- 
-  const resultNameArr = []
-  resultRoomObj.forEach(room => resultNameArr.push(room.name))
+  // const invalidConnectedRoomIds = rooms.filter((room) => !connectedRoomIds.includes(room.roomId))
+  // if(invalidConnectedRoomIds.length > 0){
+  //   return `Room with ID of 'incorrect-id' could not be found.`
+  // }
+
+  const resultNameArr = resultRoomObj.map(room => room.name)
 
   return resultNameArr
 }
