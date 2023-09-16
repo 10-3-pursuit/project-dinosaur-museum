@@ -32,18 +32,22 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   // Return the name of the room where the given dinosaur can be found
 let dinosaurNameId;
 let result;
-for(let dino of dinosaurs){
-  if(dino.name === dinosaurName){
-    dinosaurNameId = dino.dinosaurId
-  } else {
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`
-  }
+// for(let dino of dinosaurs){
+//   if(dino.name === dinosaurName){
+//     dinosaurNameId = dino.dinosaurId
+//   } else {
+//     return `Dinosaur with name '${dinosaurName}' cannot be found.`
+//   }
+// }
+const dinosaurNameObj = dinosaurs.find((dino) => dino.name === dinosaurName)
+if(dinosaurNameObj === undefined){
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`
 }
 
 for(let room of rooms){
   for(let id of room.dinosaurs){
     if(id === dinosaurNameId){
-      result = room.name
+      return room.name
     } else {
       return `Dinosaur with name ${dinosaurName} cannot be found in any rooms.`
     }
