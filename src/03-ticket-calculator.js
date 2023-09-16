@@ -61,6 +61,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const ticketEntrantType = ticketInfo.entrantType
   const ticketDataExtras = ['movie','education','terrace']
   const ticketExtras = ticketInfo.extras
+  let finalPrice = 0
   
   if(!ticketDataTicketTypes.includes(ticketType)){
     return `Ticket type '${ticketType}' cannot be found.`
@@ -72,6 +73,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       return `Extra type '${incorrectTypes[0]}' cannot be found.`
     }
   }
+  
+  switch(true){
+    case ticketType === "general":
+      switch(true){
+        case ticketEntrantType === 'child':
+          finalPrice += 2000
+          break;
+        case ticketEntrantType === 'adult':
+          finalPrice += 3000
+          break;
+        case ticketEntrantType === 'senior':
+          finalPrice += 2500
+          break;
+      }
+      break;
+    }
+  return finalPrice
 }
 
 /**
