@@ -22,6 +22,7 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
+
 function getLongestDinosaur(dinosaurs) {
   // Initialize variables to store the longest dinosaur length and a new dinosaur object
   let longestDinosaur = 0
@@ -73,7 +74,7 @@ function getDinosaurDescription(dinosaurs, id) {
   dinosaurs.forEach((dinosaur) => {
     // Check if the current dinosaur's 'dinosaurId' matches the original 'id' parameter.
     if (dinosaur.dinosaurId === id) {
-      // If there is a match, update 'dinoInfo' with the dinosaur's information.
+      // If the IDs match, update 'dinoInfo' with the dinosaur's information using string interoplation.
       dinoInfo = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`
     }
   })
@@ -106,7 +107,46 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Created empty array to store values.
+  const dinosaurArray = []
+  // Iterate through the 'dinosaurs' array using .forEach().
+  dinosaurs.forEach(dinosaur => {
+    // Check if the 'dinosaur.mya' array has more than one element using '.length'.
+    if (dinosaur.mya.length > 1) {
+      /* Check if value of 'mya' in the parameters is equal to or inbetween the two values of the elements 
+      in the array 'dinosaur.mya'. */
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
+        if (key && dinosaur[key] !== undefined) {
+          // Push the value of 'dinosaur[key]' into the array 'dinosaurArray'.
+          dinosaurArray.push(dinosaur[key])
+        } else {
+          // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
+          dinosaurArray.push(dinosaur.dinosaurId)
+        }
+      }
+    } 
+    // Check if the 'dinosaur.mya' array has only one element using '.length'.
+    else if (dinosaur.mya.length === 1) {
+      // Check if the value of 'mya' in the parameters is within 1 million years BEFORE the value of 'dinosaur.mya[0]'.
+      if (mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0]) {
+        // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
+        if (key && dinosaur[key] !== undefined) {
+          // Push the value of 'dinosaur[key]' into the array 'dinosaurArray'.
+          dinosaurArray.push(dinosaur[key])
+        } else {
+          // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
+          dinosaurArray.push(dinosaur.dinosaurId)
+        }
+      }
+    }
+  })
+  /* Return 'dinosaurArray' with either the dinosaur ID's or the specified key, after the entire 'dinosaurs' 
+  array has been iterated through. */
+  return dinosaurArray
+}
 
 module.exports = {
   getLongestDinosaur,
