@@ -70,6 +70,15 @@ function getConnectedRoomNamesById(rooms, id) {
   if(roomObj === undefined){
     return `Room with ID of '${id}' could not be found.`
   }
+  const connectedRoomIds = []
+  roomObj.connectsTo.forEach(roomId => connectedRoomIds.push(roomId)) 
+
+  const resultRoomObj = rooms.filter((room) => connectedRoomIds.includes(room.roomId))
+ 
+  const resultNameArr = []
+  resultRoomObj.forEach(room => resultNameArr.push(room.name))
+
+  return resultNameArr
 }
 
 module.exports = {
