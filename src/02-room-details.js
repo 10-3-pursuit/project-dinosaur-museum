@@ -26,34 +26,18 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
-  // convert dinosaurName to id#
-  // if dinoName not found in any room, `Dinosaur with name ${dinosaurName} cannot be found in any rooms.`
-  // if dinoName doesn't exist in array, `Dinosaur with name ${dinosaurName} cannot be found.`
-  // Return the name of the room where the given dinosaur can be found
-let dinosaurNameId;
-let result;
-// for(let dino of dinosaurs){
-//   if(dino.name === dinosaurName){
-//     dinosaurNameId = dino.dinosaurId
-//   } else {
-//     return `Dinosaur with name '${dinosaurName}' cannot be found.`
-//   }
-// }
-const dinosaurNameObj = dinosaurs.find((dino) => dino.name === dinosaurName)
-if(dinosaurNameObj === undefined){
-  return `Dinosaur with name '${dinosaurName}' cannot be found.`
-}
-
-for(let room of rooms){
-  for(let id of room.dinosaurs){
-    if(id === dinosaurNameId){
-      return room.name
-    } else {
-      return `Dinosaur with name ${dinosaurName} cannot be found in any rooms.`
-    }
+  
+  const dinosaurNameObj = dinosaurs.find((dino) => dino.name === dinosaurName)
+  if(dinosaurNameObj === undefined){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  } 
+  
+  const resultRoomObj = rooms.find((room) => room.dinosaurs.includes(dinosaurNameObj.dinosaurId))
+  if(resultRoomObj === undefined){
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
   }
-}
-return result
+  
+  return resultRoomObj.name 
 }
 
 /**
