@@ -179,7 +179,43 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+    const error = purchases.find(purchase => typeof(calculateTicketPrice(ticketData,purchase)) === 'string')
+    if(error){
+      return calculateTicketPrice(ticketData,error)
+    }else{
+  
+    }
+  
+  let finalCost = purchases.map((purchase)=>{
+    return calculateTicketPrice(ticketData,purchase)
+    })
+    .reduce((acc,cost)=> acc + cost,0)
+    finalCost = (finalCost/100).toFixed(2)
+    const thankYou = 'Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n'
+    const receipt = purchases.reduce((receiptStr,purchase) => {
+      const ticketEntrantType = purchase.entrantType.slice(0,1).toUpperCase() + purchase.entrantType.slice(1)
+      const ticketType = purchase.ticketType.slice(0,1).toUpperCase() + purchase.ticketType.slice(1)
+      const purchaseCost = (calculateTicketPrice(ticketData,purchase)/100).toFixed(2)
+      const extrasDscr = purchase.extras.map(extra => {
+        return `${ticketData['extras'][`${extra}`]['description']}`
+      })
+      .join(', ')
+      receiptStr += `${ticketEntrantType} ${ticketType} Admission: $${purchaseCost}`
+      if(extrasDscr){
+        receiptStr += ` (${extrasDscr})`
+      }
+      if(purchases.indexOf(purchase) !== purchases.length - 1){
+        receiptStr += '\n'
+      }
+      return receiptStr
+    },'')
+  
+    return `${thankYou}${receipt}\n-------------------------------------------\nTOTAL: $${finalCost}`
+
+}
+
+
 
 // Do not change anything below this line.
 module.exports = {
