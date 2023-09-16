@@ -22,7 +22,33 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // my input should be an empty object 
+  //  i need to return an object {} where the key is the name of tallest dinosaur and value is the height in feet .
+  //  i will need an if statement to make sure i return the first dinosaur if all dinosaur are the same height.
+  //  if no dinosar are threre or there is an empty arguement return empty object 
+    if (dinosaurs.length === 0) {
+      return {}; 
+    }
+  
+    const tallestDino = dinosaurs.reduce((prevDino, currentDino) =>
+      prevDino.lengthInMeters >= currentDino.lengthInMeters ? prevDino : currentDino
+    );
+  
+    const lengthInFeet = tallestDino.lengthInMeters * 3.28084;
+  
+    const longestDinosaur = {
+      [tallestDino.name]: lengthInFeet,
+    };
+  
+    return longestDinosaur;
+  }
+  
+  // Example usage:
+  // const dinosaurs = [...] // Your array of dinosaur objects
+  // const result = findLongestDinosaur(dinosaurs);
+  // console.log(result); // Output: { "LongestDinosaurName": 65.62 }
+  
 
 /**
  * getDinosaurDescription()
@@ -44,7 +70,11 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  const dinoDescription = dinosaurs.find((dino) => dino.id === dinosaur.id)
+
+  
+}
 
 /**
  * getDinosaursAliveMya()
