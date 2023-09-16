@@ -77,17 +77,19 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     }
   }
 
-  let testExtra = ticketInfo.extras.every(current => 
-    Object.keys(ticketData.extras).includes(current))
-  if(!testExtra)
-    return `Extra type 'incorrect-extra' cannot be found.`
+  if(ticketInfo.extras!==undefined){
+    let testExtra = ticketInfo.extras.every(current => 
+      Object.keys(ticketData.extras).includes(current))
+    if(!testExtra)
+      return `Extra type 'incorrect-extra' cannot be found.`
+  }
+
+  if(!Object.keys(ticketData).includes(ticketInfo.ticketType))
+    return `Ticket type 'incorrect-type' cannot be found.`
 
   if(!Object.keys(ticketData.general.priceInCents).includes(ticketInfo.entrantType))
     return `Entrant type 'incorrect-entrant' cannot be found.`
 
-  if(total===0)
-    return `Ticket type 'incorrect-type' cannot be found.`
-  
   return total
 }
 
@@ -144,7 +146,42 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  const prices = purchases.map(current => calculateTicketPrice(ticketData,current))
+  const total = prices.reduce((total,current) => total+current )
+
+  if(purchases.every(current => !Number.isInteger(calculateTicketPrice(ticketData, current))))
+    return calculateTicketPrice(ticketData, purchases[0])
+  
+  let result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+
+  prices.forEach((current,index) =>{
+
+    result+=`${purchases[index].entrantType.charAt(0).toUpperCase()}${purchases[index].entrantType.substring(1)} `+
+            `${purchases[index].ticketType.charAt(0).toUpperCase()}${purchases[index].ticketType.substring(1)} `+
+            `Admission: \$${(Number.parseFloat(current/100).toFixed(2))}`
+
+    if(purchases[index].extras!==undefined){
+      purchases[index].extras.forEach((current,index,self)=>{
+        if(index === 0)
+          result += ` (`
+
+        result += `${current.charAt(0).toUpperCase()}${current.substring(1)} Access`
+
+        if(index !== self.length-1)
+          result += `, `
+        else
+          result += `)`
+      })
+    }
+
+    result+=`\n`        
+  },purchases)
+  result += `-------------------------------------------\n`+
+            `TOTAL: \$${(Number.parseFloat(total/100).toFixed(2))}`
+
+  return result;
+}
 
 // Do not change anything below this line.
 module.exports = {
