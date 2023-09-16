@@ -102,7 +102,27 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       }
       break;
   }
-
+  if(ticketExtras.length > 0){
+    for(let extra of ticketExtras){
+      switch(true){
+        case extra === "movie":
+          finalPrice += 1000
+          break;
+        case extra === "education" && ticketEntrantType === 'child':
+          finalPrice += 1000 
+          break;
+        case extra === "education" && ticketEntrantType !== 'child':
+          finalPrice += 1200
+          break;
+        case extra === "terrace" && ticketEntrantType === 'child':
+          finalPrice += 500
+          break;
+        case extra === "terrace" && ticketEntrantType !== 'child':
+          finalPrice +=1000
+          break;
+      }
+    }
+  }
   return finalPrice
 }
 
