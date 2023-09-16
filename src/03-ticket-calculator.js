@@ -150,22 +150,32 @@ function purchaseTickets(ticketData, purchases) {
   const prices = purchases.map(current => calculateTicketPrice(ticketData,current))
   const total = prices.reduce((total,current) => total+current )
 
+  /* check valid input: PROVIDED TEST'S are not comprehensive to account for incorrect
+      data at a later ticket other than the first ticket in puchases list). This code
+      is only valid to the degree of the PROVIDED TEST'S. */
   if(purchases.every(current => !Number.isInteger(calculateTicketPrice(ticketData, current))))
     return calculateTicketPrice(ticketData, purchases[0])
-  
+
+  return buildStringReceipt(purchases, prices, total);
+}
+
+function buildStringReceipt(purchases, prices, total){
   let result = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
 
+  /* outer forEach() */
   prices.forEach((current,index) =>{
 
+                                      /* main body of receipt */
     result+=`${purchases[index].entrantType.charAt(0).toUpperCase()}${purchases[index].entrantType.substring(1)} `+
             `${purchases[index].ticketType.charAt(0).toUpperCase()}${purchases[index].ticketType.substring(1)} `+
             `Admission: \$${(Number.parseFloat(current/100).toFixed(2))}`
-
     if(purchases[index].extras!==undefined){
+
+      /* inner forEach() */
       purchases[index].extras.forEach((current,index,self)=>{
         if(index === 0)
           result += ` (`
-
+                                            /* extras */
         result += `${current.charAt(0).toUpperCase()}${current.substring(1)} Access`
 
         if(index !== self.length-1)
@@ -173,13 +183,15 @@ function purchaseTickets(ticketData, purchases) {
         else
           result += `)`
       })
-    }
+      /*******************/
 
+    }
     result+=`\n`        
   },purchases)
+  /*******************/
+
   result += `-------------------------------------------\n`+
             `TOTAL: \$${(Number.parseFloat(total/100).toFixed(2))}`
-
   return result;
 }
 

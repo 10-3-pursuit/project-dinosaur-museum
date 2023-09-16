@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all dinosaurs.
 */
+const dinosaurs = require('../data/dinosaurs');
 const exampleDinosaurData = require('../data/dinosaurs');
 // Do not change the line above.
 
@@ -55,7 +56,7 @@ function getDinosaurDescription(dinosaurs, id) {
   if(dino===undefined)
     return `A dinosaur with an ID of '${id}' cannot be found.`
   return `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the `+ 
-          `${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
+         `${dino.period} period, over ${dino.mya[dino.mya.length-1]} million years ago.`
 }
 
 /**
@@ -96,6 +97,13 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       return dino[key]
   }, key)
   return formattedDinos
+}
+
+function whichDinoHerb(dinosaurs){
+  let result = [];
+  result = dinosaurs.filter(({diet}) => diet === "herbivorous").map(({name}) => name);
+  console.log("Herbivores Dinosaurs:")
+  result.forEach(current => console.log(current))
 }
 
 module.exports = {
