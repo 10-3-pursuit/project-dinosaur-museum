@@ -88,7 +88,21 @@ function calculateTicketPrice(ticketData, ticketInfo) {
           break;
       }
       break;
-    }
+    case ticketType === "membership":
+      switch(true){
+        case ticketEntrantType === 'child':
+        finalPrice += 1500
+          break;
+        case ticketEntrantType === 'adult':
+          finalPrice += 2800
+          break;
+        case ticketEntrantType === 'senior':
+          finalPrice += 2300
+          break;
+      }
+      break;
+  }
+
   return finalPrice
 }
 
