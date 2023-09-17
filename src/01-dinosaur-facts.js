@@ -42,7 +42,7 @@ function getLongestDinosaur(dinosaurs) {
 
   return result; // result object makes function defined so when invoked it produces output. Output is an object where the key is the dinosaur name with longest length and the value is the maximum length in feet.
 };
-console.log(getLongestDinosaur(exampleDinosaurData));
+//console.log(getLongestDinosaur(exampleDinosaurData)); // to test function using node src/01-dinosaur-facts.js
 
 /**
  * getDinosaurDescription()
@@ -91,7 +91,38 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+// If only 2 parameters OR If all 3 but key doesn't exist in the data (dinosaur and mya) RETURNS array of dinosaurs IDs who were alive at given mya
+// If all 3 parameters returns actual key value
+// To do this ^ :check if key exists (if statement or .filter()) if it does then push key into new array if it doesn't - push id into array
+// if the `mya` key is an array of one number, should allow for 1 MYA less than the amount 
+// To do this iterate through the array using a for loop or high order native array function like .filter() or .map() use: if dino.mya.length === 1 and mya === dino.mya || mya === dino.mya - 1
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const result =[];
+  let max;
+  let min;
+  for (let dino of dinosaurs) {
+    if (dino.mya.length === 1) { //Checks for dino.mya values where there is only 1 element inside the array. If statement to provide a range of dinos alvie at the time
+      max = dino.mya;
+      min = dino.mya - 1; // Unnecessary to iterate over an array with just 1 element in order to subtract from it
+    } else {
+      max = dino.mya[0];
+      min = dino.mya[1];
+    }
+    if (mya <= max && mya >= min) {
+      if (key && dino.hasOwnProperty(key)) { // if it matches key
+        result.push(dino[key]);
+      } else if (key && !dino.hasOwnProperty(key)) { // if there's a key argument but it doesn't match any keys in the data
+        result.push(dino.dinosaurId);
+      } else {
+        result.push(dino.dinosaurId); // for all other cases which include if the optional parameter key isn't provided an argument
+      }
+    }
+  }
+ return result;
+}
+console.log(getDinosaursAliveMya(exampleDinosaurData));
 
 module.exports = {
   getLongestDinosaur,
