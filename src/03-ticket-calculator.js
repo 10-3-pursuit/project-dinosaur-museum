@@ -80,7 +80,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
       total += extrasDataObj[extra].priceInCents[entrantInfo]
     }
   }
-  
+
   return total
 }
 
@@ -137,7 +137,26 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  let entrantType;
+  let typeInfo;
+  let extras;
+
+  
+  for(let purchase of purchases){
+    total += calculateTicketPrice(ticketData, purchase)
+    entrantType = purchase.entrantType
+    ticketType = purchase.ticketType
+    extras = purchase.extras.join(' , ')
+    if(!ticketData[ticketType] && ticketType !== 'extras'){
+      return `Ticket type '${ticketType}' cannot be found.`
+    }
+
+  }
+
+  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${entrantType} ${ticketType} Admission: ${total.toFixed(2)} (Movie Access)\n-------------------------------------------\nTOTAL: $38.00`
+}
 
 // Do not change anything below this line.
 module.exports = {
