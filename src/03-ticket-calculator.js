@@ -60,15 +60,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   // extra type does not match an existing extra type
   const addOnsObj = ticketData.extras
   let total = 0
-  if(ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership'){
-    return "Ticket type 'incorrect-type' cannot be found."
-  } else if(ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
-    return "Entrant type 'incorrect-entrant' cannot be found."
-  } else if(ticketInfo.extras && !addOnsObj.hasOwnProperty(ticketInfo.extras)){
-    return "Extra type 'incorrect-extra' cannot be found."
-  }
 
+  const typeInfo = ticketInfo.ticketType
+  const entrantInfo = ticketInfo.entrantType
   
+  // if(ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership'){
+  //   return "Ticket type 'incorrect-type' cannot be found."
+  // } else if(ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+  //   return "Entrant type 'incorrect-entrant' cannot be found."
+  // } else if(ticketInfo.extras && !addOnsObj.hasOwnProperty(ticketInfo.extras)){
+  //   return "Extra type 'incorrect-extra' cannot be found."
+  // }
+
+  if(!ticketData[typeInfo]){
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else {
+    total += ticketData[typeInfo].priceInCents[entrantInfo]
+  }
   // calculate a gen admission without any addons 
   // calculate a membership admisison without any addons
 
