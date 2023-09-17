@@ -23,20 +23,22 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  let greatestLengthSoFar = 0;
+  let longestDinoSoFar;
   if (dinosaurs.length === 0) {
-    return {}; // Return an empty array
+    return {};
   }
 
-  const longestDinosaur = dinosaurs.reduce((currentLongest, dinosaur) => {
-    const heightInFeet = dinosaur.lengthInMeters * 3.281; // Convert height to feet
-    if (heightInFeet > currentLongest.height) {
-      return { name: dinosaur.name, height: heightInFeet };
-    } else {
-      return currentLongest;
-    }
-  }, { name: '', height: 0 });
+  for (const dino of dinosaurs) {
+    if (dino.lengthInMeters > greatestLengthSoFar) {
+      longestDinoSoFar = dino;
+      greatestLengthSoFar = dino.lengthInMeters;
+    } 
+  }
+  let newObject = {};
+  newObject[longestDinoSoFar.name] = longestDinoSoFar.lengthInMeters * 3.281;
 
-  return { [longestDinosaur.name]: longestDinosaur.height };
+  return newObject;
 }
 
 
@@ -97,7 +99,29 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const myaValues = [mya, mya - 1];
+
+  const filteredDinos = dinosaurs.filter(dinosaur => {
+    if (Array.isArray(dinosaur.mya)) {
+      return dinosaur.mya.some(year => myaValues.includes(year));
+    } else {
+      return myaValues.includes(dinosaur.mya);
+    }
+  });
+
+  if (key) {
+    return filteredDinos.map(dinosaurs => dinosaurs.dinosaurId);
+  }
+  if (!key) {
+    return filteredDinos.map(dinosaurs => dinosaurs.dinosaurId);
+  }
+
+  return filteredDinos.map(dinosaurs => dinosaurs[key] || dinosaurs.dinosaurId);
+}
+
+// Example usage remains the same as in the previous response.
+
 
 module.exports = {
   getLongestDinosaur,
