@@ -139,23 +139,45 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let total = 0
-  let entrantType;
-  let typeInfo;
-  let extras;
-
-  
+  const receiptHeader = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let receipt = ''
   for(let purchase of purchases){
-    total += calculateTicketPrice(ticketData, purchase)
-    entrantType = purchase.entrantType
-    ticketType = purchase.ticketType
-    extras = purchase.extras.join(' , ')
-    if(!ticketData[ticketType] && ticketType !== 'extras'){
-      return `Ticket type '${ticketType}' cannot be found.`
+
+    const entrantInfo = purchase.entrantType
+    const ticketTypeInfo = purchase.ticketType
+
+    const ticketCost = calculateTicketPrice(ticketData, purchase)
+    if(!ticketCost){
+      if(entrantInfo !== 'child' && entrantInfo !== 'adult' && entrantInfo !== 'senior'){
+        return "Entrant type 'incorrect-entrant' cannot be found."
+      } else if(!ticketData[ticketTypeInfo]){
+        return "Ticket type 'incorrect-type' cannot be found."
+      }
+    } else {
+      total += ticketCost
     }
 
+    const typeDescription = ticketData[ticketTypeInfo].description
+    // receipts.push(`${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)}`)
+
+    const extrasDescription = []
+    
+    for(let extra of purchase.extras){
+      if(ticketData.extras[extra]){
+        extrasDescription.push(ticketData.extras[extra].description)
+      }
+    }
+
+    if(purchase.extras.length > 0){
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)} (${extrasDescription.join(', ')})\n`
+    } else {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)}\n`
+    }
   }
 
-  return `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${entrantType} ${ticketType} Admission: ${total.toFixed(2)} (Movie Access)\n-------------------------------------------\nTOTAL: $38.00`
+  const receiptTotal = `-------------------------------------------\nTOTAL: $${(total/100).toFixed((2))}`
+  
+  return `${receiptHeader}${receipt}${receiptTotal}`
 }
 
 // Do not change anything below this line.
