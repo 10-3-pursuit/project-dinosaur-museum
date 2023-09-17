@@ -75,10 +75,11 @@ function getDinosaurDescription(dinosaurs, id) {
   // Should return an error message if dinosaur cannot be found
   // Should not mutate the original dinosaurs array
   
-  const singleDinosaur = dinosaurs.find(dinosaur => dinosaur.dinosaurId === id);
+  const singleDinosaur = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id);
+  
   if (singleDinosaur) {
+   
    const myaRange = Math.min(...singleDinosaur.mya);
-
    const description = `${singleDinosaur.name} (${singleDinosaur.pronunciation})\n${singleDinosaur.info} It lived in the ${singleDinosaur.period} period, over ${myaRange} million years ago.`;
     return description;
   } else {
@@ -117,23 +118,55 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {
-    return dinosaurs
-        .filter(dinosaur => {
-          if (dinosaur.mya.length === 1) {
-            return mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0];
-          } else {
-            return mya >= Math.min(...dinosaur.mya) && mya <= Math.max(...dinosaur.mya);
-          }
-        })
-        .map(dinosaur => {
-          if (key && dinosaur.hasOwnProperty(key)) {
-            return dinosaur[key];
-          } else {
-            return dinosaur.dinosaurId;
-          }
-        });
-    }
+//function getDinosaursAliveMya(dinosaurs, mya, key) {
+    //return dinosaurs
+      //  .filter(dinosaur => {
+        //  if (dinosaur.mya.length === 1) {
+          //  return mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0];
+         // } else {
+           // return mya >= Math.min(...dinosaur.mya) && mya <= Math.max(...dinosaur.mya);
+         // }
+       // })
+       // .map(dinosaur => {
+         // if (key && dinosaur.hasOwnProperty(key)) {
+           // return dinosaur[key];
+         // } else {
+          //  return dinosaur.dinosaurId;
+         // }
+       // });
+   // }
+
+
+   function getDinosaursAliveMya(dinosaurs, mya, key) {
+    const result = [];
+    let minMya, maxMya;
+    
+    
+    dinosaurs.filter(dinosaur => {
+    
+      if (dinosaur.mya.length === 1) {
+        minMya = dinosaur.mya[0] - 1;
+        maxMya = dinosaur.mya[0];
+      
+      } else {
+        minMya = Math.min(...dinosaur.mya);
+        maxMya = Math.max(...dinosaur.mya);
+      }
+      
+      if (mya >= minMya && mya <= maxMya) {
+        if (key && dinosaur.hasOwnProperty(key)) {
+          result.push(dinosaur[key]);
+        } else {
+          result.push(dinosaur.dinosaurId);
+        }
+      }
+    });
+  
+    return result;
+  }
+  
+  
+  
     
   
 
