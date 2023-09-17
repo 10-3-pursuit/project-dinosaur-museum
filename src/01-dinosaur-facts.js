@@ -22,7 +22,22 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+function getLongestDinosaur(dinosaurs) {
+  const dinosaursCopy = dinosaurs.map(dinosaur => dinosaur)
+  if (dinosaursCopy.length === 0) {
+    return {}; 
+  }
+  const sortedDinosaurs = dinosaursCopy.sort((a,b) => b.lengthInMeters - a.lengthInMeters);
+  const longestDinosaur = sortedDinosaurs[0]
+  const lengthInFeet = longestDinosaur.lengthInMeters * 3.281;
+
+  return {[longestDinosaur.name]: lengthInFeet}
+
+}
+
+
+
 
 /**
  * getDinosaurDescription()
@@ -45,6 +60,12 @@ function getLongestDinosaur(dinosaurs) {}
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {}
+ 
+  // return a STRING of the dinosaurDescription
+  // consider mya : should work for dino with only one value in mya 
+  // return ERROR if dino cannot be found 
+  // does not mutate the array 
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +92,9 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+}
 
 module.exports = {
   getLongestDinosaur,
