@@ -59,7 +59,16 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {let dinosaurObj = null;
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+    dinosaurObj = dinosaur
+    } 
+  }
+  if (dinosaurObj === null) {
+    return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  }
+  return `${dinosaurObj.name} (${dinosaurObj.pronunciation})\n${dinosaurObj.info} It lived in the ${dinosaurObj.period} period, over ${dinosaurObj.mya[dinosaurObj.mya.length-1]} million years ago.`}
  
   // return a STRING of the dinosaurDescription
   // consider mya : should work for dino with only one value in mya 
