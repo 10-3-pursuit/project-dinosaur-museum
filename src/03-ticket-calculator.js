@@ -55,33 +55,32 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  // ticket type does not match an existing ticket type 
-  // entrant type does not match an existing entrant type
-  // extra type does not match an existing extra type
-  const addOnsObj = ticketData.extras
   let total = 0
 
   const typeInfo = ticketInfo.ticketType
   const entrantInfo = ticketInfo.entrantType
+  const extrasInfoArr = ticketInfo.extras
+  const extrasDataObj = ticketData.extras
   
-  // if(ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership'){
-  //   return "Ticket type 'incorrect-type' cannot be found."
-  // } else if(ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
-  //   return "Entrant type 'incorrect-entrant' cannot be found."
-  // } else if(ticketInfo.extras && !addOnsObj.hasOwnProperty(ticketInfo.extras)){
-  //   return "Extra type 'incorrect-extra' cannot be found."
-  // }
+
+  if(entrantInfo !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+      return "Entrant type 'incorrect-entrant' cannot be found."
+    }
 
   if(!ticketData[typeInfo]){
     return "Ticket type 'incorrect-type' cannot be found."
   } else {
     total += ticketData[typeInfo].priceInCents[entrantInfo]
   }
-  // calculate a gen admission without any addons 
-  // calculate a membership admisison without any addons
 
-  // should calculate general admission with any addons
-
+  for(let extra of extrasInfoArr){
+    if(!extrasDataObj[extra]){
+      return "Extra type 'incorrect-extra' cannot be found."
+    } else {
+      total += extrasDataObj[extra].priceInCents[entrantInfo]
+    }
+  }
+  
   return total
 }
 
