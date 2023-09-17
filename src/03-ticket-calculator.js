@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // ticket type does not match an existing ticket type 
+  // entrant type does not match an existing entrant type
+  // extra type does not match an existing extra type
+  const addOnsObj = ticketData.extras
+  let total = 0
+  if(ticketInfo.ticketType !== 'general' && ticketInfo.ticketType !== 'membership'){
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else if(ticketInfo.entrantType !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  } else if(ticketInfo.extras && !addOnsObj.hasOwnProperty(ticketInfo.extras)){
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+
+  
+  // calculate a gen admission without any addons 
+  // calculate a membership admisison without any addons
+
+  // should calculate general admission with any addons
+
+  return total
+}
 
 /**
  * purchaseTickets()

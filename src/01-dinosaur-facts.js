@@ -103,6 +103,8 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   let result = []
+  let max;
+  let min;
   for(let dino of dinosaurs){
     if(dino.mya.length === 1){
       max = dino.mya
