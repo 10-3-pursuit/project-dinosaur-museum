@@ -1,5 +1,5 @@
-const exampleDinosaurData = require("../data/dinosaurs");
-const exampleRoomData = require("../data/rooms");
+const dinosaurs = require('../data/dinosaurs');
+const rooms = require("../data/rooms");
 
 // QUESTION: Which dinosaurs only eat meat?
 // find all the names of dinosaurs that only eat meat. 
@@ -82,3 +82,10 @@ console.log(getRequiredTicketTypeByRoomName(rooms, "Paxton Decker Terrace"))
 
 
 
+module.exports = {
+    getAllMeatEaters,
+    getDinosaursFromLateJurrasic,
+    getAllHerbivorousFromPeriod,
+    roomsWithNoDinosaurs,
+    getRequiredTicketTypeByRoomName,
+  };
