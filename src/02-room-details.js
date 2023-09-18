@@ -78,6 +78,8 @@ function getConnectedRoomNamesById(rooms, id) {
   if (connectedRooms.length === 0) {
     return `No connected rooms found for room with ID '${id}'.`;
   }
+
+  const invalidConnectedRoomIds = connectedRoomIds.filter(roomId => !rooms.some(r => r.roomId === roomId));
 }
 
 module.exports = {
