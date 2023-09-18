@@ -59,7 +59,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const { ticketType, entrantType, extras } = ticketInfo;
 
   //ticket type does not match an existing ticket type
-  if (!ticketData[ticketType]) {
+  //include the or because it says it could be any string EXCEPT the value extras
+  if (!ticketData[ticketType] || ticketData[ticketType] === "extras") {
     return `Ticket type '${ticketType}' cannot be found.`;
   }
 
@@ -78,16 +79,15 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   //Loop through all of the extras options
   for (let extra of extras) {
     if (!ticketData["extras"][extra]) {
+      //End the function with an error message if an "extra" doesn't exist
       return `Extra type '${extra}' cannot be found.`;
     }
-  }
 
-  // if (!entrantType[entrantType]) {
-  //   return `Entrant type '${entrantType}' cannot be found.`;
-  // }
-  // if (!extras[extras]) {
-  //   return `E type '${extras}' cannot be found.`;
-  // }
+    //can assume all of the below exist because, in the error codes above we already did our checks for it they DO NOT exist. Therefore we wouldnt even reach this point if it didnt
+    extrasPrice += ticketData["extras"][extra]["priceInCents"][entrantType];
+  }
+  //Final value should be the total of the base price and extra price
+  return basePrice + extrasPrice;
 }
 
 /**
