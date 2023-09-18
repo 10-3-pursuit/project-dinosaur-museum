@@ -32,6 +32,9 @@ const dinosaur = dinosaurs.find(dino => dino.name === dinosaurName);
 if (!dinosaur) {
   return `Dinosaur with name '${dinosaurName}' cannot be found.`;
 }
+
+const room = rooms.find(room => room.dinosaurs.includes(dinosaur.dinosaurId));
+
 }
 
 /**
