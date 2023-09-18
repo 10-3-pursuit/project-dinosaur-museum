@@ -54,7 +54,35 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let total = 0
+
+  const typeInfo = ticketInfo.ticketType
+  const entrantInfo = ticketInfo.entrantType
+
+  if(entrantInfo !== 'child' && entrantInfo !== 'adult' && entrantInfo !== 'senior'){
+      return "Entrant type 'incorrect-entrant' cannot be found."
+    }
+
+  if(!ticketData[typeInfo]){
+    return "Ticket type 'incorrect-type' cannot be found."
+  } else {
+    total += ticketData[typeInfo].priceInCents[entrantInfo]
+  }
+
+  const extrasInfoArr = ticketInfo.extras
+  const extrasDataObj = ticketData.extras
+
+  for(let extra of extrasInfoArr){
+    if(!extrasDataObj[extra]){
+      return "Extra type 'incorrect-extra' cannot be found."
+    } else {
+      total += extrasDataObj[extra].priceInCents[entrantInfo]
+    }
+  }
+
+  return total
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +137,41 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let total = 0
+  const receiptHeader = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  let receipt = ''
+  for(let purchase of purchases){
+
+    const entrantInfo = purchase.entrantType
+    const ticketTypeInfo = purchase.ticketType
+    const ticketCost = calculateTicketPrice(ticketData, purchase)
+    
+    if(typeof ticketCost === 'string'){
+      return ticketCost
+    }
+    
+    total += ticketCost
+
+    const extrasDescription = []
+    
+    for(let extra of purchase.extras){
+      if(ticketData.extras[extra]){
+        extrasDescription.push(ticketData.extras[extra].description)
+      }
+    }
+    
+    if(purchase.extras.length > 0){
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(ticketCost/100).toFixed(2)} (${extrasDescription.join(', ')})\n`
+    } else {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(ticketCost/100).toFixed(2)}\n`
+    } 
+  }
+
+  const receiptTotal = `-------------------------------------------\nTOTAL: $${(total/100).toFixed((2))}`
+  
+  return `${receiptHeader}${receipt}${receiptTotal}`
+}
 
 // Do not change anything below this line.
 module.exports = {
