@@ -109,9 +109,16 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
     if(dino.mya.length === 1 && (dino.mya[0] === mya || dino.mya[0] === mya + 1)) {
 
       arr.push(key && dino[key] !== undefined ? dino[key] : dino.dinosaurId);
-      
+
+    } else if (dino.mya.length > 1 && dino.mya[1] <= mya && dino.mya[0] >= mya) {
+
+      arr.push(key && dino[key] !== undefined ? dino[key] : dino.dinosaurId);
+
     }
-  })
+
+  });
+
+  return arr
 }       
 
 
