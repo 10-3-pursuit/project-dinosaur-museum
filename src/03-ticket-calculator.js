@@ -69,7 +69,7 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
 
   // creating error message for invalid inputs. Invalid inputs are inputs in ticketPersonBought that can't be referenced using ticketsData
   // if statement for the case where customer places an order for values not found in ticketsData
-  if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
+  if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) { // .hasOwnProperty() returns true if ticketData has a key referenced by ticketPersonBought.ticketType. ! symbol negates value
     return `Ticket type 'incorrect-type' cannot be found.`;
   } if (ticketPersonBought.entrantType !== "child" && ticketPersonBought.entrantType !== "adult" && ticketPersonBought.entrantType !== "senior") {
     return `Entrant type 'incorrect-entrant' cannot be found.`;
@@ -149,7 +149,35 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  
+  // step 1: initialize number variable totalCost
+  let totalCost = 0;
+  // step 2: initialize string variable with the beginning of whatever is going to be on the receipt
+  let receipt = `Thank you for visiting the Dinosaur Museum!
+  -------------------------------------------
+  Adult General Admission: $30.00
+  -------------------------------------------
+  TOTAL: $${totalCost}`; // probably will need to fix up later with string interpolation
+
+  // for of loop to access ticketPersonBought objects represented by purchase variable
+  for (let purchase of purchases) { // purchases is an array of ticketPersonBought objects represented by purchase in this function. Once we do a for of loop we can destructure the object
+    // Destructuring extracts values that corresponds to customer input which is structured like an object.
+  const {ticketType, entrantType} = purchase; 
+    // use variables instead of dotting into purchase object to reference data inside purchase object after destructuring purchase object 
+    if (!ticketData.hasOwnProperty(ticketType)) { // .hasOwnProperty() returns true if ticketData has a key referenced by purchases.ticketType. ! symbol negates value
+      return `Ticket type 'incorrect-type' cannot be found.`;
+    } if (entrantType !== "child" && entrantType !== "adult" && entrantType !== "senior") {
+      return `Entrant type 'incorrect-entrant' cannot be found.`;
+    }
+    // for loop to access each extra in purchase.extras. 
+    for (let extra of purchase.extras) {
+      if (!ticketData.extras[extra]) { // ticketData.extras[extra]: This tries to access the value associated with the key.
+        return `Extra type '${extra}' cannot be found.`; // if the extra that customer put in purchases doesn't exist as a key in ticketData.extras[extra] it will return this error
+      }
+    }
+  }
+}
 
 // Do not change anything below this line.
 module.exports = {
