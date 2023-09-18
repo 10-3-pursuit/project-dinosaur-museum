@@ -81,7 +81,25 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found".
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //create the default message and assign the value to be the "error message" that will be returned if the dinosaurs ID is not found (no conditions are TRUE)
+  //loop through the dinosaur array and check if the dinosaurId is equal to the inputted ID
+  //if it is update the message to include the dino name, pronunciation, info and period
+  //At first i was checking if the array was equal to 1 and creating a message for that and then checking if the array was greater than 1 and creating a different message for that case but then i refactored and instead am using the Math.min method as well as a spread opeartor in order to check the length of the array and return a message based on the arrays length
+  //this eliminates the need of creating multiple if statements
+
+  let message = `A dinosaur with an ID of '${id}' cannot be found.`;
+  for (let dino of dinosaurs) {
+    const { dinosaurId, name, pronunciation, period, mya, info } = dino;
+    if (dinosaurId === id) {
+      message = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${Math.min(
+        ...mya
+      )} million years ago.`;
+      return message;
+    }
+  }
+  return message;
+}
 
 /**
  * getDinosaursAliveMya()
