@@ -29,7 +29,9 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
 const dinosaur = dinosaurs.find(dino => dino.name === dinosaurName);
 
-
+if (!dinosaur) {
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+}
 }
 
 /**
