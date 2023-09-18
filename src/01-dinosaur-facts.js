@@ -29,7 +29,7 @@ function getLongestDinosaur(dinosaurs) {
   }
 //initializing variables to keep track of longest dinosaur we have found so far before iterating. Starting point is necessary for comparison of what we have so far to current value
   let longestDino = null; // value is set to null because initially there are no values to compare
-  let maxLengthInFeet = 0; // value is a number and set to 0 to initiate starting point as we iterate through the list
+  let maxLengthInFeet = 0; // value is a number and set to 0 to initiate starting point as it iterates through the list
 
   for (let dino of dinosaurs) { // iterate to get to the objects inside the dinosaurs array
     let lengthInFeet = dino.lengthInMeters * 3.281; // converts meters to feet (required for this function in particular to keep units consistent)

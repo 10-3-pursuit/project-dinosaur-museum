@@ -5,6 +5,7 @@
 
   Keep in mind that your functions must still have and use a parameter for accepting all tickets.
 */
+const tickets = require("../data/tickets");
 const exampleTicketData = require("../data/tickets");
 // Do not change the line above.
 
@@ -54,7 +55,37 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketPersonBought) {
+  // rewrote ticketInfo as ticketPersonBought becasuse Info and Data are synonyms so very confusing
+  // may have to iterate over extras because dataType in example is array (extras in data is object type) has to work in case there is more than 2 elements in extra
+  // ticketType is either general, membership, extras, education, terrace
+  // entrantType is the object inside the object called ticketType and it's either child, adult, senior
+  // extras can be const extras = ticketData.extras
+
+//  const { ticketType, entrantType, extras,} = ticketPersonBought;
+//   const extrasData = ticketData.extras;
+//   if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
+//     return `Ticket type 'incorrect-type' cannot be found.`
+//   } if (!ticketPersonBought.ticketType.hasOwnProperty(ticketPersonBought.entrantType)) {
+//     return `Entrant type 'incorrect-entrant' cannot be found.`
+//   }
+// }
+
+// step 1: if statement for the case where customer orders stuff not on the menu
+// ticketInfo = ticketPersonBought for clarity
+  if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
+    return `Ticket type 'incorrect-type' cannot be found.`
+  } if (ticketPersonBought.entrantType !== "child" && ticketPersonBought.entrantType !== "adult" && ticketPersonBought.entrantType !== "senior") {
+    return `Entrant type 'incorrect-entrant' cannot be found.`
+  }
+// step 2: for each extra in ticketPersonBought.extras check if the extra is a key in extras, if not return error
+  ticketPersonBought.extras.forEach((extra) => {
+    if (extra !== "movie" && extra !== "education" && extra !== "terrace") {
+      return `Extra type 'incorrect-extra' cannot be found.`
+    }
+  });
+}
+//console.log(calculateTicketPrice(tickets, general));
 
 /**
  * purchaseTickets()
