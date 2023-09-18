@@ -67,6 +67,9 @@ return room.name;
 function getConnectedRoomNamesById(rooms, id) {
   const idRoom = rooms.find(room => room.roomId === id);
 
+  if (!idRoom) {
+    return `Room with ID of '${id}' could not be found.`;
+  }
 }
 
 module.exports = {
