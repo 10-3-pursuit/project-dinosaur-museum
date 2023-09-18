@@ -38,6 +38,8 @@ const room = rooms.find(room => room.dinosaurs.includes(dinosaur.dinosaurId));
 if (!room) {
   return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
 }
+
+return room.name;
 }
 
 /**
