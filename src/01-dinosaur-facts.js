@@ -29,14 +29,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
 //*NOTE* you MUSt convert meters into feet => multiply by 3.281
 
 function getLongestDinosaur(dinosaurs) {
-  if (dinosaurs.length < 1) {
-    return {};
+  //create an empty object to store data IF the dinosaur array is NOT empty and to return IF the dinosaur array IS empty
+  let longestDino = {};
+
+  // should return an empty object if there are no dinosaurs
+  //this is the "guard clause" that checks if the array is empty and if so the empty array stored to the longestDino variable will be returned
+  //when this is executed the function ends
+  if (dinosaurs.length === 0) {
+    return longestDino;
   }
-  const sortedByTallestDino = dinosaurs.sort(
-    (a, b) => b.lengthInMeters - a.lengthInMeters
-  );
-  const tallestObject = sortedByTallestDino[0];
-  return { [tallestObject.name]: tallestObject.lengthInMeters * 3.281 };
+  //if the array is not empty, create a key to store the dino name to
+  //start the value at 0 (to ensure that the datatype is a number?)and update it when the longest dino length is found
+  else if (dinosaurs.length > 0) {
+    let key = "";
+    let val = 0;
+
+    for (let ele of dinosaurs) {
+      if (ele.lengthInMeters > val) {
+        key = ele.name;
+        val = ele.lengthInMeters;
+        //whenver the lengthInMeters is greater than the val, the val changes to that particular LIM
+      }
+    }
+    //when the loop is complete we want to store the data into the previously empty object
+    //MUST do this step OUTSIDE of the loop
+    //Convert to meters into feet by multiply the value by 3.281
+    longestDino[key] = val * 3.281;
+
+    //return the final object
+    return longestDino;
+  }
 }
 
 /**
@@ -59,23 +81,7 @@ function getLongestDinosaur(dinosaurs) {
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found".
  */
-function getDinosaurDescription(dinosaurs, id) {
-  //use .find to find the dino object that matches the inputted id
-  //if the dinosaurId in the object does not match the inputted id then return an error message
-  //if they DO match return a formatted message using template literals
-
-  const foundDinoById = dinosaurs.find((dino) => {
-    return dino.dinosaurId === id;
-  });
-
-  if (!foundDinoById) {
-    return `A dinosaur with an ID of '${id}' cannot be found.`;
-  } else if (foundDinoById.mya.length === 1) {
-    return `${foundDinoById.name} (${foundDinoById.pronunciation})\n${foundDinoById.info} It lived in the ${foundDinoById.period} period, over ${foundDinoById.mya[0]} million years ago.`;
-  }
-  //foundDinoById.name
-  return `${foundDinoById.name} (${foundDinoById.pronunciation})\n${foundDinoById.info} It lived in the ${foundDinoById.period} period, over ${foundDinoById.mya[1]} million years ago.`;
-}
+function getDinosaurDescription(dinosaurs, id) {}
 
 /**
  * getDinosaursAliveMya()
