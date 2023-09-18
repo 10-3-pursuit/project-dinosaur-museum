@@ -70,6 +70,8 @@ function getConnectedRoomNamesById(rooms, id) {
   if (!idRoom) {
     return `Room with ID of '${id}' could not be found.`;
   }
+
+  const connectedRoomIds = idRoom.connectsTo;
 }
 
 module.exports = {
