@@ -54,7 +54,41 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //extract keys from the ticket info using destructuring
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  //ticket type does not match an existing ticket type
+  if (!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+
+  //entrant type does not match an existing entrant type
+  if (!ticketData[ticketType]["priceInCents"][entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+
+  //Access the base price by navigating in the 'ticketData' object.
+  //the basePrice is dependent on the ticketType and entrantType (entrant type is nested in the priceInCents)
+  let basePrice = ticketData[ticketType]["priceInCents"][entrantType];
+  //Set up an accumulator for the extras price since it's an array of options
+  //assume ppl will not choose extras, so we will start this at $0
+  let extrasPrice = 0;
+
+  //Loop through all of the extras options
+  for (let extra of extras) {
+    if (!ticketData["extras"][extra]) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+
+  // if (!entrantType[entrantType]) {
+  //   return `Entrant type '${entrantType}' cannot be found.`;
+  // }
+  // if (!extras[extras]) {
+  //   return `E type '${extras}' cannot be found.`;
+  // }
+}
 
 /**
  * purchaseTickets()
