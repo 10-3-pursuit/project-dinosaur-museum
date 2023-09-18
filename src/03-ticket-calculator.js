@@ -28,7 +28,7 @@ const exampleTicketData = require("../data/tickets");
  * @param {string[]} ticketPersonBought.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
  * @returns {number} The cost of the ticket in cents.
  *
- * //These examples are kind of like having a GUI or graphic user interface (what would be inputted into the function). In the function I renamed the constant ticketInfo to ticketPersonBought for clarity since it's too similar to ticketData (since info and data are synonyms)
+ * //These examples are kind of like having a GUI or graphic user interface (what would be inputted into the function). In the function I renamed the constant ticketInfo to ticketPersonBought for clarity since it's too similar to ticketData (since info and data are synonyms).
  * EXAMPLE:
  *  const ticketPersonBought = {
       ticketType: "general",
@@ -57,61 +57,44 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */ //user
 function calculateTicketPrice(ticketData, ticketPersonBought) {
-  const {ticketType, entrantType} = ticketPersonBought; // Corresponds to customer input which is structured like an object. ticketType variable is ticketPersonBought.ticketType a string, entrantType variable is ticketPersonBought.entrantType. If user input matches keys in ticketsData, it'll be able to reference ticketsData
-  // rewrote ticketInfo as ticketPersonBought because Info and Data are synonyms so very confusing
-  // may have to iterate over extras because dataType in ticketPersonBought is array because customer can choose more than one extra (extras in ticketData is object type) has to work in case there is more than 2 elements in extra
-  // ticketType is a string in ticketPersonBought but an object either general or membership in ticketData
-  // entrantType is a string in ticketPersonBought but in ticketData it is an object inside the object called general or membership. It's either child, adult, senior
+  // Destructuring extracts values that corresponds to customer input which is structured like an object.
+  const {ticketType, entrantType} = ticketPersonBought; 
+  // ticketType is a string in ticketPersonBought but an object with keys called "general" or "membership" in ticketData
+  // entrantType is a string in ticketPersonBought but in ticketData it is a number with keys "child", "adult", "senior" inside an object with key "priceInCents" inside the object called "general" or "membership".
  
+  //initializing total cost (this function will return total cost), baseCost, and extraCost
+  let totalCost = 0; // totalCost = baseCost unless customer adds extras. If extras then extraCost will be added to baseCost.
+  let baseCost = 0; // cost without extras
+  let extraCost = null; // total cost of extras
 
-// step 3: Now that all edge/error cases are satisfied, initialize total cost (this function will return total cost)
-let totalCost = 0; //necessary in case gotta add extras to baseCost
-let baseCost = 0; // cost without extras
-let extraCost = null; // total cost of extras
-
-// step 1 and 2 are for error messages
-// step 1: if statement for the case where customer orders stuff not on the menu
-// ticketInfo = ticketPersonBought for clarity
+  // creating error message for invalid inputs. Invalid inputs are inputs in ticketPersonBought that can't be referenced using ticketsData
+  // if statement for the case where customer places an order for values not found in ticketsData
   if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
     return `Ticket type 'incorrect-type' cannot be found.`;
   } if (ticketPersonBought.entrantType !== "child" && ticketPersonBought.entrantType !== "adult" && ticketPersonBought.entrantType !== "senior") {
     return `Entrant type 'incorrect-entrant' cannot be found.`;
   }
-
-// step 2: for each extra in ticketPersonBought.extras check if the extra is a key in extras, if not return error
+  // for loop to access each extra in ticketPersonBought.extras. 
   for (let extra of ticketPersonBought.extras) {
-    if (!ticketData.extras[extra]) { // ticketData.extras[extra]: This tries to access the value associated with the key 
-      return `Extra type '${extra}' cannot be found.`;
+    if (!ticketData.extras[extra]) { // ticketData.extras[extra]: This tries to access the value associated with the key.
+      return `Extra type '${extra}' cannot be found.`; // if the extra that customer put in ticketPersonBought doesn't exist as a key in ticketData.extras[extra] it will return this error
     }
   }
-
-
-// step 4: calculating base cost (without extras) which depends on both the type of tix bough and type of entrant. After calculating baseCost I can add extras to running totalCost
-  // ticketPersonBought object is created and populated with data based on customer's selections (see examples). That's what's getting extracted with this deconstruction
-
-  const ticketTypeInfo = ticketData[ticketType]; // Accesses the object in ticketData that corresponds to ticketType (ticketData.general for example)
-  if (ticketTypeInfo) { // if it exists will evaluate true
-   baseCost = ticketTypeInfo.priceInCents[entrantType]; // if ticketTypeInfo has truthy value will store the value of entrantType (which is a number) to baseCost
-    totalCost += baseCost; // adds baseCost to running totalCost
-  
-  } 
-// step 5: Calculating extras cost
-
+  // calculating base cost (without extras) which depends on both the type of tix bought and type of entrant. 
+  const ticketTypeInfo = ticketData[ticketType]; // accesses the object in ticketData that corresponds to ticketType (ticketData.general for example)
+    if (ticketTypeInfo) { // if input for ticketType in ticketPersonBought matches key in ticketData this evaluates to true
+      baseCost = ticketTypeInfo.priceInCents[entrantType]; // if ticketTypeInfo has truthy value will store the value of entrantType (which is a number) to baseCost
+      totalCost += baseCost; // adds baseCost to running totalCost
+    } 
+    // if customers input extras, this will calculating extras cost. After calculating baseCost I can add extras to running totalCost
     if (ticketPersonBought.extras.length !== 0) { // if customer ordered extras
       for (let extra of ticketPersonBought.extras) { // iterate through ticketPersonBought.extras array to get values of elements which are the extras the customer added to their order
-        extraCost = ticketData.extras[extra].priceInCents[entrantType]; // depending on customer's chosen extras and entrantType from inputs in ticketPersonBought.extras array look up the cost in ticketData.extras
-        totalCost += extraCost; //add extra cost to totalCost
+        extraCost = ticketData.extras[extra].priceInCents[entrantType]; // depending on customer's chosen extras and entrantType from inputs in ticketPersonBought.extras array, look up the cost in ticketData.extras by navigating (dotting into) to  the key priceInCents (an object of numbers)
+        totalCost += extraCost; //add extraCost to totalCost otherwise extraCost will just = 0
     }
  }
- return totalCost;
+ return totalCost; // this function is supposed to return total price based on customer's input in ticketPersonBought
 };
-//to test function calculateTicketPrice():
-// const ticketPersonBought = {
-//   ticketType: "membership",
-//   entrantType: "child",
-//   extras: ["movie"],
-// };
-//  console.log(calculateTicketPrice(tickets, ticketPersonBought));
 
 /**
  * purchaseTickets()
