@@ -60,7 +60,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const typeInfo = ticketInfo.ticketType
   const entrantInfo = ticketInfo.entrantType
 
-  if(entrantInfo !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
+  if(entrantInfo !== 'child' && entrantInfo !== 'adult' && entrantInfo !== 'senior'){
       return "Entrant type 'incorrect-entrant' cannot be found."
     }
 
@@ -145,13 +145,13 @@ function purchaseTickets(ticketData, purchases) {
 
     const entrantInfo = purchase.entrantType
     const ticketTypeInfo = purchase.ticketType
-
     const ticketCost = calculateTicketPrice(ticketData, purchase)
     
-      if(typeof ticketCost === 'string'){
-        return ticketCost
-      }
-      total += ticketCost
+    if(typeof ticketCost === 'string'){
+      return ticketCost
+    }
+    
+    total += ticketCost
 
     const extrasDescription = []
     
