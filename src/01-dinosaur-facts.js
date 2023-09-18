@@ -28,7 +28,8 @@ function getLongestDinosaur(dinosaurs) {
   let longestDino = {};
 
   //Created a f(x) to sort in ascending order based on "lengthInMeters" values
-  const sortInAscendingOrder = (dinosaurs) => {
+  //Used spread operator to make a shallow copy of array so it doesn't mutate and mess with other tests
+  const sortInAscendingOrder = ([...dinosaurs]) => {
     //Used sort method for numbers
     return dinosaurs.sort((a,b) => {return a.lengthInMeters - b.lengthInMeters}
       )};
@@ -77,17 +78,20 @@ function getDinosaurDescription(dinosaurs, id) {
 
   //created the defaut dino description to be the error message
   let dinoDescription = "A dinosaur with an ID of 'incorrect-id' cannot be found."; 
-  
-  const 
-    //created a condition that will update dino description based on if the id given matched that of one of the dinos
-    for (dino of dinosaurs) {  
-      const closestMYA = dino.mya.find(?) 
-      if (dino.dinosaurId === id) { 
-        dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya.find()} million years ago.`  
-      } 
+    //checks if there is an id value in our parameters 
+    if (id) {
+      //created a condition that will update dino description based on if the id given matched that of one of the dinos
+      for (dino of dinosaurs) {  
+        // create a variable that returns smaller mya number 
+        const mostRecentMYA = (Math.min(...dino.mya)); 
+        //created a condition that checks if dino id matches id given, if this is true, dinoDescription will update with correct string information
+        if (dino.dinosaurId === id) { 
+          dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${mostRecentMYA} million years ago.`
+        } 
+      }  
     }
-  return console.log(dinoDescription);
-};  
+  return dinoDescription;
+};   
 
 /**
  * getDinosaursAliveMya()
@@ -112,9 +116,12 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["Dracorex"]
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
- *  //> ["WHQcpcOj0G"]
+ *  //> ["WHQcpcOj0G"] 
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+
+
+}; 
 
 module.exports = {
   getLongestDinosaur,
