@@ -80,6 +80,10 @@ function getConnectedRoomNamesById(rooms, id) {
   }
 
   const invalidConnectedRoomIds = connectedRoomIds.filter(roomId => !rooms.some(r => r.roomId === roomId));
+
+  if (invalidConnectedRoomIds.length > 0) {
+    return `Room with ID of 'incorrect-id' could not be found.`;
+  }
 }
 
 module.exports = {
