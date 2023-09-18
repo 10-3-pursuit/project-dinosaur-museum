@@ -101,7 +101,52 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // make an array to store dinosaurs
+  const dinoInPeriod = [];
+
+  // iterate through dinosaurs array 
+  for (let i = 0; i < dinosaurs.length; i++) {
+    // get the current dinosaur object from the array
+    let dino = dinosaurs[i];
+
+    // check if the mya has two values
+    if (dino.mya.length === 2) {
+      // check if 'mya' falls within the range defined by the dinosaur
+      if (mya >= dino.mya[0] && mya <= dino.mya[1]) {
+        // get the value associated with the 'key' property in the dinosaur object
+        let keyProperty = dino[key];
+        
+        // check if keyProperty exists in the dinosaur object
+        if (keyProperty === undefined) {
+          // if it doesn't exist, add the dinosaur's ID to dinoInPeriod 
+          dinoInPeriod.push(dino.dinosaurId);
+        } else {
+          // if it exists, add the value to dinoInPeriod 
+          dinoInPeriod.push(keyProperty);
+        }
+      }
+    } else {
+      // if the mya property of the dinosaur has only one value (not a range), check if mya matches that single value or is one less than it
+      if (mya === dino.mya[0] || mya === dino.mya[0] - 1) {
+        // get the value associated with the 'key' property in the dinosaur object
+        let keyProperty = dino[key];
+        
+        // check if the keyProperty exists in the dinosaur object
+        if (keyProperty === undefined) {
+          // Ii it doesn't exist, add the dinosaur's ID to dinoInPeriod
+          dinoInPeriod.push(dino.dinosaurId);
+        } else {
+          // add value to dinoInPeriod
+          dinoInPeriod.push(keyProperty);
+        }
+      }
+    }
+  }
+
+  // return the array of dinosaurs that fits the conditions
+  return dinoInPeriod;
+}
 
 module.exports = {
   getLongestDinosaur,
