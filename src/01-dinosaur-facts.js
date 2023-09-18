@@ -22,7 +22,36 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+
+  //Created an empty object to hold the data for our "longestDino"
+  let longestDino = {};
+
+  //Created a f(x) to sort in ascending order based on "lengthInMeters" values
+  const sortInAscendingOrder = (dinosaurs) => {
+    //Used sort method for numbers
+    return dinosaurs.sort((a,b) => {return a.lengthInMeters - b.lengthInMeters}
+      )};
+
+  //Created a new array of dino's in ascending order
+  const newSortedArray = sortInAscendingOrder(dinosaurs);
+  //Created a variable equal to the object of the first longest dino in the array
+  const firstlongestDino = newSortedArray.find((dino) => dino.lengthInMeters === newSortedArray[newSortedArray.length - 1].lengthInMeters);   
+
+    for (dino of newSortedArray) {
+      if (dino) {
+        if (dino.lengthInMeters === firstlongestDino.lengthInMeters) {
+        //this sets the key of obj longestDino to the first longest dino's name and set it equal to a value of the length of the dino converted to feet fixed to the second decimal place
+        //The Number() method was used since the output showed the length in feet in quotes so to cancel that I used this method
+        longestDino[dino.name] = Number((dino.lengthInMeters * 3.281).toFixed(2))
+        //break the f(x) so it doesn't return the other longest dinosaurs, that aren't the first instance
+        break; 
+        }
+      }
+    }
+
+  return longestDino; 
+};
 
 /**
  * getDinosaurDescription()
@@ -43,8 +72,22 @@ function getLongestDinosaur(dinosaurs) {}
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
- */
-function getDinosaurDescription(dinosaurs, id) {}
+ */ 
+function getDinosaurDescription(dinosaurs, id) {
+
+  //created the defaut dino description to be the error message
+  let dinoDescription = "A dinosaur with an ID of 'incorrect-id' cannot be found."; 
+  
+  const 
+    //created a condition that will update dino description based on if the id given matched that of one of the dinos
+    for (dino of dinosaurs) {  
+      const closestMYA = dino.mya.find(?) 
+      if (dino.dinosaurId === id) { 
+        dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya.find()} million years ago.`  
+      } 
+    }
+  return console.log(dinoDescription);
+};  
 
 /**
  * getDinosaursAliveMya()
