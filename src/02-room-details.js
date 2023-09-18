@@ -64,7 +64,10 @@ return room.name;
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const idRoom = rooms.find(room => room.roomId === id);
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
