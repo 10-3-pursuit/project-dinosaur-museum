@@ -84,6 +84,8 @@ function getConnectedRoomNamesById(rooms, id) {
   if (invalidConnectedRoomIds.length > 0) {
     return `Room with ID of 'incorrect-id' could not be found.`;
   }
+
+  return connectedRoomNames;
 }
 
 module.exports = {
