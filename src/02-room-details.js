@@ -74,6 +74,10 @@ function getConnectedRoomNamesById(rooms, id) {
   const connectedRoomIds = idRoom.connectsTo;
   const connectedRooms = rooms.filter(room => connectedRoomIds.includes(room.roomId));
   const connectedRoomNames = connectedRooms.map(conRoom => conRoom.name);
+  
+  if (connectedRooms.length === 0) {
+    return `No connected rooms found for room with ID '${id}'.`;
+  }
 }
 
 module.exports = {
