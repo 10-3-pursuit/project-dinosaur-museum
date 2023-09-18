@@ -103,6 +103,10 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   const arr = [];
+
+  dinosaurs.forEach(dino => {
+    
+  })
 }       
 
 
