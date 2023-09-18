@@ -98,7 +98,13 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const filteredDinos = dinosaurs.filter(dino => dino.mya.includes(mya) || dino.mya.includes(mya - 1))
+  console.log(filteredDinos)
+  // if(Objects.keys(filteredDinos).includes(key)) {
+  //   return filteredDinos.name
+  // }
+}
 
 module.exports = {
   getLongestDinosaur,
