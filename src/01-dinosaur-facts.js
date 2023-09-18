@@ -22,41 +22,36 @@ const exampleDinosaurData = require("../data/dinosaurs");
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-//if the dino array is empty return an empty array
-//first sort the data by the dino length (highest length goes first)
-//grab the first element in that newly sorted array
-//return an object where the key is the dino name and value is the length in feet
-//*NOTE* you MUSt convert meters into feet => multiply by 3.281
 
 function getLongestDinosaur(dinosaurs) {
-  //create an empty object to store data IF the dinosaur array is NOT empty and to return IF the dinosaur array IS empty
+  // Create an empty object to store data IF the dinosaur array is NOT empty and to return IF the dinosaur array IS empty.
   let longestDino = {};
 
-  // should return an empty object if there are no dinosaurs
-  //this is the "guard clause" that checks if the array is empty and if so the empty array stored to the longestDino variable will be returned
-  //when this is executed the function ends
+  // If there are no dinosaurs in the array, return the empty object.
+  // This is the "guard clause" that checks if the array is empty and if so the empty array stored to the longestDino variable will be returned
   if (dinosaurs.length === 0) {
     return longestDino;
   }
-  //if the array is not empty, create a key to store the dino name to
-  //start the value at 0 (to ensure that the datatype is a number?)and update it when the longest dino length is found
-  else if (dinosaurs.length > 0) {
-    let key = "";
-    let val = 0;
 
+  // If the array is not empty, Create variables to store the longest dinosaur's name and length in meters.
+  else if (dinosaurs.length > 0) {
+    let key = ""; // Create a variable to store the name of the longest dinosaur.
+    let val = 0; // Create a variable to store the length (in meters) of the longest dinosaur.
+
+    // Loop through each dinosaur in the 'dinosaurs' array.
     for (let ele of dinosaurs) {
+      // Check if the current dinosaur's length in meters is greater than the stored length.
       if (ele.lengthInMeters > val) {
-        key = ele.name;
-        val = ele.lengthInMeters;
-        //whenver the lengthInMeters is greater than the val, the val changes to that particular LIM
+        key = ele.name; // Update the 'key' to the current dinosaur's name.
+        val = ele.lengthInMeters; // Update the 'val' to the current dinosaur's length in meters.
       }
     }
-    //when the loop is complete we want to store the data into the previously empty object
-    //MUST do this step OUTSIDE of the loop
-    //Convert to meters into feet by multiply the value by 3.281
+
+    // After the loop, store the data (name and length in feet) in the 'longestDino' object.
+    // Convert the length from meters to feet by multiplying by 3.281.
     longestDino[key] = val * 3.281;
 
-    //return the final object
+    // Return the object containing the name and length of the longest dinosaur.
     return longestDino;
   }
 }
@@ -82,22 +77,27 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found".
  */
 function getDinosaurDescription(dinosaurs, id) {
-  //create the default message and assign the value to be the "error message" that will be returned if the dinosaurs ID is not found (no conditions are TRUE)
-  //loop through the dinosaur array and check if the dinosaurId is equal to the inputted ID
-  //if it is update the message to include the dino name, pronunciation, info and period
-  //At first i was checking if the array was equal to 1 and creating a message for that and then checking if the array was greater than 1 and creating a different message for that case but then i refactored and instead am using the Math.min method as well as a spread opeartor in order to check the length of the array and return a message based on the arrays length
-  //this eliminates the need of creating multiple if statements
-
+  // Create a default message that will be returned if the dinosaur ID is not found.
   let message = `A dinosaur with an ID of '${id}' cannot be found.`;
+
+  // Loop through each dinosaur in the 'dinosaurs' array.
   for (let dino of dinosaurs) {
+    // Destructure the properties of the current dinosaur.
     const { dinosaurId, name, pronunciation, period, mya, info } = dino;
+
+    // Check if the current dinosaur's ID matches the input 'id'.
     if (dinosaurId === id) {
+      // If the ID matches, update the message to include the dinosaur's name, pronunciation, information, and period.
       message = `${name} (${pronunciation})\n${info} It lived in the ${period} period, over ${Math.min(
         ...mya
       )} million years ago.`;
+
+      // Return the updated message and exit the loop since we found the matching dinosaur.
       return message;
     }
   }
+
+  // If no matching dinosaur ID is found, the default message is returned.
   return message;
 }
 
@@ -126,7 +126,35 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const dinoAliveDuringMya = [];
+
+  for (const dinosaur of dinosaurs) {
+    // Check if the dinosaur's mya period matches the specified range.
+    if (
+      dinosaur.mya.length === 2 &&
+      dinosaur.mya[0] >= mya &&
+      mya >= dinosaur.mya[1]
+    ) {
+      const dinoKeys = Object.keys(dinosaur);
+      // If the key exists, push its value; otherwise, push the dinosaur ID.
+      dinoAliveDuringMya.push(
+        dinoKeys.includes(key) ? dinosaur[key] : dinosaur.dinosaurId
+      );
+    } else if (
+      dinosaur.mya.length === 1 &&
+      (dinosaur.mya[0] === mya || mya === dinosaur.mya[0] - 1)
+    ) {
+      const dinoKeys = Object.keys(dinosaur);
+      // If the key exists, push its value; otherwise, push the dinosaur ID.
+      dinoAliveDuringMya.push(
+        dinoKeys.includes(key) ? dinosaur[key] : dinosaur.dinosaurId
+      );
+    }
+  }
+
+  return dinoAliveDuringMya;
+}
 
 module.exports = {
   getLongestDinosaur,
