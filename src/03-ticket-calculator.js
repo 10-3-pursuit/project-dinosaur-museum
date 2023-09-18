@@ -22,7 +22,7 @@ const exampleTicketData = require("../data/tickets");
  * If either the `ticketInfo.ticketType` value or `ticketInfo.entrantType` value is incorrect, or any of the values inside of the `ticketInfo.extras` key is incorrect, an error message should be returned.
  *
  * @param {Object} ticketData - An object containing data about prices to enter the museum. See the `data/tickets.js` file for an example of the input.
- * @param {Object} ticketInfo - An object representing data for a single ticket.
+ * @param {Object} ticketInfo - An object representing data for a single ticket (that a person bought/is going to buy)
  * @param {string} ticketInfo.ticketType - Represents the type of ticket. Could be any string except the value "extras".
  * @param {string} ticketInfo.entrantType - Represents the type of entrant. Prices change depending on the entrant.
  * @param {string[]} ticketInfo.extras - An array of strings where each string represent a different "extra" that can be added to the ticket. All strings should be keys under the `extras` key in `ticketData`.
@@ -62,30 +62,29 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
   // entrantType is the object inside the object called ticketType and it's either child, adult, senior
   // extras can be const extras = ticketData.extras
 
-//  const { ticketType, entrantType, extras,} = ticketPersonBought;
-//   const extrasData = ticketData.extras;
-//   if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
-//     return `Ticket type 'incorrect-type' cannot be found.`
-//   } if (!ticketPersonBought.ticketType.hasOwnProperty(ticketPersonBought.entrantType)) {
-//     return `Entrant type 'incorrect-entrant' cannot be found.`
-//   }
-// }
 
 // step 1: if statement for the case where customer orders stuff not on the menu
 // ticketInfo = ticketPersonBought for clarity
   if (!ticketData.hasOwnProperty(ticketPersonBought.ticketType)) {
-    return `Ticket type 'incorrect-type' cannot be found.`
+    return `Ticket type 'incorrect-type' cannot be found.`;
   } if (ticketPersonBought.entrantType !== "child" && ticketPersonBought.entrantType !== "adult" && ticketPersonBought.entrantType !== "senior") {
-    return `Entrant type 'incorrect-entrant' cannot be found.`
+    return `Entrant type 'incorrect-entrant' cannot be found.`;
   }
+
 // step 2: for each extra in ticketPersonBought.extras check if the extra is a key in extras, if not return error
-  ticketPersonBought.extras.forEach((extra) => {
-    if (extra !== "movie" && extra !== "education" && extra !== "terrace") {
-      return `Extra type 'incorrect-extra' cannot be found.`
+  for (let extra of ticketPersonBought.extras) {
+    if (!ticketData.extras[extra]) {
+      return `Extra type '${extra}' cannot be found.`;
     }
-  });
-}
-//console.log(calculateTicketPrice(tickets, general));
+  }
+};
+// to test function calculateTicketPrice():
+// const ticketPersonBought = {
+//   ticketType: "membership",
+//   entrantType: "child",
+//   extras: ["movie"],
+// };
+// console.log(calculateTicketPrice(tickets, ticketPersonBought));
 
 /**
  * purchaseTickets()
