@@ -54,7 +54,32 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+
+  // these are my 3 error checks
+  // Check if the ticket type exists in the ticket data
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  // Check if all extras exist in the ticket data
+  for (const extra of ticketInfo.extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+  // Check if the entrant type exists in the ticket data for the specified ticket type
+  if (!ticketData[ticketInfo.ticketType].hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+
+
+  // Calculate the ticket price based on the provided information
+  // (implementation of the calculation logic)
+
+  return 0; // Placeholder for the actual calculation
+}
+  
 
 /**
  * purchaseTickets()

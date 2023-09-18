@@ -65,9 +65,8 @@ function getLongestDinosaur(dinosaurs) {
  */
 function getDinosaurDescription(dinosaurs, id) {
   const dinosaurFound = dinosaurs.find((dinosaur)=> dinosaur.dinosaurId === id);
-  
   // ✕ should return a string description of a dinosaur, by ID (1 ms)
-    // ✕ should work for dinosaurs with only one value in `mya`
+  // ✕ should work for dinosaurs with only one value in `mya`
   if(dinosaurFound){
     // deconstruct dinosaurFound
     const {name ,pronunciation, info ,period , mya} = dinosaurFound;
@@ -112,7 +111,50 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const filteredDinosaurs = dinosaurs.filter((dinosaur) => {
+    // Check if the mya value is within the range of the dinosaur's mya values
+    let myaRange;
+    if (Array.isArray(dinosaur.mya)) {
+      if (dinosaur.mya.length === 1) {
+        myaRange = [dinosaur.mya[0], dinosaur.mya[0] - 1];
+      } else {
+        myaRange = dinosaur.mya;
+      }
+    } else {
+      myaRange = [dinosaur.mya];
+    }
+
+    return myaRange.includes(mya);
+  });
+
+  const resultArray = [];
+  if (key) {
+    filteredDinosaurs.forEach((dinosaur) => {
+      if (dinosaur[key]) {
+        resultArray.push(dinosaur[key]);
+      } else {
+        resultArray.push(dinosaur.dinosaurId);
+      }
+    });
+  } else {
+    filteredDinosaurs.forEach((dinosaur) => {
+      resultArray.push(dinosaur.dinosaurId);
+    });
+  }
+
+  return resultArray;
+}
+  // ✕ should return the IDs of all dinosaurs that were alive approximately at the given time
+  // ✕ should include dinosaurs with only one `mya` year
+  // ✕ if the `mya` key is an array of one number, should allow for 1 MYA less than the amount
+  // ✕ should return an empty array if the year does not match any (1 ms)
+  // ✕ if the third argument is set, should replace the IDs with the value of the given key
+  // ✕ if the third argument is set, but to a key that doesn't return a value, should return the IDs (1 ms)
+
+  
+  
+  
 
 module.exports = {
   getLongestDinosaur,
