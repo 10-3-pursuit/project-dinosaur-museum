@@ -73,6 +73,7 @@ function getConnectedRoomNamesById(rooms, id) {
 
   const connectedRoomIds = idRoom.connectsTo;
   const connectedRooms = rooms.filter(room => connectedRoomIds.includes(room.roomId));
+  const connectedRoomNames = connectedRooms.map(conRoom => conRoom.name);
 }
 
 module.exports = {
