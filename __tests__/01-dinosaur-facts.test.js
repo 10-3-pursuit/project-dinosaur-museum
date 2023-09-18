@@ -52,7 +52,7 @@ describe("getLongestDinosaur()", () => {
   });
 });
 
-describe.only("getDinosaurDescription()", () => {
+describe("getDinosaurDescription()", () => {
   test("should return a string description of a dinosaur, by ID", () => {
     const id = "U9vuZmgKwUr";
     const actual = getDinosaurDescription(dinosaurs, id);
@@ -97,7 +97,7 @@ describe.only("getDinosaurDescription()", () => {
   });
 });
 
-describe("getDinosaursAliveMya()", () => {
+describe.only("getDinosaursAliveMya()", () => {
   test("should return the IDs of all dinosaurs that were alive approximately at the given time", () => {
     const mya = 150;
     const actual = getDinosaursAliveMya(dinosaurs, mya);
