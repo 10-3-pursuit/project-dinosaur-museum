@@ -66,12 +66,12 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   // use .find() method to search for a dinosaur in the array if the 'dinosaurId' matches the 'id'
   const foundDino = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id)
-  // Check if a dinosaur with the 'id' was found
+  // check if a dinosaur with the 'id' was found
   if (foundDino) {
-  // If a matching dinosaur was found, construct a description string including the dinosaur's name, pronunciation, information, period, and mya
+  // if a matching dinosaur was found, construct a description string including the dinosaur's name, pronunciation, information, period, and mya
     return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length-1]} million years ago.`
   } else {
-  // If no matching dinosaur was found, return an error message
+  // if no matching dinosaur was found, return an error message
     return `A dinosaur with an ID of '${id}' cannot be found.`
   }
 }
@@ -134,7 +134,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         
         // check if the keyProperty exists in the dinosaur object
         if (keyProperty === undefined) {
-          // Ii it doesn't exist, add the dinosaur's ID to dinoInPeriod
+          // if it doesn't exist, add the dinosaur's ID to dinoInPeriod
           dinoInPeriod.push(dino.dinosaurId);
         } else {
           // add value to dinoInPeriod
