@@ -76,7 +76,7 @@ function getConnectedRoomNamesById(rooms, id) {
   const resultRoomObj = rooms.filter((room) => connectedRoomIds.includes(room.roomId))
 
   const resultNameArr = resultRoomObj.map(room => room.name)
-  const roomNamesArr = rooms.map((room) => room.name)
+  // const roomNamesArr = rooms.map((room) => room.name)
   
 
   // for(let resultName of resultNameArr){

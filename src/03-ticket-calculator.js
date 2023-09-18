@@ -59,9 +59,6 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   const typeInfo = ticketInfo.ticketType
   const entrantInfo = ticketInfo.entrantType
-  const extrasInfoArr = ticketInfo.extras
-  const extrasDataObj = ticketData.extras
-  
 
   if(entrantInfo !== 'child' && ticketInfo.entrantType !== 'adult' && ticketInfo.entrantType !== 'senior'){
       return "Entrant type 'incorrect-entrant' cannot be found."
@@ -72,6 +69,9 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   } else {
     total += ticketData[typeInfo].priceInCents[entrantInfo]
   }
+
+  const extrasInfoArr = ticketInfo.extras
+  const extrasDataObj = ticketData.extras
 
   for(let extra of extrasInfoArr){
     if(!extrasDataObj[extra]){
@@ -147,18 +147,11 @@ function purchaseTickets(ticketData, purchases) {
     const ticketTypeInfo = purchase.ticketType
 
     const ticketCost = calculateTicketPrice(ticketData, purchase)
-    if(!ticketCost){
-      if(entrantInfo !== 'child' && entrantInfo !== 'adult' && entrantInfo !== 'senior'){
-        return "Entrant type 'incorrect-entrant' cannot be found."
-      } else if(!ticketData[ticketTypeInfo]){
-        return "Ticket type 'incorrect-type' cannot be found."
+    
+      if(typeof ticketCost === 'string'){
+        return ticketCost
       }
-    } else {
       total += ticketCost
-    }
-
-    const typeDescription = ticketData[ticketTypeInfo].description
-    // receipts.push(`${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)}`)
 
     const extrasDescription = []
     
@@ -167,12 +160,12 @@ function purchaseTickets(ticketData, purchases) {
         extrasDescription.push(ticketData.extras[extra].description)
       }
     }
-
+    
     if(purchase.extras.length > 0){
-      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)} (${extrasDescription.join(', ')})\n`
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(ticketCost/100).toFixed(2)} (${extrasDescription.join(', ')})\n`
     } else {
-      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${typeDescription}: $${(ticketCost/100).toFixed(2)}\n`
-    }
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(ticketCost/100).toFixed(2)}\n`
+    } 
   }
 
   const receiptTotal = `-------------------------------------------\nTOTAL: $${(total/100).toFixed((2))}`
