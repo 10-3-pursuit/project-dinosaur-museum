@@ -148,39 +148,40 @@ function purchaseTickets(ticketData, purchases) {
   for (const purchase of purchases) {
     const ticketPrice = calculateTicketPrice(ticketData, purchase);
 
-
+    // Check if the result from calculateTicketPrice is a string (indicating an error)
     if (typeof ticketPrice === "string") {
-      return ticketPrice; 
+      return ticketPrice; // Return the error message
     }
 
-
+    // Format the purchase details for this ticket, including extras if present
     const formattedEntrantType = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1); 
     const formattedTicketType = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1); 
     
     let formattedExtras = [];
     if (purchase.extras.length > 0) {
       formattedExtras = purchase.extras.map(extra => extra.charAt(0).toUpperCase() + extra.slice(1).toLowerCase() + " Access"); 
+      // Capitalize only the first character and convert the rest to lowercase, then i added " Access" to them
     }
 
     let formattedPurchase = `${formattedEntrantType} ${formattedTicketType} Admission: $${(ticketPrice / 100).toFixed(2)}`;
     
     if (formattedExtras.length > 0) {
-      formattedPurchase += ` (${formattedExtras.join(", ")})`; 
+      formattedPurchase += ` (${formattedExtras.join(", ")})`; // Extras will only have the first character capitalized
     }
 
-  
+    // Add the purchase details to the array
     purchaseDetails.push(formattedPurchase);
 
-   
+    // Add the ticket price to the total cost
     totalCost += ticketPrice;
   }
 
-
+  // Format the receipt
   const receiptHeader = "Thank you for visiting the Dinosaur Museum!";
   const receiptSeparator = "-------------------------------------------";
   const receiptFooter = `TOTAL: $${(totalCost / 100).toFixed(2)}`;
 
- 
+  // Combine all parts of the receipt
   const receipt = [receiptHeader, receiptSeparator, ...purchaseDetails, receiptSeparator, receiptFooter].join("\n");
 
   return receipt;
