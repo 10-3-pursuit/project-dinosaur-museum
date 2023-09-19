@@ -54,7 +54,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 /**
  * getConnectedRoomNamesById()
  * ---------------------
- * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
+ * Returns an array of strings, where each string is the name of a room connected to the given room.
+ * If a room ID cannot be found, an error message is returned.
  *
  * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
  * @param {string} id - A unique room identifier.
@@ -67,13 +68,44 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
  * EXAMPLE:
  *  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
  *  //> [
-      "Entrance Room",
-      "Coat Check Room",
-      "Ellis Family Hall",
-      "Kit Hopkins Education Wing"
-    ]
+ *      "Entrance Room",
+ *      "Coat Check Room",
+ *      "Ellis Family Hall",
+ *      "Kit Hopkins Education Wing"
+ *    ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  const connectedRooms = [];
+
+  // Loop through each room in the rooms array
+  for (const room of rooms) {
+    // Check if the current room's ID matches the provided ID
+    if (room.roomId === id) {
+      // If it matches, loop through the room's connections
+      for (const connectedId of room.connectsTo) {
+        // Find the connected room based on its ID
+        const connectedRoom = rooms.find((r) => r.roomId === connectedId);
+
+        // If a connected room is found, add its name to the connectedRooms array
+        if (connectedRoom) {
+          connectedRooms.push(connectedRoom.name);
+        } else {
+          // If a connected room is not found, return an error message
+          return `Room with ID '${connectedId}' not found.`;
+        }
+      } 
+
+      // Return the array of connected room names
+      return connectedRooms;
+    } else {
+      return `Room with ID of '${id}' could not be found.`
+    }
+  }
+
+  // If the provided room ID is not found, return an error message
+  return `Room with ID '${id}' not found.`;
+}
+
 
 module.exports = {
   getRoomByDinosaurName,
