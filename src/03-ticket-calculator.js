@@ -58,6 +58,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const ticketType = ticketInfo.ticketType;
   const entrantType = ticketInfo.entrantType;
   const extras = ticketInfo.extras;
+
+  if (!ticketData.hasOwnProperty(ticketType)) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+
 }
 
 /**
