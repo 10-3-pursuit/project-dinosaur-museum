@@ -68,6 +68,14 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
 
   let totalPrice = ticketData[ticketType].priceInCents[entrantType];
+
+  for (const extra of extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+    
+    totalPrice += ticketData.extras[extra].priceInCents[entrantType];
+  }
 }
 
 /**
