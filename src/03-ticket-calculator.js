@@ -73,7 +73,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
 
-  // Calculate the ticket price based on the provided information
+  // Calculate the ticket price based on the entrant type
   const ticketPrice = ticketTypeData.priceInCents[ticketInfo.entrantType];
 
   // Calculate the total price by adding the prices of selected extras
