@@ -103,29 +103,30 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   const dinoInPeriod = [];
-
+  // iterate through dinosaurs array 
   for (let i = 0; i < dinosaurs.length; i++) {
-    const dinosaur = dinosaurs[i];
+    // get the current dinosaur object from the array
+    const dino = dinosaurs[i];
 
-    if (dinosaur.mya.length > 1) {
-      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
-        if (key && dinosaur[key] !== undefined) {
-          dinoInPeriod.push(dinosaur[key]); // push the value of dinosaur[key] into the dinoInPeriod
+    // check if the mya has two values
+    if (dino.mya.length > 1) {
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
+        if (key && dino[key] !== undefined) {
+          dinoInPeriod.push(dino[key]); // push the value of dinosaur[key] into the dinoInPeriod
         } else {
-          dinoInPeriod.push(dinosaur.dinosaurId); // push dinosaurId into dinoInPeriod
+          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into dinoInPeriod
         }
       }
-    } else if (dinosaur.mya.length === 1) {
-      if (mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0]) {
-        if (key && dinosaur[key] !== undefined) {
-          dinoInPeriod.push(dinosaur[key]); // push the value of dinosaur[key] into dinoInPeriod
+    } else if (dino.mya.length === 1) {
+      if (mya >= dino.mya[0] - 1 && mya <= dino.mya[0]) {
+        if (key && dino[key] !== undefined) {
+          dinoInPeriod.push(dino[key]); // push the value of dinosaur[key] into dinoInPeriod
         } else {
-          dinoInPeriod.push(dinosaur.dinosaurId); // push dinosaurId into 'dinoInPeriod
+          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into 'dinoInPeriod
         }
       }
     }
   }
-
   return dinoInPeriod; // return dinoInPeriod with either the dinosaur ID's or the key
 }
 

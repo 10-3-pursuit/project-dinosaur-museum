@@ -127,74 +127,33 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-    function purchaseTickets(ticketData, purchases) {
-      // Initialize variables
-      let totalCost = 0;
-      const receiptDetails = [];
-      const errorMessages = [];
+function purchaseTickets(ticketData, purchases) {
+  let totalCost = 0;
+  const receiptDetails = [];
+  const errorMessages = [];
+
+  for (const purchase of purchases) {
+    const validationError = validatePurchase(ticketData, purchase);
     
-      // Helper function to validate purchase data
-      function validatePurchase(purchase) {
-        if (!ticketData[purchase.ticketType]) {
-          return `Ticket type '${purchase.ticketType}' cannot be found.`;
-        }
-        if (!ticketData[purchase.ticketType].priceInCents[purchase.entrantType]) {
-          return `Entrant type '${purchase.entrantType}' cannot be found.`;
-        }
-        for (const extra of purchase.extras) {
-          if (!ticketData[purchase.ticketType].extras || !ticketData[purchase.ticketType].extras[extra]) {
-            return `Extra type '${extra}' cannot be found.`;
-          }
-        }
-        return null; // Validation passed
-      }
-    
-      // Helper function to calculate the cost of a ticket
-      function calculateTicketPrice(purchase) {
-        let ticketPrice = ticketData[purchase.ticketType].priceInCents[purchase.entrantType];
-        for (const extra of purchase.extras) {
-          ticketPrice += ticketData[purchase.ticketType].extras[extra].priceInCents[purchase.entrantType];
-        }
-        return ticketPrice;
-      }
-    
-      // Helper function to format individual ticket purchase details
-      function formatTicketPurchase(purchase, ticketPrice) {
-        const extrasString = purchase.extras.length > 0 ? ` (${purchase.extras.join(', ')})` : '';
-        return `${purchase.entrantType} ${purchase.ticketType}: $${(ticketPrice / 100).toFixed(2)}${extrasString}`;
-      }
-    
-      // Loop through each purchase
-      for (const purchase of purchases) {
-        // Validate purchase data
-        const validationError = validatePurchase(purchase);
-        if (validationError) {
-          errorMessages.push(validationError);
-          continue; // Skip this purchase and move to the next one
-        }
-    
-        // Calculate the cost of the ticket for this purchase
-        const ticketPrice = calculateTicketPrice(purchase);
-    
-        // Add the cost to the totalCost
-        totalCost += ticketPrice;
-    
-        // Format and store ticket purchase details
-        const formattedDetails = formatTicketPurchase(purchase, ticketPrice);
-        receiptDetails.push(formattedDetails);
-      }
-    
-      // Handle errors (if any) and return error messages
-      if (errorMessages.length > 0) {
-        return errorMessages.join('\n');
-      }
-    
-      // Format the entire receipt
-      const formattedReceipt = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n${receiptDetails.join('\n')}\n-------------------------------------------\nTOTAL: $${(totalCost / 100).toFixed(2)}`;
-    
-      // Return the formatted receipt as a string
-      return formattedReceipt;
+    if (!validationError) {
+      const ticketPrice = calculateTicketPrice(ticketData, purchase);
+      totalCost += ticketPrice;
+
+      const formattedDetails = formatTicketPurchase(purchase, ticketPrice);
+      receiptDetails.push(formattedDetails);
+    } else {
+      errorMessages.push(validationError);
     }
+  }
+
+  if (errorMessages.length > 0) {
+    return errorMessages.join('\n');
+  }
+
+  const formattedReceipt = formatReceipt(receiptDetails, totalCost);
+
+  return formattedReceipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
