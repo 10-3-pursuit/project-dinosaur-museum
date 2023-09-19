@@ -119,9 +119,84 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"] 
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //created a variable for out output
+  const results = []; 
+  for (const dino of dinosaurs) { 
+   //created a variable for max mya in a given dino's mya array
+   let maxMYA = Math.max(...dino.mya);
+   //created a variable for the min mya   
+   let minMYA = Math.min(...dino.mya);
+    //created conditional for range of dino mya years, if mya is in range of dino mya will move onto next condition 
+    if (maxMYA >= mya && minMYA <= mya) {
+      //created conditonal that checks if a key parameter is given, and if dino has that same key 
+      if (key && dino[key]) {
+        //pushes dino[key] to result array 
+        results.push(dino[key]);
+      } else {
+        //if if doesn't pass then this will push the dino Id to results array 
+        results.push(dino.dinosaurId);
+      } 
+      //created conditional for cases where dino only has one mya value    
+    } else if (dino.mya.length === 1) {
+      let singleMYA = dino.mya
+        //created conditional to check if dino.mya is equal to mya or mya - 1 
+        if (singleMYA === maxMYA || singleMYA === minMYA || singleMYA.includes(mya - 1)) {
+          //checks if key is equal to a dino key 
+          if (key && dino[key]) {
+            //pushes dino[key] to result array
+            results.push(dino[key]);
+          } else {
+            //if if doesn't pass then this will push the dino Id to results array
+            results.push(dino.dinosaurId);
+          }
+        }
+    }
+  }
+  return results;  
+};       
 
+//   //created an empty array to later push into the dinos who are alive during the given mya 
+//   let arrayOfDinosAlive = []; 
+//   //created a list of accepted keys 
+//   const trueKeys = ["dinosaurId", "name", "pronunciation", "meaningOfName", "diet", "lengthInMeters", "period", "mya", "info"] 
 
-}; 
+//   // if (mya) {
+//     for (dino of dinosaurs) {
+//       //created a variable equal to dino.mya 
+//       const dinoPrime = [...dino.mya]  
+      // if (dinoPrime.length > 1) { 
+        // //created a variable for max mya in a given dino's mya array
+        // const maxMYA = Math.max(dinoPrime)
+        // //created a variable for the min mya 
+        // const minMYA = Math.min(dinoPrime)
+        // if (maxMYA >= mya || minMYA <= mya) {
+//           if (key) {
+//             if (trueKeys.includes(key)) {
+//               arrayOfDinosAlive.push(dino.key)
+//             }
+//           } else {
+//               arrayOfDinosAlive.push(dino.dinosaurId)
+//           }
+//         } 
+//       //created an else if for the dino's with only one mya value 
+//       } else if (dinoPrime.length === 1) {
+//           if (dinoPrime === mya || dinoPrime === (mya - 1)) {
+//             if (key) {
+//               if (trueKeys.includes(key)) {
+//                 arrayOfDinosAlive.push(dino.key)
+// //               } 
+//             } else {
+//               arrayOfDinosAlive.push(dino.dinosaurId)
+//             }
+//           }
+//       }  
+//     }
+//   // }      
+//   return arrayOfDinosAlive;   
+// }; 
+
+// dino.mya === mya || dino.mya === (mya - 1)
+// --use this for when a dino only has one mya element in their mya array
 
 module.exports = {
   getLongestDinosaur,
