@@ -100,51 +100,31 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
   const dinoArray = []
+  const resultArray = []
   for(let dino of dinosaurs) {
-    const keyArray = Object.keys(dino)
-      if(dino.mya.length === 1) {
-        if(dino.mya[0] === mya || dino.mya[0] === mya - 1) {
-          dinoArray.push(dino)
-      // } else {
-      } 
-      if(dino.mya.length === 2) {
-        if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
-          dinoArray.push(dino)
-          }
-        }
+    if(dino.mya.length === 2) {
+      if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
+        dinoArray.push(dino)
       }
-
     }
-    // if(smallestMya === mya) {
-    //   if(key === undefined || keyArray.includes(key) === false) {
-    //     dinoArray.push(dino.dinosaurID)
-    //     } else if(keyArray.includes(key)) {
-    //     dinoArray.push(dino[key])
-    //     }
-    //   }
-    // }
-    console.log('----------------------')
-    console.log(dinoArray)
-    console.log(dinoArray.length)
+    if(dino.mya.length === 1) {
+      if(dino.mya[0] === mya || dino.mya[0] - 1 === mya) {
+        dinoArray.push(dino)
+      } 
+    }
   }
-  // // const filteredDinos = dinosaurs.filter(dino =>  {
-  //   if(dino.mya.length === 1) {
-  //     if(dino.mya[0] === mya || dino.mya[0] === mya - 1) {
-  //       return dino
-  //   } else {
-  //     if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
-  //       return dino
-  //       }
-  //     }
-  //   }
-  // })
-  // console.log('')
-  // console.log(filteredDinos)
-  //   if(key !== undefined && Object.keys(filteredDinos).includes(key)) {
-  //     return filteredDinos.map(dino => dino[key])
-  //   } else {
-  //     return filteredDinos.map(dino => dino.dinosaurId)
-  //   }
+  for(let dino of dinoArray) {
+    const keyArray = Object.keys(dino)
+    if(key === undefined) {
+      resultArray.push(dino.dinosaurId)
+    } else if(keyArray.includes(key) === false) {
+    resultArray.push(dino.dinosaurId)
+    } else if(keyArray.includes(key)) {
+    resultArray.push(dino[key])
+    }
+  }
+  return resultArray
+}
 
 
 module.exports = {
