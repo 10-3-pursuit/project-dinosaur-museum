@@ -76,6 +76,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     
     totalPrice += ticketData.extras[extra].priceInCents[entrantType];
   }
+
+  return totalPrice;
 }
 
 /**
