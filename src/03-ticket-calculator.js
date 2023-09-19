@@ -152,108 +152,65 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
 
 
 function purchaseTickets(ticketData, purchases) {
-  //initializing number variables totalCost, baseCost, extraCost (to use later to calculate final values)
+  // Step 1: Initializing variables (placed here so it can be accessible thoughout scope of function)
+  // initializing number variables totalCost, baseCost, extraCost (to use later to calculate final values) 
   let totalCost = 0;
   let baseCost = 0;
   let extraCost = 0;
-  
-  //initialize string variable with the beginning of whatever is going to be on the receipt (header) copied from test file
+  // initialize string variable with the (header) (copied from test file) to accumulate throughtout the loops
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n"; 
-  
-  // for of loop to access ticketPersonBought objects represented by purchase variable. purchases is an array of ticketPersonBought objects
+
+  // Step 2: destructuring and for of loop to access ticketPersonBought objects represented by purchase variable. purchases is an array of ticketPersonBought objects
   for (let purchase of purchases) {
     // destructuring extracts values from purchase that corresponds to customer input which is structured like an object.
-    const {ticketType, entrantType} = purchase; 
-    
-    // creating edge cases for errors (if no extras) with corresponding error messages 
-    if (!ticketData.hasOwnProperty(ticketType)) { // checks if ticketType exists in ticketData
-      return `Ticket type 'incorrect-type' cannot be found.`; // returns error if it doesn't
+    const {ticketType, entrantType} = purchase; // references keys and values stored in purchase object
+
+    // Step 3: creating edge cases for errors (if no extras) with corresponding error messages 
+    if (!ticketData.hasOwnProperty(ticketType)) { 
+      return `Ticket type 'incorrect-type' cannot be found.`; 
     } 
-    if (entrantType !== "child" && entrantType !== "adult" && entrantType !== "senior") {
-      return `Entrant type 'incorrect-entrant' cannot be found.`;
+    if (entrantType !== "child" && entrantType !== "adult" && entrantType !== "senior") { 
+      return `Entrant type 'incorrect-entrant' cannot be found.`; 
     }
-// calculates baseCost (this will be added to totalCost). If no extras baseCost is equal to totalCost    
-    const ticketTypeInfo = ticketData[ticketType]; 
-    if (ticketTypeInfo) {
-      baseCost = ticketTypeInfo.priceInCents[entrantType]; 
+
+    // Step 4: inside for of loop that allows access to purchase values, calculate baseCost for each ticket purchased
+    const ticketTypeInfo = ticketData[ticketType]; // scoped in outer loop because derived from purchase object
+    if (ticketTypeInfo) { 
+      baseCost = ticketTypeInfo.priceInCents[entrantType]; // baseCost needs to be calculated before extraCost because it needs to be used in each iteration of the outer loop and forms part of totalCost
       totalCost += baseCost; 
     }
 
-    let extrasDescription = "";
-    for (let extra of purchase.extras) {
-      let listOfExtrasArr = [];
-// PUSH EXTRAS DESCRIPTION INTO listOfExtrasArr array with conditionals
-      if (!ticketData.extras[extra]) {
-        return `Extra type '${extra}' cannot be found.`;
+    // Step 5: initialize string variable to store extras descriptions per ticket if !ticketData.extras[extra] evaluates to false (to access extra another for of loop is needed since purchase.extras is an array)
+    // individualExtraCost and extrasDescription scoped in inner loop bc specific only to extras processing per purchase
+    let extrasDescription = ""; 
+    for (let extra of purchase.extras) { 
+      if (!ticketData.extras[extra]) { 
+        return `Extra type '${extra}' cannot be found.`; 
       }
-// calculates cost for extras if any (this will be added to baseCost to calculate totalCost)
-      if (purchase.extras.length !== 0) {
-         let individualExtraCost = ticketData.extras[extra].priceInCents[entrantType]; 
-//        totalCost += extraCost; 
-extraCost += individualExtraCost; // add the individual extra cost to the total extraCost
-//        extrasDescription += ` (${ticketData.extras[extra].description})`;
-extrasDescription += (extrasDescription ? ", " : "") + ticketData.extras[extra].description;
+
+      // Step 6: if there are extras meaning !ticketData.extras[extra] evaluated to false, this codeblock calculates cost for extras per extra type which is ticketData.extras[extra] and entrantType (this will be added to baseCost to calculate totalCost)
+      if (purchase.extras.length !== 0) { 
+        let individualExtraCost = ticketData.extras[extra].priceInCents[entrantType];
+        extraCost += individualExtraCost; 
+        if (extrasDescription) {
+          extrasDescription += ", " + ticketData.extras[extra].description;
+        } else {
+          extrasDescription += ticketData.extras[extra].description;
+        }
       }
     }
-    totalCost += extraCost; // Move this line here to add extraCost to baseCost to get the total cost for each ticket (so it can access the outer for of loop)
-//    receipt += `${entrantType.charAt(0).toUpperCase() + entrantType.slice(1)} ${ticketTypeInfo.description}: $${(baseCost / 100).toFixed(2)}${extrasDescription}\n`;
+
+    // Step 7: outside loop to extract elements of purchase.extras, but inside loop to extract elements of purchases calculate total cost (baseCost per ticketType depending on entrantType purchased + extraCost per extra type depending on entrantType)
+    // Step 7a: outside loop to extract elements of purchase.extras, but inside loop to extract elements of purchases format receipt per ticketType purchased with extras if any, including description per item, and price per item
+    totalCost += extraCost; 
     receipt += `${entrantType.charAt(0).toUpperCase() + entrantType.slice(1)} ${ticketTypeInfo.description}: $${((baseCost + extraCost) / 100).toFixed(2)}${extrasDescription ? ` (${extrasDescription})` : ""}\n`;
-
-    extraCost = 0; // Reset extraCost for the next iteration
+    extraCost = 0; // Reset extraCost for the next iteration to avoid duplicate summation
   }
-  
-  receipt += "-------------------------------------------\n";
-  return `${receipt}TOTAL: $${(totalCost / 100).toFixed(2)}`;  // this is where totalCost is utilized
+
+  // Step 8: add formatting to receipt and return formatted totalCost 
+  receipt += "-------------------------------------------\n"; 
+  return `${receipt}TOTAL: $${(totalCost / 100).toFixed(2)}`;  
 };
-
-
-    
-// Draft 1
-// function purchaseTickets(ticketData, purchases) {
-//   //initializing number variables totalCost, baseCost, extraCost
-//   let totalCost = 0;
-//   let baseCost = 0;
-//   let extraCost = null;
-//   //initialize string variable with the beginning of whatever is going to be on the receipt
-//   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n" // probably will need to fix up later with string interpolation
-  
-//   // for of loop to access ticketPersonBought objects represented by purchase variable. purchases is an array of ticketPersonBought objects
-//   for (let purchase of purchases) { // Once we do a for of loop we can destructure the object
-//     // destructuring extracts values that corresponds to customer input which is structured like an object.
-//     // use variables instead of dotting into purchase object to reference data inside purchase object after destructuring purchase object 
-//     const {ticketType, entrantType} = purchase; 
-    
-//     // creating edge cases for errors (if no extras) with corresponding error messages 
-//     if (!ticketData.hasOwnProperty(ticketType)) { // .hasOwnProperty() returns true if ticketData has a key referenced by purchases.ticketType. ! symbol negates value
-//       return `Ticket type 'incorrect-type' cannot be found.`;
-//     } if (entrantType !== "child" && entrantType !== "adult" && entrantType !== "senior") {
-//         return `Entrant type 'incorrect-entrant' cannot be found.`;
-//       }
-//       // calculating base cost (without regarding extras) which depends on both the type of tix bought and type of entrant. 
-//       const ticketTypeInfo = ticketData[ticketType]; // accesses the object in ticketData that corresponds to ticketType (ticketData.general for example)
-//         if (ticketTypeInfo) { // if input for ticketType in purchase matches key in ticketData this evaluates to true
-//           baseCost = ticketTypeInfo.priceInCents[entrantType]; // if ticketTypeInfo has truthy value will store the value of entrantType (which is a number) to baseCost
-//           totalCost += baseCost; // adds baseCost to running totalCost
-//         }
-
-//         // for loop to access each extra in purchase.extras which are the extras the customer added to their order.
-//         for (let extra of purchase.extras) {
-//           let listOfExtrasArr = [];
-
-//           // creating edge case for errors regarding extras with corresponding error message
-//           if (!ticketData.extras[extra]) { // ticketData.extras[extra]: This tries to access the value associated with the key.
-//             return `Extra type '${extra}' cannot be found.`;
-//           }
-//           // if customers input extras, this will calculating extras cost. After calculating baseCost I can add extras to running totalCost
-//           if (purchase.extras.length !== 0) { // if customer ordered extras
-//             extraCost = ticketData.extras[extra].priceInCents[entrantType]; // depending on customer's chosen extras and entrantType from inputs in purchase.extras array, look up the cost in ticketData.extras by navigating (dotting into) to  the key priceInCents (an object of numbers)
-//             totalCost += extraCost; //add extraCost to totalCost otherwise extraCost will just = 0
-//           }
-//         }
-        
-//         receipt += "-------------------------------------------\n";
-//       } return `${receipt} TOTAL: $${totalCost.toFixed(2)}`;  // this is where totalCost is utilized
-// };
 
 // Do not change anything below this line.
 module.exports = {
