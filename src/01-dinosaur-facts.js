@@ -43,98 +43,20 @@ function getLongestDinosaur(dinosaurs) {
   // Return an object with the longest dinosaur's name and length in feet
   return { [longestDinosaur.name]: longestDinosaur.lengthInFeet };
 }
+/*
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
 
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
-/**
- * getDinosaurDescription()
- * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
- *
- * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
- *
- * NOTE: The `\n` represents a new line in text.
- *
- * @param {Object[]} dinosaurs - An array of dinosaur objects.
- * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur or an error message.
- */
 function getDinosaurDescription(dinosaurs, id) {
   for (const dinosaur of dinosaurs) {
     if (dinosaur.dinosaurId === id) {
@@ -173,7 +95,35 @@ function getDinosaurDescription(dinosaurs, id) {
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const collectionOfDinosaurs = [];
+
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.mya.length === 1) {
+      const year = dinosaur.mya[0];
+      if (mya === year || mya === year - 1) {
+        if (key && dinosaur[key]) {
+          collectionOfDinosaurs.push(dinosaur[key]);
+        } else {
+          collectionOfDinosaurs.push(dinosaur.dinosaurId);
+        }
+      }
+    } else {
+      const [maxMya, minMya] = dinosaur.mya;
+      if (mya >= minMya && mya <= maxMya) {
+        if (key && dinosaur[key]) {
+          collectionOfDinosaurs.push(dinosaur[key]);
+        } else {
+          collectionOfDinosaurs.push(dinosaur.dinosaurId);
+        }
+      }
+    }
+  }
+
+  return collectionOfDinosaurs;
+}
+
+
 
 module.exports = {
   getLongestDinosaur,
