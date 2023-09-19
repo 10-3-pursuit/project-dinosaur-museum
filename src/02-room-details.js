@@ -36,7 +36,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     // if a dinooo Id is found in one of the arrays of room.dinosaurs
     if (room) {
       // return the name of the room with the dinosaur
-      return room.name   
+      return room.name;  
       // if room.dinosaurs does not have the dinooo ID  
     } else { 
       // return error statement
@@ -71,7 +71,53 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  //initialized a variable roomIsFound using the find method and checking if id given matches a room.id in the rooms array
+  const roomIsFound = rooms.find((room) => room.roomId === id); 
+  
+  //checks if the target room ID is not found
+  if (!roomIsFound) {
+    //return error message 
+    return `Room with ID of '${id}' could not be found.`
+  } 
+
+  const connectedRoomNames = roomIsFound.connectsTo.map(connectId => { 
+    const connectedRoom = rooms.find(room => room.roomId === connectId);
+
+    if (!connectedRoom) {
+      return `Room with ID of '${connectId}' could not be found.`
+    }
+    return connectedRoom.name
+  }); 
+
+  return connectedRoomNames; 
+};  
+
+//   //intitialized a variable, idIsReal, and set it equal to the first object that shares the properties of the id given and room id (this finds room object with given ID)
+//   const idIsReal = rooms.find((room) => room.roomId === id); 
+//   //if the id is real, continue logic 
+//   if (idIsReal) {
+//     for (const room of rooms) {
+//       //create an empty array for listOfConnectedRooms
+//       const listOfConnectedRooms = [];
+//       for (const connectedId of room.connectsTo) {   
+//         // const connectedRoom = rooms.find((room) => room.roomId === connectedId); 
+//         const connectedRoom = rooms.find((room) => idIsReal.roomId === connectedId); 
+//         if (connectedRoom) {
+//           //current issue is that it doesn't go throguh all of the elements of
+//           listOfConnectedRooms.push(connectedRoom.name);  
+//           return listOfConnectedRooms; 
+//         } else {
+//             return `Room with ID of 'incorrect-id' could not be found.`
+//         }
+//       }
+//     }  
+//   //if id given isn't real 
+//   } else { 
+//     //return this error message
+//       return `Room with ID of '${id}' could not be found.`
+//   }
+// }; 
 
 module.exports = {
   getRoomByDinosaurName,

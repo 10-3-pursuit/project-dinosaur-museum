@@ -75,11 +75,8 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */ 
 function getDinosaurDescription(dinosaurs, id) {
-
   //created the defaut dino description to be the error message
   let dinoDescription = "A dinosaur with an ID of 'incorrect-id' cannot be found."; 
-    //checks if there is an id value in our parameters 
-    if (id) {
       //created a condition that will update dino description based on if the id given matched that of one of the dinos
       for (dino of dinosaurs) {  
         // create a variable that returns smaller mya number 
@@ -89,10 +86,9 @@ function getDinosaurDescription(dinosaurs, id) {
           dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${mostRecentMYA} million years ago.`
         } 
       }  
-    }
-  return dinoDescription;
+  return dinoDescription; 
 };   
-
+ 
 /**
  * getDinosaursAliveMya()
  * ---------------------
