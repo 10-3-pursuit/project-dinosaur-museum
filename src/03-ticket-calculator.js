@@ -202,7 +202,13 @@ function purchaseTickets(ticketData, purchases) {
 
     // Step 7: outside loop to extract elements of purchase.extras, but inside loop to extract elements of purchases calculate total cost (baseCost per ticketType depending on entrantType purchased + extraCost per extra type depending on entrantType)
     // Step 7a: outside loop to extract elements of purchase.extras, but inside loop to extract elements of purchases format receipt per ticketType purchased with extras if any, including description per item, and price per item
-    totalCost += extraCost; 
+    totalCost += extraCost;
+    // Step 7b: Use string interpolation (using strings, backticks, and enclosing variables/expressions in template literals)
+    // - formatting entrantType by getting first char, converting it to uppercase, then concatenating with rest of string example: if entrantType is "child" this turns it to "Child"
+    // - adding ticket description which is referenced by ticketTypeInfo.description using template literal
+    // - $${((baseCost + extraCost) / 100).toFixed(2)} adds baseCost to extraCost (if there are extras. If not extraCost = 0) to show price of that particular ticket, then formats it into dollars by adding dollar sing infront of template literal, dividing by 100, and putting a decimal point to create a tenths and hundredths place
+    // - ${extrasDescription ? ` (${extrasDescription})` : ""} works sorta like an if statement. If extrasDescription is truthy then outputs (${extrasDescription})`if falsy outputs empty string (it'll be falsy when customer didn't add extra to ticketType)
+    // - the += part concatenates all of this stuff with what's already stored inside receipt (it was initialized with a header)
     receipt += `${entrantType.charAt(0).toUpperCase() + entrantType.slice(1)} ${ticketTypeInfo.description}: $${((baseCost + extraCost) / 100).toFixed(2)}${extrasDescription ? ` (${extrasDescription})` : ""}\n`;
     extraCost = 0; // Reset extraCost for the next iteration to avoid duplicate summation
   }
