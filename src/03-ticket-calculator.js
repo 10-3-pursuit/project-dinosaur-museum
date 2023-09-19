@@ -57,6 +57,7 @@ const exampleTicketData = require("../data/tickets");
 function calculateTicketPrice(ticketData, ticketInfo) {
   const ticketType = ticketInfo.ticketType;
   const entrantType = ticketInfo.entrantType;
+  const extras = ticketInfo.extras;
 }
 
 /**
