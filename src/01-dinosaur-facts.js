@@ -102,50 +102,31 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  // make an array to store dinosaurs
   const dinoInPeriod = [];
 
-  // iterate through dinosaurs array 
   for (let i = 0; i < dinosaurs.length; i++) {
-    // get the current dinosaur object from the array
-    let dino = dinosaurs[i];
+    const dinosaur = dinosaurs[i];
 
-    // check if the mya has two values
-    if (dino.mya.length === 2) {
-      // check if 'mya' falls within the range defined by the dinosaur
-      if (mya >= dino.mya[0] && mya <= dino.mya[1]) {
-        // get the value associated with the 'key' property in the dinosaur object
-        let keyProperty = dino[key];
-        
-        // check if keyProperty exists in the dinosaur object
-        if (keyProperty === undefined) {
-          // if it doesn't exist, add the dinosaur's ID to dinoInPeriod 
-          dinoInPeriod.push(dino.dinosaurId);
+    if (dinosaur.mya.length > 1) {
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        if (key && dinosaur[key] !== undefined) {
+          dinoInPeriod.push(dinosaur[key]); // push the value of dinosaur[key] into the dinoInPeriod
         } else {
-          // if it exists, add the value to dinoInPeriod 
-          dinoInPeriod.push(keyProperty);
+          dinoInPeriod.push(dinosaur.dinosaurId); // push dinosaurId into dinoInPeriod
         }
       }
-    } else {
-      // if the mya property of the dinosaur has only one value (not a range), check if mya matches that single value or is one less than it
-      if (mya === dino.mya[0] || mya === dino.mya[0] - 1) {
-        // get the value associated with the 'key' property in the dinosaur object
-        let keyProperty = dino[key];
-        
-        // check if the keyProperty exists in the dinosaur object
-        if (keyProperty === undefined) {
-          // if it doesn't exist, add the dinosaur's ID to dinoInPeriod
-          dinoInPeriod.push(dino.dinosaurId);
+    } else if (dinosaur.mya.length === 1) {
+      if (mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0]) {
+        if (key && dinosaur[key] !== undefined) {
+          dinoInPeriod.push(dinosaur[key]); // push the value of dinosaur[key] into dinoInPeriod
         } else {
-          // add value to dinoInPeriod
-          dinoInPeriod.push(keyProperty);
+          dinoInPeriod.push(dinosaur.dinosaurId); // push dinosaurId into 'dinoInPeriod
         }
       }
     }
   }
 
-  // return the array of dinosaurs that fits the conditions
-  return dinoInPeriod;
+  return dinoInPeriod; // return dinoInPeriod with either the dinosaur ID's or the key
 }
 
 module.exports = {
