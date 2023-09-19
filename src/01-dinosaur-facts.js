@@ -22,29 +22,131 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    return {}; // Return an empty object if there are no dinosaurs
+  } 
+
+  let longestDinosaur = null;
+
+  for (const dinosaur of dinosaurs) {
+    const lengthInFeet = dinosaur.lengthInMeters * 3.281; // Convert meters to feet
+
+    if (longestDinosaur === null || lengthInFeet > longestDinosaur.lengthInFeet) {
+      longestDinosaur = {
+        name: dinosaur.name,
+        lengthInFeet: lengthInFeet,
+      };
+    }
+  }
+
+  // Return an object with the longest dinosaur's name and length in feet
+  return { [longestDinosaur.name]: longestDinosaur.lengthInFeet };
+}
 
 /**
  * getDinosaurDescription()
  * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found, returns an error message.
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
  *
  * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
  *
  * NOTE: The `\n` represents a new line in text.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
  * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur.
- *
- * EXAMPLE:
- *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
- *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
- *
- *  getDinosaurDescription(dinosaurs, "incorrect-id");
- *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ * @returns {string} A detailed description of the dinosaur or an error message.
  */
-function getDinosaurDescription(dinosaurs, id) {}
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+/**
+ * getDinosaurDescription()
+ * ---------------------
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
+ *
+ * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
+ *
+ * NOTE: The `\n` represents a new line in text.
+ *
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
+ * @param {string} id - The unique identifier for the dinosaur.
+ * @returns {string} A detailed description of the dinosaur or an error message.
+ */
+function getDinosaurDescription(dinosaurs, id) {
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      const yearsAgo = Math.min(...dinosaur.mya);
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${yearsAgo} million years ago.`;
+    }
+  }
+
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+}
+
+
 
 /**
  * getDinosaursAliveMya()
