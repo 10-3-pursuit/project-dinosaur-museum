@@ -191,11 +191,11 @@ function purchaseTickets(ticketData, purchases) {
       // Step 6: if there are extras meaning !ticketData.extras[extra] evaluated to false, this codeblock calculates cost for extras per extra type which is ticketData.extras[extra] and entrantType (this will be added to baseCost to calculate totalCost)
       if (purchase.extras.length !== 0) { 
         let individualExtraCost = ticketData.extras[extra].priceInCents[entrantType];
-        extraCost += individualExtraCost; 
+        extraCost += individualExtraCost; // updates extraCost depending on how many extras that correspond to individualExtraCost
         if (extrasDescription) {
-          extrasDescription += ", " + ticketData.extras[extra].description;
+          extrasDescription += ", " + ticketData.extras[extra].description; // needs comma if description is already present (for more than 1 extra)
         } else {
-          extrasDescription += ticketData.extras[extra].description;
+          extrasDescription += ticketData.extras[extra].description; // to add first description (no comma beforehand)
         }
       }
     }
