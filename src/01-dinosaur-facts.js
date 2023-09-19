@@ -138,19 +138,38 @@ function getDinosaurDescription(dinosaurs, id) {
 // input: Id,
 // output:id 
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  
-    return dinosaurs
-      .filter((dino) => {
-        
-      })
-      .map((dino) => {
-        if (key) {
-          
-          return dino.dinosaurId; 
-        }
-      });
+
+  const aliveDinos = dinosaurs.filter((dino) => {
+    if (dino.mya.length === 1 ) {
+      if (mya <= dino.mya[0] && mya >= dino.mya[0] - 1) {
+        return dino
+      }
+
+
+    } else if (dino.mya.length ===2 ) {
+
+      if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
+        return dino
+       }
+      }
+     
+  })
+
+  console.log(aliveDinos)
+  if (key) {
+    return aliveDinos.map((dino) => dino[key] || dino.dinosaurId);
+  } else {
+    return aliveDinos.map((dino) => dino.dinosaurId);
   }
+}
+
+getDinosaursAliveMya(exampleDinosaurData, 150);
+
+
   
+ 
+  
+
 
 
 module.exports = {
