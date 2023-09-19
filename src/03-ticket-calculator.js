@@ -66,6 +66,8 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   if (!ticketData[ticketType].priceInCents.hasOwnProperty(entrantType)) {
     return `Entrant type '${entrantType}' cannot be found.`;
   }
+
+  let totalPrice = ticketData[ticketType].priceInCents[entrantType];
 }
 
 /**
