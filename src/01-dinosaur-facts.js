@@ -99,25 +99,52 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const filteredDinos = dinosaurs.filter(dino =>  {
-    if(dino.mya.length === 1) {
-      if(dino.mya[0] === mya || dino.mya[0] === mya - 1) {
-        return dino
-    } else {
-      if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
-        return dino
+  const dinoArray = []
+  for(let dino of dinosaurs) {
+    const keyArray = Object.keys(dino)
+      if(dino.mya.length === 1) {
+        if(dino.mya[0] === mya || dino.mya[0] === mya - 1) {
+          dinoArray.push(dino)
+      // } else {
+      } 
+      if(dino.mya.length === 2) {
+        if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
+          dinoArray.push(dino)
+          }
         }
       }
+
     }
-  })
-  console.log('')
-  console.log(filteredDinos)
-  if(key !== undefined && Object.keys(filteredDinos).includes(key)) {
-    return filteredDinos.map(dino => dino[key])
-  } else {
-    return filteredDinos.map(dino => dino.dinosaurId)
+    // if(smallestMya === mya) {
+    //   if(key === undefined || keyArray.includes(key) === false) {
+    //     dinoArray.push(dino.dinosaurID)
+    //     } else if(keyArray.includes(key)) {
+    //     dinoArray.push(dino[key])
+    //     }
+    //   }
+    // }
+    console.log('----------------------')
+    console.log(dinoArray)
+    console.log(dinoArray.length)
   }
-}
+  // // const filteredDinos = dinosaurs.filter(dino =>  {
+  //   if(dino.mya.length === 1) {
+  //     if(dino.mya[0] === mya || dino.mya[0] === mya - 1) {
+  //       return dino
+  //   } else {
+  //     if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
+  //       return dino
+  //       }
+  //     }
+  //   }
+  // })
+  // console.log('')
+  // console.log(filteredDinos)
+  //   if(key !== undefined && Object.keys(filteredDinos).includes(key)) {
+  //     return filteredDinos.map(dino => dino[key])
+  //   } else {
+  //     return filteredDinos.map(dino => dino.dinosaurId)
+  //   }
 
 
 module.exports = {
