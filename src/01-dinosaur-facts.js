@@ -113,33 +113,40 @@ function getDinosaurDescription(dinosaurs, id) {
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
  const dinosaurArray = [];
-
+ // goes through the 'dinosaurs' array using .forEach().
  dinosaurs.forEach(dinosaur => {
-
+   // Check if the 'dinosaur.mya' array has more than one element using '.length'.
    if (dinosaur.mya.length === 1) {
-    
+     // Check if the value of 'mya' in the parameters is within 1 million years BEFORE the value of 'dinosaur.mya[0]'.
      if (mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0]) {
-  
+      // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
       if (key && typeof dinosaur[key] !== 'undefined') {
-     
+       // Add the value of 'dinosaur[key]' to the 'dinosaurArray'.
        dinosaurArray.push(dinosaur[key]);
      } else {
-       
+        // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
         dinosaurArray.push(dinosaur.dinosaurId);
       }
     }
    } else if (dinosaur.mya.length > 1) {
-    
+      /* This condition checks if the 'mya' (million years ago) values for a particular dinosaur
+    have more than one element in the 'dinosaur.mya' array. If so, it means that this dinosaur
+    existed over a range of time periods. We then proceed to check if the specified 'mya' value
+    falls within this range of time, ensuring that it's equal to or between the two values stored
+    in the 'dinosaur.mya' array. */
      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
-      
+      // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
       if (key && dinosaur[key] !== undefined) {
+        // Push the value of 'dinosaur[key]' into the array 'dinosaurArray'.
         dinosaurArray.push(dinosaur[key]);
       } else {
+        // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
         dinosaurArray.push(dinosaur.dinosaurId);
       }
     }
    }
  });
+ // Return 'dinosaurArray' with either the dinosaur ID's or the specified key, after the entire 'dinosaurs' array has been iterated through.
  return dinosaurArray;
 }
 
