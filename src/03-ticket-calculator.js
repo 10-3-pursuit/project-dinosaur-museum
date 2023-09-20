@@ -54,7 +54,41 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  //extract keys from the ticket info using destructuring
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  //ticket type does not match an existing ticket type
+  //include the or because it says it could be any string EXCEPT the value extras
+  if (!ticketData[ticketType] || ticketData[ticketType] === "extras") {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+
+  //entrant type does not match an existing entrant type
+  if (!ticketData[ticketType]["priceInCents"][entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+
+  //Access the base price by navigating in the 'ticketData' object.
+  //the basePrice is dependent on the ticketType and entrantType (entrant type is nested in the priceInCents)
+  let basePrice = ticketData[ticketType]["priceInCents"][entrantType];
+  //Set up an accumulator for the extras price since it's an array of options
+  //assume ppl will not choose extras, so we will start this at $0
+  let extrasPrice = 0;
+
+  //Loop through all of the extras options
+  for (let extra of extras) {
+    if (!ticketData["extras"][extra]) {
+      //End the function with an error message if an "extra" doesn't exist
+      return `Extra type '${extra}' cannot be found.`;
+    }
+
+    //can assume all of the below exist because, in the error codes above we already did our checks for it they DO NOT exist. Therefore we wouldnt even reach this point if it didnt
+    extrasPrice += ticketData["extras"][extra]["priceInCents"][entrantType];
+  }
+  //Final value should be the total of the base price and extra price
+  return basePrice + extrasPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +143,90 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+function purchaseTickets(ticketData, purchases) {
+  // Step 1: Initialize a variable to store a single ticket purchase.
+  let ticketPurchase;
+
+  // Step 2: Create the receipt header using template literals.
+  let receipt = `Thank you for visiting the Dinosaur Museum!
+-------------------------------------------
+`;
+
+  // Step 3: Initialize an accumulator for the total cost.
+  let total = 0;
+
+  // Step 4: Initialize a variable to store the cost of a single ticket.
+  let costOfTicket;
+
+  // Step 5: Loop through each ticket purchase in the 'purchases' array.
+  for (let i = 0; i < purchases.length; i++) {
+    // Get the current ticket purchase.
+    ticketPurchase = purchases[i];
+
+    // Calculate the cost of the ticket using the 'calculateTicketPrice' function.
+    costOfTicket = calculateTicketPrice(ticketData, ticketPurchase);
+
+    // Check if the cost is not a number (i.e., an error occurred in the calculation).
+    if (typeof costOfTicket !== "number") {
+      // Return the error message.
+      return costOfTicket;
+    }
+
+    // Convert the cost of the ticket from cents to dollars.
+    costOfTicket /= 100;
+
+    // Add the cost of the ticket to the total.
+    total += costOfTicket;
+
+    // Check if there are no extras in the ticket purchase.
+    if (ticketPurchase.extras.length === 0) {
+      // Add a line to the receipt for the ticket purchase.
+      receipt += `${
+        ticketPurchase.entrantType[0].toUpperCase() +
+        ticketPurchase.entrantType.substring(1)
+      } ${
+        ticketData[ticketPurchase.ticketType].description
+      }: $${costOfTicket.toFixed(2)}
+`;
+    } else {
+      // Add a line to the receipt for the ticket purchase with extras.
+      receipt += `${
+        ticketPurchase.entrantType[0].toUpperCase() +
+        ticketPurchase.entrantType.substring(1)
+      } ${
+        ticketData[ticketPurchase.ticketType].description
+      }: $${costOfTicket.toFixed(2)} (`;
+
+      // Loop through each extra in the ticket purchase.
+      for (let j = 0; j < purchases[i].extras.length; j++) {
+        if (j !== purchases[i].extras.length - 1) {
+          // Add extras to the receipt.
+          receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
+            i
+          ].extras[j].substring(1)} Access, `;
+        } else {
+          // Add the last extra to the receipt and start a new line.
+          receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
+            i
+          ].extras[j].substring(1)} Access)
+`;
+        }
+      }
+    }
+  }
+
+  // Step 6: Create a divider for the receipt.
+  let divider = `-------------------------------------------
+`;
+
+  // Add the divider and total to the receipt.
+  receipt += divider;
+  receipt += `TOTAL: $${total.toFixed(2)}`;
+
+  // Step 7: Return the complete receipt.
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
