@@ -22,7 +22,29 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+function getLongestDinosaur(dinosaurs) {
+  // Initialize variables to store the longest dinosaur length and a new dinosaur object
+  let longestDinosaur = 0
+  let newDinosaurObj = {}
+  // Iterate through the array of dinosaurs using .forEach()
+  dinosaurs.forEach((dinosaur) => {
+    // Check if the current dinosaur's length is greater than 'longestDinosaur'
+    if (dinosaur.lengthInMeters > longestDinosaur) {
+      // If it is, update longestDinosaur
+      longestDinosaur = dinosaur.lengthInMeters
+      /* Create a new dinosaur object with the dinosaur name as the key
+      and its length converted to feet as the value. If the next dinosaur is longer, 
+      the object is updated. */
+      newDinosaurObj = {
+        [dinosaur.name]: dinosaur.lengthInMeters * 3.281
+      }
+    }
+  })
+  /* Return the new dinosaur object with the longest dinosaur. If there are no dinosaurs, 
+  returns empty object. */
+  return newDinosaurObj
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +66,21 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+function getDinosaurDescription(dinosaurs, id) {
+  // Created a variable to hold a default error message in case the ID is not found.
+  let dinoInfo = `A dinosaur with an ID of '${id}' cannot be found.`
+  // Iterate through the 'dinosaurs' array using .forEach().
+  dinosaurs.forEach((dinosaur) => {
+    // Check if the current dinosaur's 'dinosaurId' matches the original 'id' parameter.
+    if (dinosaur.dinosaurId === id) {
+      // If the IDs match, update 'dinoInfo' with the dinosaur's information using string interoplation.
+      dinoInfo = `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${dinosaur.mya[dinosaur.mya.length - 1]} million years ago.`
+    }
+  })
+  // Return 'dinoInfo', which either contains the dinosaur's information or the default error message.
+  return dinoInfo
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +107,45 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Created empty array to store values.
+  const dinosaurArray = []
+  // Iterate through the 'dinosaurs' array using .forEach().
+  dinosaurs.forEach(dinosaur => {
+    // Check if the 'dinosaur.mya' array has more than one element using '.length'.
+    if (dinosaur.mya.length > 1) {
+      /* Check if value of 'mya' in the parameters is equal to or inbetween the two values of the elements in the array 'dinosaur.mya'. */
+      if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
+        // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
+        if (key && dinosaur[key] !== undefined) {
+          // Push the value of 'dinosaur[key]' into the array 'dinosaurArray'.
+          dinosaurArray.push(dinosaur[key])
+        } else {
+          // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
+          dinosaurArray.push(dinosaur.dinosaurId)
+        }
+      }
+    } 
+    // Check if the 'dinosaur.mya' array has only one element using '.length'.
+    else if (dinosaur.mya.length === 1) {
+      // Check if the value of 'mya' in the parameters is within 1 million years BEFORE the value of 'dinosaur.mya[0]'.
+      if (mya >= dinosaur.mya[0] - 1 && mya <= dinosaur.mya[0]) {
+        // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
+        if (key && dinosaur[key] !== undefined) {
+          // Push the value of 'dinosaur[key]' into the array 'dinosaurArray'.
+          dinosaurArray.push(dinosaur[key])
+        } else {
+          // If 'key' is not in the parameters or 'dinosaur[key]' is undefined, push 'dinosaurId' into 'dinosaurArray'.
+          dinosaurArray.push(dinosaur.dinosaurId)
+        }
+      }
+    }
+  })
+  /* Return 'dinosaurArray' with either the dinosaur ID's or the specified key, after the entire 'dinosaurs' 
+  array has been iterated through. */
+  return dinosaurArray
+}
 
 module.exports = {
   getLongestDinosaur,
