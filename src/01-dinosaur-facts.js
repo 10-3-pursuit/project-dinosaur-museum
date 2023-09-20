@@ -58,11 +58,15 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
+  //this function has two parameters this time, and the formatted detailed description is one option, as well is an error message
   let dinoDetails = "A dinosaur with an ID of '" + id + "' cannot be found.";
+  //logically, the .forEach method seemed most appropriate to use to iterate through the array of objects 
   dinosaurs.forEach((dinosaur) => {
+    //and so the logic begins, to make an absolute true match of correct id to each dinosaur description, or not if there isn't
     if(dinosaur.dinosaurId === id && !dinosaur.mya.includes(undefined)) {
+      //the shape, format and order of the description must be adhered to by the examples, which is why this deserves the strictest code, syntax and particular return to follow
       dinoDetails = `${dinosaur.name} (${dinosaur.pronunciation}) 
-      ${dinosaur.info} 
+      \n${dinosaur.info} 
       It lived in the ${dinosaur.period} period, over ${dinosaur.mya[0]} million years ago.`;
     }
   });

@@ -26,13 +26,18 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //this function carries 3 parameters, but the main clue is `to find` rooms with dinosaurs, and edge case message if no dinosaur found
   const findingDino = dinosaurs.find((dinosaur) => dinosaur.name === dinosaurName);
+  //created my clever variable, then used an obvious high-order native array method to iterate, making sure to immediate drum up a match to keys and parameter
   if(!findingDino) {
-    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`; //if there's no dinosaur found, return exact error message provided
   }
   const roomers = rooms.find((room) => room.dinosaurs.includes(findingDino.dinosaurId));
+  //now to match the actual rooms, created a variable again, also using .find method and iterating through the objects, this time to match rooms
   if(roomers) {
     return roomers.name;
+    //the room name could either be the return, or that error message if there's no dinosaur to match a room
   } else {
     return `Dinosaur with name '${dinosaurName}' cannot be found in any room.`;
   }

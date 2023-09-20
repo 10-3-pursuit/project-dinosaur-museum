@@ -56,8 +56,10 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   const {ticketType, entrantType, extras} = ticketInfo;
+  //five parameters for this function, and similarly to previous ones, an error message is generated if info is off 
   if(!ticketData[ticketType]) {
     return `Ticket type '${ticketType}' cannot be found.`;
+    //for the next three forms of logic, the 'no' symbol is used within each 'if' statement, to purposefully generate an error message for each of the three ticket type values
   }
   if(!ticketData[ticketType].priceInCents[entrantType]) {
     return `Entrant type '${entrantType}' cannot be found.`;
@@ -65,9 +67,11 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const tixCosts = extras.reduce((sum, extra) => {
     if(!ticketData.extras[extra]) {
       return `Extra '${extra}' cannot be found.`;
+      //creating a new variable above, the focus to decifer a sum of the costs, we use the .reduce method, still factoring the error message if the extras value isn't correct or missing
     }
     return sum + ticketData.extras[extra].priceInCents[entrantType];
   }, 0);
+  //to calculate the total cost with extras, initialize the 0 within that extras.reduce function above. Kinda got stuck here for a while.
   return tixCosts + ticketData[ticketType].priceInCents[entrantType];
 }
 
