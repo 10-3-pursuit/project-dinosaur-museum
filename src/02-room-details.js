@@ -72,10 +72,12 @@ function getConnectedRoomNamesById(rooms, id) {
 
   // Iterate through the rooms and find the first one that matches the given id
   const connectedRooms = rooms.find((room) => room.roomId === id);
+
   //If connectedRooms is falsy return error message
   if(!connectedRooms){
     return `Room with ID of 'incorrect-id' could not be found.`
   }
+  
   // When room is found store the connected rooms in to this variable
   const connectedRoomIds = connectedRooms.connectsTo;
 
