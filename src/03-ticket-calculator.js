@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const { ticketType, entrantType, extras } = ticketInfo;
+
+  if (!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  
+  if (!ticketdata[ticketType][entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+
+    let totalTicketPrice = ticketData[ticketType][entrantType];
+for (const extra of extras) {
+  
+  if (!ticketData.extras[extra]) {
+    return `Extra '${extra}' cannot be found.`;
+  }
+  totalTicketPrice += ticketData.extras[extra];
+}
+return totalTicketPrice;
+  
+  }  
+  }
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +130,25 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  const ticketPrice = calculateTicketPrice(ticketData, purchase);
+
+  if (typeof ticketPrice === "string") {
+    return ticketPrice;
+  }
+  totalCost += ticketPrice;
+
+  receipt += `${purchase.entrantType} ${purchase.ticketType} Admission: ${(ticketPrice / 100).toFixed(2)}`;
+  of (purchase.extras.length > 0) {
+    receipt += '${purchase.extras.join(",")}';
+  }
+  receipt += "\n";
+}
+receipt += "-----------------------------------------\n";
+receipt += `TOTAL: ${(totalCost / 100).toFixed(2)}`;
+
+return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
