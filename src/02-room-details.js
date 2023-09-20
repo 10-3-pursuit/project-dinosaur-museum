@@ -87,6 +87,9 @@ function getConnectedRoomNamesById(rooms, id) {
     if (connectedRoom) {
       arrayConnectsTo.push(connectedRoom.name);
     }
+    else{
+      return `Room with ID of 'incorrect-id' could not be found.`;
+    }
   }
 
   //return array;
