@@ -140,7 +140,7 @@ function purchaseTickets(ticketData, purchases) {
   for (const purchase of purchases) {
     const ticketType = purchase.ticketType.toLowerCase(); 
     const entrantType = purchase.entrantType.toLowerCase(); 
-    
+    let extrasStr = "";
   }   
 }
 
