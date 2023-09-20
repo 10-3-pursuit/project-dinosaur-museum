@@ -54,47 +54,53 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {
-  // Check if the value of 'ticketInfo.ticketType' exists as a nested object in the ticketData object, using it as a key to access ticketData.
-  if (!ticketData[ticketInfo.ticketType]) {
 
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Store the entrant type from ticketInfo
+  let customerType = ticketInfo.entrantType
+
+  // Store the admission type object based on the ticket type in ticketInfo
+  let admissionType = ticketData[ticketInfo.ticketType]
+
+  // Store the extras on the ticket from ticketInfo
+  let extrasOnTicket = ticketInfo.extras
+
+  // Check if the value of 'ticketInfo.ticketType' exists as a nested object in the ticketData object
+  if (!admissionType) {
     // Return an error message if not found
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
-
-  // Check if the value of 'ticketInfo.entrantType' exists as a nested object in 'ticketData.general.priceInCents' using it as a key to access 'ticketData.general.priceInCents'.
-  if (!ticketData.general.priceInCents[ticketInfo.entrantType]) {
-
+  
+  // Check if customerType exists inside 'ticketData.general.priceInCents'
+  if (!ticketData.general.priceInCents[customerType]) {
     // Return an error message if not found
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.` 
+    return `Entrant type '${customerType}' cannot be found.`
   }
-
-  // Iterates through the 'ticketInfo.extras' array to check if any of the elements do not exist in the ticketData object, using the parameter of the callback function as a key to access the 'ticketData.extras" array. Assigns the value to 'notFoundExtra'.
-  const notFoundExtra = ticketInfo.extras.find(extra => !ticketData.extras[extra])
-
+  
+  // Iterates through the 'extrasOnTicket' array to check if any of the elements do not exist in the ticketData object, using the parameter of the callback function as a key to access the 'ticketData.extras" array. Assigns the value to 'notFoundExtra'.
+  const notFoundExtra = extrasOnTicket.find(extra => !ticketData.extras[extra])
+  
   // If 'notFoundExtra' is truthy, return an error message.
   if (notFoundExtra) {
     return `Extra type '${notFoundExtra}' cannot be found.`
   }
-
+  
   // Create a variable to store the total price of extras
-  let extrasTotalPrice = 0;
-
-  // If the length of 'ticketInfo.extras' is 0, no extras are in the array, so return the price for the ticket type and entrant type.
-  if (ticketInfo.extras.length === 0) {
-    // Access the price in the ticketData object, using 'ticketInfo.ticketType' and 'ticketInfo.entrantType' as keys. 
-    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
+  let extrasTotalPrice = 0
+  
+  // If the length of 'extrasOnTicket' is 0, no extras are in the array, so return the price for the ticket type and entrant type.
+  if (extrasOnTicket.length === 0) {
+    // Access the price in 'admissionType.priceInCents', using 'customerType' as a key. 
+    return admissionType.priceInCents[customerType]
   }
-
-  // If the length of 'ticketInfo.extras' is more than 0, calculate their total price and return the combined price.
-  if (ticketInfo.extras.length > 0) {
-
-    // Loop through 'ticketInfo.extras' using the '.forEach()' method, and access their prices in the ticketData object, using the callback function parameter and 'ticketInfo.entrantType' as keys to access the specified prices. Increment the prices onto 'extrasTotalPrice'
-
-    ticketInfo.extras.forEach(extra => extrasTotalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
-
+  
+  // If the length of 'extrasOnTicket' is more than 0, calculate their total price and return the combined price.
+  if (extrasOnTicket.length > 0) {
+    // Loop through 'extrasOnTicket' using the '.forEach()' method, and access their prices in the ticketData object, using the callback function parameter and 'customerType' as keys to access the specified prices. Increment the prices onto 'extrasTotalPrice'
+    extrasOnTicket.forEach(extra => extrasTotalPrice += ticketData.extras[extra].priceInCents[customerType])
+    
     // Return the price of the ticket purchased.
-    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extrasTotalPrice
+    return admissionType.priceInCents[customerType] + extrasTotalPrice
   }
 }
 
@@ -151,73 +157,120 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
+
 function purchaseTickets(ticketData, purchases) {
-let ticketTypeFalse = null
-let entrantTypeFalse = null 
-let extraTypeFalse = null
-let netPrice = 0
-let extrasTotalPrice = 0
+  // Create variables to track invalid ticket, entrant, and extra types
+  let ticketTypeFalse = null 
+  let entrantTypeFalse = null 
+  let extraTypeFalse = null
+  
+  // Create variables for calculating the net price and the total price of the extras
+  let netPrice = 0
+  let extrasTotalPrice = 0 
+  
+  // Initialize the receipt text
+  let receiptText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
+  
+  // Iterate through each element in the 'purchases' array and check if the specified ticket type exists in the ticketData object.
+  purchases.forEach(purchase => {
+    // Create a string to store capitalized extra descriptions
+    let capitalizedExtraString = ''
+  
+    // Create a variable to track the total price of individual extras
+    let indivExtra = null
+  
+    // Store the entrant type from the current purchase
+    let customerType = purchase.entrantType
+  
+    // Store the admission type object based on the current purchase's ticket type
+    let admissionType = ticketData[purchase.ticketType]
+  
+    // Check if the specified ticket type exists in the ticketData object
+    if (!admissionType) {
+      ticketTypeFalse = purchase.ticketType // Store the invalid ticket type
+    }
+  
+    // Check if 'customerType' exists in the ticketData object, using customerType as a key to access the ticketData.general.priceInCents nested object.
+    if (!ticketData.general.priceInCents[customerType]) {
+      entrantTypeFalse = customerType
+    }
+  
+    // Check if any of the specified extras do not exist in the ticketData object
+    const notFoundExtra = purchase.extras.find(extra => !ticketData.extras[extra])
+  
+    //if 'notFoundExtra' is truthy, store the invalid extra type to extraTypeFalse.
+    if (notFoundExtra) {
+      extraTypeFalse = notFoundExtra 
+    }
+  
+    // If all types are valid, calculate prices and build the receipt
+    if (!ticketTypeFalse && !entrantTypeFalse && !extraTypeFalse) {
 
-purchases.forEach(purchase => {
-if (!ticketData[purchase.ticketType]){
-  ticketTypeFalse = purchase.ticketType
-  }
-if (!ticketData.general.priceInCents[purchase.entrantType]){
-  entrantTypeFalse = purchase.entrantType
-  }
-})
-
-if (ticketTypeFalse) {
-  return `Ticket type '${ticketTypeFalse}' cannot be found.`
-}
-
-if (entrantTypeFalse) {
-  return `Entrant type '${entrantTypeFalse}' cannot be found.`
-}
-
-purchases.forEach(purchase => {
-  const notFoundExtra = purchase.extras.find(extra => !ticketData.extras[extra])
-  if (notFoundExtra) {
-    extraTypeFalse = notFoundExtra
-  }
-})
-
-if (extraTypeFalse) {
-  return `Extra type '${extraTypeFalse}' cannot be found.`
-  }
-
-let receiptText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
-
-purchases.forEach(purchase => {
-  const capitalizedEntrantType = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)
-  let capitalizedExtraString = ''
-  let indivExtra = null
-
-  if (purchase.extras.length === 0) {
-    netPrice += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
-
-    receiptText += `\n${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${((ticketData[purchase.ticketType].priceInCents[purchase.entrantType]) / 100).toFixed(2)}`
-  }
-  if (purchase.extras.length > 0) {
-    netPrice += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
-    purchase.extras.forEach(extra => {
-      if (purchase.extras.indexOf(extra) !== 0){
-        capitalizedExtraString += `, `
+      // Create a string with the entrant type capitalized
+      const capitalizedEntrantType = customerType.charAt(0).toUpperCase() + customerType.slice(1)
+  
+      // Store the price object based on the current purchase's ticket type
+      let admissionPriceObject = ticketData[purchase.ticketType].priceInCents
+  
+      if (purchase.extras.length === 0) {
+        // Calculate the price for the ticket without extras
+        netPrice += admissionPriceObject[customerType]
+  
+        // Generate a line in the receipt for the ticket without extras
+        receiptText += `\n${capitalizedEntrantType} ${admissionType.description}: $${((admissionPriceObject[customerType]) / 100).toFixed(2)}`
       }
-      capitalizedExtraString += `${extra.charAt(0).toUpperCase() + extra.slice(1)} Access`
-      
-      extrasTotalPrice += ticketData.extras[extra].priceInCents[purchase.entrantType]
-      indivExtra += ticketData.extras[extra].priceInCents[purchase.entrantType]
+  
+      if (purchase.extras.length > 0) {
+        // Calculate the price for the ticket with extras
+        netPrice += admissionPriceObject[customerType]
 
-    })
-    receiptText += `\n${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${((ticketData[purchase.ticketType].priceInCents[purchase.entrantType] + indivExtra) / 100).toFixed(2)} (${capitalizedExtraString})`
-    indivExtra = 0
+        // Iterate through the extras of the current purchase
+        purchase.extras.forEach(extra => {
+          // Store the extras price object for the current extra
+          let extrasPriceObj = ticketData.extras[extra].priceInCents
+  
+          // Add a comma at the end of each extra if there is more than one
+          if (purchase.extras.indexOf(extra) !== 0) {
+            capitalizedExtraString += ', '
+          }
+          //Capitalize each extra string, with 'Access' at the end
+          capitalizedExtraString += `${extra.charAt(0).toUpperCase() + extra.slice(1)} Access`
+  
+          // Accessing extra price based on 'customerType'
+          extrasTotalPrice += extrasPriceObj[customerType]
 
+          // 'indivExtra' used to calculate all extra prices to one ticket
+          indivExtra += extrasPriceObj[customerType]
+        })
+  
+        // Generate a line in the receipt for the ticket with extras
+        receiptText += `\n${capitalizedEntrantType} ${admissionType.description}: $${((admissionPriceObject[customerType] + indivExtra) / 100).toFixed(2)} (${capitalizedExtraString})`
+  
+        // Reset indivExtra to zero for the next iteration/ticket
+        indivExtra = 0
+      }
+    }
+  })
+  
+  // Calculate the total price, add it to the receipt text, and format it as currency
+  netPrice += extrasTotalPrice
+  receiptText += `\n-------------------------------------------\nTOTAL: $${(netPrice / 100).toFixed(2)}`
+  
+  // Return error messages for invalid ticket, entrant, or extra types, if any
+  if (ticketTypeFalse) {
+    return `Ticket type '${ticketTypeFalse}' cannot be found.`
   }
-})
-netPrice += extrasTotalPrice
-receiptText += `\n-------------------------------------------\nTOTAL: $${(netPrice / 100).toFixed(2)}`
-return receiptText
+  if (entrantTypeFalse) {
+    return `Entrant type '${entrantTypeFalse}' cannot be found.`
+  }
+  
+  // Return an error message for an invalid extra type, if any
+  if (extraTypeFalse) {
+    return `Extra type '${extraTypeFalse}' cannot be found.`
+  }
+  
+  // Return the complete receipt text if there are no errors
+  return receiptText
 }
 
 
