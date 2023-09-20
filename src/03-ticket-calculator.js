@@ -84,7 +84,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
         entrantType: "senior",
         extras: ["terrace"],
       },
-      {
+      { 
         ticketType: "general",
         entrantType: "child",
         extras: ["education", "movie", "terrace"],

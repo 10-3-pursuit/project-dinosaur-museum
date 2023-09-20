@@ -74,53 +74,37 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   //initialized a variable roomIsFound using the find method and checking if id given matches a room.id in the rooms array
   const roomIsFound = rooms.find((room) => room.roomId === id); 
+  //created a variable to house the array of connected room names 
+  const connectedRoomNames = []; 
   
   //checks if the target room ID is not found
   if (!roomIsFound) {
     //return error message 
     return `Room with ID of '${id}' could not be found.`
   } 
-
-  const connectedRoomNames = roomIsFound.connectsTo.map(connectId => { 
-    const connectedRoom = rooms.find(room => room.roomId === connectId);
-
-    if (!connectedRoom) {
-      return `Room with ID of '${connectId}' could not be found.`
+  //initialized a variable and set it to equal the list of connected room ids 
+  const connectedRooms = roomIsFound.connectsTo; 
+  //used a normal for loop to iterate through each id in the array of connectedRooms 
+  for (let i = 0; i < connectedRooms.length; i++) {
+    //created a variable to find the connected room in the array of connectedRooms 
+    const connected = rooms.find((room) => room.roomId === connectedRooms[i]);  
+      //if a room is indeed connected 
+      if (connected) {
+        //push connected room name to the list of connectedRoomNames 
+        connectedRoomNames.push(connected.name)
+      //id a room is not connected 
+      } else {
+        //return this error message 
+        return `Room with ID of '${connectedRooms[i]}' could not be found.`;
+      }
     }
-    return connectedRoom.name
-  }); 
-
-  return connectedRoomNames; 
-};  
-
-//   //intitialized a variable, idIsReal, and set it equal to the first object that shares the properties of the id given and room id (this finds room object with given ID)
-//   const idIsReal = rooms.find((room) => room.roomId === id); 
-//   //if the id is real, continue logic 
-//   if (idIsReal) {
-//     for (const room of rooms) {
-//       //create an empty array for listOfConnectedRooms
-//       const listOfConnectedRooms = [];
-//       for (const connectedId of room.connectsTo) {   
-//         // const connectedRoom = rooms.find((room) => room.roomId === connectedId); 
-//         const connectedRoom = rooms.find((room) => idIsReal.roomId === connectedId); 
-//         if (connectedRoom) {
-//           //current issue is that it doesn't go throguh all of the elements of
-//           listOfConnectedRooms.push(connectedRoom.name);  
-//           return listOfConnectedRooms; 
-//         } else {
-//             return `Room with ID of 'incorrect-id' could not be found.`
-//         }
-//       }
-//     }  
-//   //if id given isn't real 
-//   } else { 
-//     //return this error message
-//       return `Room with ID of '${id}' could not be found.`
-//   }
-// }; 
+    // created a if statement to check if the array of connectedRoomNames is greater than 0 so that it can return the array created 
+    if (connectedRoomNames.length > 0) {
+      return connectedRoomNames;
+    } 
+  }; 
 
 module.exports = {
   getRoomByDinosaurName,
   getConnectedRoomNamesById,
 };
- 
