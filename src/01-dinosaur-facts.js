@@ -58,7 +58,7 @@ function getLongestDinosaur(dinosaurs) {
 function getDinosaurDescription(dinosaurs, id) {
   for(let dinosaur of dinosaurs){
     if( dinosaur.dinosaurId === id){
-      if (dinosaur['mya'].length === 1){// strictly equals 1 value of mya
+      if (dinosaur.mya.length < 2){// strictly equals 1 value of mya
       return `${dinosaur.name} ${dinosaur.pronuciation} \n ${dinosaur.info} It lived in ${dinosaur.period} period over ${dinosaur.mya} million years ago.`
       }
   }
@@ -99,6 +99,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
             dinosAlive.push(dinosaur.dinosaurId)
         }
         }
+        
    }    
    return dinosAlive
 }
