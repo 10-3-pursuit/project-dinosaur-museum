@@ -161,9 +161,11 @@ function purchaseTickets(ticketData, purchases) {
 
     totalCost += ticketPrice;
 
-    const TicketTypeFormat = ticketType.charAt(0).toUpperCase() + ticketType.slice(1);
+    const ticketTypeFormat = ticketType.charAt(0).toUpperCase() + ticketType.slice(1);
    
     const entrantTypeFormat = entrantType.charAt(0).toUpperCase() + entrantType.slice(1);
+
+    receipt += `${entrantTypeFormat} ${ticketTypeFormat} Admission: $${(ticketPrice / 100).toFixed(2)}${extrasStr}\n`;
   }
 }
 
