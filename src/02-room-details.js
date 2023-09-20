@@ -25,7 +25,51 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+    
+   // initialize roomNaem to an empty string
+   let roomName = '';
+
+    // used for loop to loop through the array of dinosaurs
+
+    for(let i = 0; i < dinosaurs.length; i++){
+
+      // checking if the current dinosaur's name matches the provided dinosaurName
+
+      if (dinosaurs[i].name === dinosaurName){
+
+        //if dinosaur found assign the current dinosaur's id to roomName and break
+
+        roomName = dinosaurs[i].dinosaurId;
+        break;
+      }
+    }
+      // used an if statement to check if roomName is still empty 
+
+    if (!roomName){
+
+      // if the dinosaur wasn't found return can't be found
+
+      return `Dinosaur with name '${dinosaurName}' cannot be found.`
+    }
+        // used for loop to loop through the array of rooms
+
+      for (let j = 0; j< rooms.length; j++){
+
+        // checking if the current room's dinosaurs array includes roomName
+
+       if (rooms[j].dinosaurs.includes(roomName)){
+
+        // if dinosaur was found in the room, return the name of the room
+
+        return rooms[j].name;
+      }
+    }
+
+    // if the dinosaur was found but not not in  the rooms, return an error message
+    
+ return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +93,53 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  
+  // create an array to store the id of connected rooms
+
+  let connectedRoomIds = [];
+
+  // checking if the provided id exists in the rooms array
+
+   let targetRoom = rooms.find(room => room.roomId === id);
+
+   // if the provided id is not found return an error messege
+
+    if(!targetRoom){
+      return `Room with ID of '${id}' could not be found.`
+    }
+
+    // adding the ids of connected rooms to the connectedRoomIds array
+
+    connectedRoomIds = targetRoom.connectsTo;
+
+    // created an array to store the names of connected rooms
+    let connectedRoomNames = [];
+
+    // iterating through the connectedRoomIds 
+
+    for (let i = 0; i < connectedRoomIds.length; i++){
+      
+      // created a variable to store the value rooms.find
+      
+      let connectedRoom = rooms.find(room => room.roomId === connectedRoomIds[i]);
+
+
+      // if a connected room is found push its name to the connectedRoomNames array
+      if (connectedRoom){
+        connectedRoomNames.push(connectedRoom.name);
+      
+      } else {
+        
+        // if a connected room is not found return an error message
+
+        return `Room with ID of '${connectedRoomIds[i]}' could not be found.`;
+
+      }
+    }
+return connectedRoomNames
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
