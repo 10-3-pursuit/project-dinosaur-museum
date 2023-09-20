@@ -73,7 +73,25 @@ console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pteroda
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+    function getConnectedRoomNamesById(rooms, id) {
+      
+      const foundRoom = rooms.find((room) => room.roomId === id);
+    
+      if (foundRoom) {
+       
+        const connectedRooms = rooms.filter((room) =>
+          foundRoom.connectsTo.includes(room.roomId)
+        );
+    
+        
+        const connectedRoomNames = connectedRooms.map((room) => room.name);
+        return connectedRoomNames;
+
+      } else {
+        return `Room with ID of '${id}' could not be found.`;
+      }
+    }
+    
 
 module.exports = {
   getRoomByDinosaurName,
