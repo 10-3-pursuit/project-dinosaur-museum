@@ -130,7 +130,25 @@ return totalTicketPrice;
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  const ticketPrice = calculateTicketPrice(ticketData, purchase);
+
+  if (typeof ticketPrice === "string") {
+    return ticketPrice;
+  }
+  totalCost += ticketPrice;
+
+  receipt += `${purchase.entrantType} ${purchase.ticketType} Admission: ${(ticketPrice / 100).toFixed(2)}`;
+  of (purchase.extras.length > 0) {
+    receipt += '${purchase.extras.join(",")}';
+  }
+  receipt += "\n";
+}
+receipt += "-----------------------------------------\n";
+receipt += `TOTAL: ${(totalCost / 100).toFixed(2)}`;
+
+return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
