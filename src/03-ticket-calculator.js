@@ -77,10 +77,20 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   const ticketPrice = ticketTypeData.priceInCents[ticketInfo.entrantType];
 
   // Calculate the total price by adding the prices of selected extras
-  let totalPrice = ticketPrice;
-  for (const extra of ticketInfo.extras) {
-    totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+// Initialize totalPrice with the base ticket price
+const totalPrice = ticketInfo.extras.reduce((accumulator, extra) => {
+  // Get the extra data for the current extra
+  const extraData = ticketData.extras[extra];
+
+  // Check if extraData and priceInCents exist 
+  if (extraData && extraData.priceInCents) {
+    // If all conditions are met, add the extra price to the accumulator
+    return accumulator + extraData.priceInCents[ticketInfo.entrantType];
   }
+
+  // If any condition fails, return the current accumulator without adding extra price
+  return accumulator;
+}, ticketPrice);
 
   return totalPrice;
 }
