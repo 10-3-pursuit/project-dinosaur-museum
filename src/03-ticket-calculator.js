@@ -154,6 +154,10 @@ function purchaseTickets(ticketData, purchases) {
       entrantType,
       extras: purchase.extras.map(extra => extra.toLowerCase())
     });
+
+    if (typeof ticketPrice === 'string') {
+      return ticketPrice;
+    }
   }
 }
 
