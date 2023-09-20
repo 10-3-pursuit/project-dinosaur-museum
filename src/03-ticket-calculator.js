@@ -160,6 +160,10 @@ function purchaseTickets(ticketData, purchases) {
     }
 
     totalCost += ticketPrice;
+
+    const TicketTypeFormat = ticketType.charAt(0).toUpperCase() + ticketType.slice(1);
+   
+    const entrantTypeFormat = entrantType.charAt(0).toUpperCase() + entrantType.slice(1);
   }
 }
 
