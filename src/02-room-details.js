@@ -102,15 +102,21 @@ function getConnectedRoomNamesById(rooms, id) {
     roomIdArr.push(room.roomId)
   })
 
-  //Iterate through the 'foundRoom.connectsTo' array using the .some() method.
+  //Iterate through the 'foundRoom.connectsTo' array using the .forEach() method. The callback function parameter 'connectRoomId' represents each element.
   foundRoom.connectsTo.forEach(connectRoomId => {
+
+    //'errorRoom' is assigned the value 'connectRoomId', if 'roomIdArr' does not include it.
     if (!roomIdArr.includes(connectRoomId)) {
       errorRoom = connectRoomId
     }
   })
+
+  //If 'errorRoom' is truthy, it means one of the connected rooms in the 'foundRoom' object does not exist, and an error message is returned.
   if (errorRoom) {
     return `Room with ID of '${errorRoom}' could not be found.`
   }
+
+  //If no 'errorRoom' is found, returns the array of room names 'connectedRoomsArr'.
   return connectedRoomsArr
 }
 
