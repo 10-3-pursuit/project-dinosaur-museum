@@ -65,7 +65,7 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
   //initializing total cost (this function will return total cost), baseCost, and extraCost
   let totalCost = 0; // totalCost = baseCost unless customer adds extras. If extras then extraCost will be added to baseCost.
   let baseCost = 0; // cost without extras
-  let extraCost = null; // total cost of extras
+  let extraCost = 0; // total cost of extras
 
   // creating error message for invalid inputs. Invalid inputs are inputs in ticketPersonBought that can't be referenced using ticketsData
   // if statement for the case where customer places an order for values not found in ticketsData
@@ -81,7 +81,7 @@ function calculateTicketPrice(ticketData, ticketPersonBought) {
     }
   }
   // calculating base cost (without extras) which depends on both the type of tix bought and type of entrant. 
-  const ticketTypeInfo = ticketData[ticketType]; // accesses the object in ticketData that corresponds to ticketType (ticketData.general for example)
+  const ticketTypeInfo = ticketData[ticketType]; // dynamic - accesses the object in ticketData that corresponds to ticketType (ticketData.general for example)
     if (ticketTypeInfo) { // if input for ticketType in ticketPersonBought matches key in ticketData this evaluates to true
       baseCost = ticketTypeInfo.priceInCents[entrantType]; // if ticketTypeInfo has truthy value will store the value of entrantType (which is a number) to baseCost
       totalCost += baseCost; // adds baseCost to running totalCost
