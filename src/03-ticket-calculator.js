@@ -54,7 +54,60 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  
+   let ticketType = ticketInfo.ticketType;
+   let entrantType = ticketInfo.entrantType;
+
+
+   // checking if the provided ticketType exists in the ticketData object
+
+   if (!(ticketType in ticketData)){
+
+    // if there doesnt exists return an error message
+
+    return `Ticket type '${ticketType}' cannot be found.`;
+   }
+       // checking if the provided entrantType exists in the priceInCents object for the specified ticketType
+
+   if (!(entrantType in ticketData[ticketType].priceInCents)){
+
+    //return an error message if not found
+
+    return `Entrant type '${entrantType}' cannot be found.`;
+   }
+     // initialize a variable to store the total cost of extras
+
+     let extraTicket = 0;
+
+     // loop through the extras in ticketInfo
+
+   for (let i = 0; i < ticketInfo.extras.length; i++){
+    let extra = ticketInfo.extras[i];
+
+    // checking if the extra exists in the ticketData.extras object
+
+     if (extra in ticketData.extras){
+      
+      // adding the price of the extra to extraTicket
+
+      extraTicket += ticketData.extras[extra.priceInCents[entrantType]];
+
+     } else {
+
+      // if the extra is not found return an error message
+
+      return `Extra type '${extra}' cannot be found.`;
+     }
+   } 
+      // calculate the base ticket price from ticketData and add the total cost of extras
+
+   let ticketPrice = ticketData[ticketType].priceInCents[entrantType];
+
+   // return the total ticket price by adding the base price and the extra cost
+
+ return ticketPrice + extraTicket;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +162,10 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+
+  
+}
 
 // Do not change anything below this line.
 module.exports = {
