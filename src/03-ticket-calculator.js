@@ -143,7 +143,88 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+/* ---------- TICKET RECEIPT -----------
+- 1. created a variable for the ticket pruchase to reassign later
+- 2. created reciept for top of receipt with back ticks to skip lines
+- 3. started an accumulator for total
+- 4. created variable for cost of the ticket to assign my previous function to
+- 5. created a for loop to start at index i; as long as i is less than purchases parameter which is an array
+    - assigned ticket purchase variable to purchases at index i
+    - assigned my previous function to the cost of ticket parameter
+    - created an if statement
+      - if cost of ticket is not a number, return function output
+    - divided my cost of ticket by 100 to convert into dollars
+    - reassigned my total to total plus cost of ticket
+    - if statement
+      -if ticket purchase extras array is empty then receipt plus equals the formatted string below using template literals:
+        - ticket purchase entrant type at index 0 to uppercase plus the rest of the letter using substring starting at index 1 plus total with 2 decimals using tofixed method
+        - else return the same method as the last
+        - created a for loop within that statement for extras and added to receipt variable the same way as previous
+        - else return using the same method
+- 6. created a variable for a divider in the receipt and added divider to receipt variable and total string with tofixed method then returned receipt
+*/
+function purchaseTickets(ticketData, purchases) {
+  let ticketPurchase;
+
+  let receipt = `Thank you for visiting the Dinosaur Museum!
+-------------------------------------------
+`;
+  let total = 0;
+  let costOfTicket;
+
+  for (let i = 0; i < purchases.length; i++) {
+    ticketPurchase = purchases[i];
+
+    costOfTicket = calculateTicketPrice(ticketData, ticketPurchase);
+
+    if (typeof costOfTicket !== "number") {
+      return costOfTicket;
+    }
+
+    costOfTicket /= 100;
+
+    total += costOfTicket;
+
+    if (ticketPurchase.extras.length === 0) {
+      receipt += `${
+        ticketPurchase.entrantType[0].toUpperCase() +
+        ticketPurchase.entrantType.substring(1)
+      } ${
+        ticketData[ticketPurchase.ticketType].description
+      }: $${costOfTicket.toFixed(2)}
+`;
+    } else {
+      receipt += `${
+        ticketPurchase.entrantType[0].toUpperCase() +
+        ticketPurchase.entrantType.substring(1)
+      } ${
+        ticketData[ticketPurchase.ticketType].description
+      }: $${costOfTicket.toFixed(2)} (`;
+
+      for (let j = 0; j < purchases[i].extras.length; j++) {
+        if (j !== purchases[i].extras.length - 1) {
+          receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
+            i
+          ].extras[j].substring(1)} Access, `;
+        } else {
+          receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
+            i
+          ].extras[j].substring(1)} Access)
+`;
+        }
+      }
+    }
+  }
+
+  let divider = `-------------------------------------------
+`;
+
+  receipt += divider;
+  receipt += `TOTAL: $${total.toFixed(2)}`;
+
+  return receipt;
+}
 
 // Do not change anything below this line.
 module.exports = {
