@@ -144,6 +144,9 @@ function purchaseTickets(ticketData, purchases) {
 
     if (purchase.extras.length > 0) {
       const existingExtras = purchase.extras.filter(extra => ticketData.extras[extra.toLowerCase()]);
+      if (existingExtras.length > 0) {
+        extrasStr = ` (${existingExtras.map(extra => ticketData.extras[extra.toLowerCase()].description).join(", ")})`;
+      }
     }   
   }
 }
