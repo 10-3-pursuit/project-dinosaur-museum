@@ -30,18 +30,18 @@ function getLongestDinosaur(dinosaurs) {
   let longestDinosaur = null;
 
   for (const dinosaur of dinosaurs) {
-    const lengthInFeet = dinosaur.lengthInMeters * 3.281; // Convert meters to feet
+    const lengthInFeet = dinosaur.lengthInMeters; // Convert meters to feet
 
     if (longestDinosaur === null || lengthInFeet > longestDinosaur.lengthInFeet) {
       longestDinosaur = {
         name: dinosaur.name,
-        lengthInFeet: lengthInFeet,
+        lengthInFeet: lengthInFeet ,
       };
     }
   }
 
   // Return an object with the longest dinosaur's name and length in feet
-  return { [longestDinosaur.name]: longestDinosaur.lengthInFeet };
+  return { [longestDinosaur.name]: longestDinosaur.lengthInFeet * 3.281 };
 }
 /*
  * getDinosaurDescription()
@@ -96,30 +96,43 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Create an array to collect the IDs or key values of dinosaurs that match the criteria
   const collectionOfDinosaurs = [];
 
+  // Loop through each dinosaur in the provided array
   for (const dinosaur of dinosaurs) {
+    // Check if the dinosaur has only one `mya` value
     if (dinosaur.mya.length === 1) {
+      // Get the single `mya` value for this dinosaur
       const year = dinosaur.mya[0];
+
+      // Check if the provided `mya` matches the dinosaur's `mya` or is 1 MYA less
       if (mya === year || mya === year - 1) {
+        // If a `key` is provided and the dinosaur has that property, add its value
         if (key && dinosaur[key]) {
           collectionOfDinosaurs.push(dinosaur[key]);
         } else {
+          // Otherwise, add the dinosaur's ID
           collectionOfDinosaurs.push(dinosaur.dinosaurId);
         }
       }
     } else {
+      // If the dinosaur has a range of `mya` values, check if the provided `mya` falls within that range
       const [maxMya, minMya] = dinosaur.mya;
+      // Doesn't work as intended if the values aren't max,min in the data (IMPORTANT TO REMEMBER!) 
       if (mya >= minMya && mya <= maxMya) {
+        // If a `key` is provided and the dinosaur has that property, add its value
         if (key && dinosaur[key]) {
           collectionOfDinosaurs.push(dinosaur[key]);
         } else {
+          // Otherwise, add the dinosaur's ID
           collectionOfDinosaurs.push(dinosaur.dinosaurId);
-        }
+        } 
       }
     }
   }
 
+  // Return the collection of IDs or key values that match the criteria
   return collectionOfDinosaurs;
 }
 

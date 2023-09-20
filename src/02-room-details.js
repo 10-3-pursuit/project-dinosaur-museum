@@ -32,7 +32,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   // Find the room where the dinosaur can be found, if it exists.
   const resultRoomObj = rooms.find(
     (room) => room.dinosaurs.includes(dinosaurNameObj?.dinosaurId)
-  );
+  ); // I recently learned that ?. returns undefined or null if it doesn't exist as a key instead of runtime error. 
 
   // Check if a room was found for the dinosaur.
   if (resultRoomObj) {
@@ -77,11 +77,16 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   const connectedRooms = [];
 
+  // Flag to check if the initial room ID is found
+  let roomFound = false;
+
   // Loop through each room in the rooms array
   for (const room of rooms) {
     // Check if the current room's ID matches the provided ID
     if (room.roomId === id) {
-      // If it matches, loop through the room's connections
+      roomFound = true; // Set the flag to true
+
+      // Loop through the room's connections
       for (const connectedId of room.connectsTo) {
         // Find the connected room based on its ID
         const connectedRoom = rooms.find((r) => r.roomId === connectedId);
@@ -91,20 +96,21 @@ function getConnectedRoomNamesById(rooms, id) {
           connectedRooms.push(connectedRoom.name);
         } else {
           // If a connected room is not found, return an error message
-          return `Room with ID '${connectedId}' not found.`;
+          return `Room with ID of '${connectedId}' could not be found.`;
         }
-      } 
-
-      // Return the array of connected room names
-      return connectedRooms;
-    } else {
-      return `Room with ID of '${id}' could not be found.`
+      }
     }
   }
 
-  // If the provided room ID is not found, return an error message
-  return `Room with ID '${id}' not found.`;
+  if (roomFound) {
+    // If the initial room ID was found, return the array of connected room names
+    return connectedRooms;
+  } else {
+    // If the provided room ID is not found, return an error message
+    return `Room with ID of '${id}' could not be found.`;
+  }
 }
+
 
 
 module.exports = {
