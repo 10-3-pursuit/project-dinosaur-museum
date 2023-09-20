@@ -71,24 +71,31 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
-  const mainRoom = rooms.find((room)=> room.roomId === id)
-  if (!mainRoom){
-    return `Room with ID of '${id}' could not be found.`
+  // find the main room with the given id
+  const mainRoom = rooms.find((room) => room.roomId === id);
+  // if the main room doesn't exist, return an error message
+  if (!mainRoom) {
+    return `room with id of '${id}' could not be found.`;
   }
-  let neighbors = mainRoom.connectsTo
+  // get the list of neighbors connected to the main room
+  let neighbors = mainRoom.connectsTo;
   let neighborsNames = [];
-  for (let i = 0; i < neighbors.length; i++){
-    const connectedRoom = rooms.find((room)=> room.roomId === neighbors[i])
-    if (connectedRoom){
-      neighborsNames.push(connectedRoom.name)
-    }
-    if (!connectedRoom){
-      return `Room with ID of 'incorrect-id' could not be found.`
+  // loop through the neighbors
+  for (let i = 0; i < neighbors.length; i++) {
+    // find the connected room in the list of rooms
+    const connectedRoom = rooms.find((room) => room.roomId === neighbors[i]);
+    // if the connected room exists, add its name to the list
+    if (connectedRoom) {
+      neighborsNames.push(connectedRoom.name);
+    } else {
+      // if the connected room doesn't exist, return an error message with the specific id
+      return `room with id of '${neighbors[i]}' could not be found.`;
     }
   }
-  if (neighborsNames.length > 0){
-    return neighborsNames
-  } 
+  // if there are neighbor names in the list, return them
+  if (neighborsNames.length > 0) {
+    return neighborsNames;
+  }
 }
 
 module.exports = {

@@ -55,23 +55,31 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  const ticketTypeData = ticketData[ticketInfo.ticketType]; //need this variable in order to access extras without a TypeError
-
-  if (!ticketTypeData){
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  // retrieve ticket type data to access extras without errors
+  const ticketTypeData = ticketData[ticketInfo.ticketType];
+  // if ticket type data doesn't exist, return an error message
+  if (!ticketTypeData) {
+    return `ticket type '${ticketInfo.ticketType}' cannot be found.`;
   }
-  if (!ticketTypeData.priceInCents[ticketInfo.entrantType]){
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  // if entrant type data for the ticket type doesn't exist, return an error message
+  if (!ticketTypeData.priceInCents[ticketInfo.entrantType]) {
+    return `entrant type '${ticketInfo.entrantType}' cannot be found.`;
   }
-  let totalPrice = ticketTypeData.priceInCents[ticketInfo.entrantType]
-  for (let extra of ticketInfo.extras){
+  // initialize total price with the base price for the entrant type
+  let totalPrice = ticketTypeData.priceInCents[ticketInfo.entrantType];
+  // iterate through the list of extras
+  for (let extra of ticketInfo.extras) {
+    // check if the extra type exists in ticket data
     if (ticketData.extras[extra]) {
-      totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType]
+      // add the extra's price for the entrant type to the total price
+      totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
     } else {
-      return `Extra type '${extra}' cannot be found.`
+      // if the extra type doesn't exist, return an error message
+      return `extra type '${extra}' cannot be found.`;
     }
   }
-  return totalPrice
+  // return the total price
+  return totalPrice;
 }
 
 /**

@@ -122,7 +122,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
         if (key && dino[key] !== undefined) {
           dinoInPeriod.push(dino[key]); // push the value of dinosaur[key] into dinoInPeriod
         } else {
-          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into 'dinoInPeriod
+          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into dinoInPeriod
         }
       }
     }
