@@ -22,7 +22,22 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+
+function getLongestDinosaur(dinosaurs) {
+  const dinosaursCopy = dinosaurs.map(dinosaur => dinosaur)
+  if (dinosaursCopy.length === 0) {
+    return {}; 
+  }
+  const sortedDinosaurs = dinosaursCopy.sort((a,b) => b.lengthInMeters - a.lengthInMeters);
+  const longestDinosaur = sortedDinosaurs[0]
+  const lengthInFeet = longestDinosaur.lengthInMeters * 3.281;
+
+  return {[longestDinosaur.name]: lengthInFeet}
+
+}
+
+
+
 
 /**
  * getDinosaurDescription()
@@ -44,7 +59,22 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {let dinosaurObj = null;
+  for (let dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+    dinosaurObj = dinosaur
+    } 
+  }
+  if (dinosaurObj === null) {
+    return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  }
+  return `${dinosaurObj.name} (${dinosaurObj.pronunciation})\n${dinosaurObj.info} It lived in the ${dinosaurObj.period} period, over ${dinosaurObj.mya[dinosaurObj.mya.length-1]} million years ago.`}
+ 
+  // return a STRING of the dinosaurDescription
+  // consider mya : should work for dino with only one value in mya 
+  // return ERROR if dino cannot be found 
+  // does not mutate the array 
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +101,29 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const filteredDinosaursMya = dinosaurs.filter(dinosaur => {
+      if (dinosaur.mya.length === 1 && (dinosaur.mya[0] === mya || dinosaur.mya[0] === mya + 1 )) {
+        return dinosaur 
+    } else if ( mya <= dinosaur.mya[0] && dinosaur.mya[1] <= mya) {
+        return dinosaur
+    }
+
+    });
+    return filteredDinosaursMya.map(dinosaur => {
+      if (!key || dinosaur[key] === undefined) {
+      return dinosaur.dinosaurId
+    } else {
+      return dinosaur[key]
+    }
+  });
+  }  
+      
+
+   
+
+
 
 module.exports = {
   getLongestDinosaur,
