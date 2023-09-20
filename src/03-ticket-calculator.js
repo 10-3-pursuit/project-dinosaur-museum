@@ -136,30 +136,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {
+  // initialize variables to track the total cost, receipt details, and error messages
   let totalCost = 0;
   const receiptDetails = [];
   const errorMessages = [];
-
+  // iterate through each purchase in the list of purchases
   for (const purchase of purchases) {
+    // validate the purchase; get a validation error if any
     const validationError = validatePurchase(ticketData, purchase);
-    
+    // if there is no validation error
     if (!validationError) {
+      // calculate the ticket price for the purchase
       const ticketPrice = calculateTicketPrice(ticketData, purchase);
+      // update the total cost
       totalCost += ticketPrice;
 
+      // format the purchase details with the ticket price
       const formattedDetails = formatTicketPurchase(purchase, ticketPrice);
+      // add the formatted details to the receipt
       receiptDetails.push(formattedDetails);
     } else {
+      // if there is a validation error, add it to the list of error messages
       errorMessages.push(validationError);
     }
   }
-
+  // if there are error messages, join them with newlines and return
   if (errorMessages.length > 0) {
     return errorMessages.join('\n');
   }
-
+  // format the receipt with the receipt details and total cost
   const formattedReceipt = formatReceipt(receiptDetails, totalCost);
-
+  // return the formatted receipt
   return formattedReceipt;
 }
 
