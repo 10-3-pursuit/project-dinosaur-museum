@@ -144,49 +144,44 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     //> "Ticket type 'discount' cannot be found."
  */
 
-/* ---------- TICKET RECEIPT -----------
-- 1. created a variable for the ticket pruchase to reassign later
-- 2. created reciept for top of receipt with back ticks to skip lines
-- 3. started an accumulator for total
-- 4. created variable for cost of the ticket to assign my previous function to
-- 5. created a for loop to start at index i; as long as i is less than purchases parameter which is an array
-    - assigned ticket purchase variable to purchases at index i
-    - assigned my previous function to the cost of ticket parameter
-    - created an if statement
-      - if cost of ticket is not a number, return function output
-    - divided my cost of ticket by 100 to convert into dollars
-    - reassigned my total to total plus cost of ticket
-    - if statement
-      -if ticket purchase extras array is empty then receipt plus equals the formatted string below using template literals:
-        - ticket purchase entrant type at index 0 to uppercase plus the rest of the letter using substring starting at index 1 plus total with 2 decimals using tofixed method
-        - else return the same method as the last
-        - created a for loop within that statement for extras and added to receipt variable the same way as previous
-        - else return using the same method
-- 6. created a variable for a divider in the receipt and added divider to receipt variable and total string with tofixed method then returned receipt
-*/
 function purchaseTickets(ticketData, purchases) {
+  // Step 1: Initialize a variable to store a single ticket purchase.
   let ticketPurchase;
 
+  // Step 2: Create the receipt header using template literals.
   let receipt = `Thank you for visiting the Dinosaur Museum!
 -------------------------------------------
 `;
+
+  // Step 3: Initialize an accumulator for the total cost.
   let total = 0;
+
+  // Step 4: Initialize a variable to store the cost of a single ticket.
   let costOfTicket;
 
+  // Step 5: Loop through each ticket purchase in the 'purchases' array.
   for (let i = 0; i < purchases.length; i++) {
+    // Get the current ticket purchase.
     ticketPurchase = purchases[i];
 
+    // Calculate the cost of the ticket using the 'calculateTicketPrice' function.
     costOfTicket = calculateTicketPrice(ticketData, ticketPurchase);
 
+    // Check if the cost is not a number (i.e., an error occurred in the calculation).
     if (typeof costOfTicket !== "number") {
+      // Return the error message.
       return costOfTicket;
     }
 
+    // Convert the cost of the ticket from cents to dollars.
     costOfTicket /= 100;
 
+    // Add the cost of the ticket to the total.
     total += costOfTicket;
 
+    // Check if there are no extras in the ticket purchase.
     if (ticketPurchase.extras.length === 0) {
+      // Add a line to the receipt for the ticket purchase.
       receipt += `${
         ticketPurchase.entrantType[0].toUpperCase() +
         ticketPurchase.entrantType.substring(1)
@@ -195,6 +190,7 @@ function purchaseTickets(ticketData, purchases) {
       }: $${costOfTicket.toFixed(2)}
 `;
     } else {
+      // Add a line to the receipt for the ticket purchase with extras.
       receipt += `${
         ticketPurchase.entrantType[0].toUpperCase() +
         ticketPurchase.entrantType.substring(1)
@@ -202,12 +198,15 @@ function purchaseTickets(ticketData, purchases) {
         ticketData[ticketPurchase.ticketType].description
       }: $${costOfTicket.toFixed(2)} (`;
 
+      // Loop through each extra in the ticket purchase.
       for (let j = 0; j < purchases[i].extras.length; j++) {
         if (j !== purchases[i].extras.length - 1) {
+          // Add extras to the receipt.
           receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
             i
           ].extras[j].substring(1)} Access, `;
         } else {
+          // Add the last extra to the receipt and start a new line.
           receipt += `${purchases[i].extras[j][0].toUpperCase()}${purchases[
             i
           ].extras[j].substring(1)} Access)
@@ -217,12 +216,15 @@ function purchaseTickets(ticketData, purchases) {
     }
   }
 
+  // Step 6: Create a divider for the receipt.
   let divider = `-------------------------------------------
 `;
 
+  // Add the divider and total to the receipt.
   receipt += divider;
   receipt += `TOTAL: $${total.toFixed(2)}`;
 
+  // Step 7: Return the complete receipt.
   return receipt;
 }
 
