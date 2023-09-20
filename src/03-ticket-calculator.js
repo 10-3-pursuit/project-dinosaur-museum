@@ -55,26 +55,45 @@ const exampleTicketData = require("../data/tickets");
     //> "Entrant type 'kid' cannot be found."
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
-  if (!ticketData[ticketInfo.ticketType]){
+  // Check if the value of 'ticketInfo.ticketType' exists as a nested object in the ticketData object, using it as a key to access ticketData.
+  if (!ticketData[ticketInfo.ticketType]) {
+
+    // Return an error message if not found
     return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
   }
-  if (!ticketData.general.priceInCents[ticketInfo.entrantType]){
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+
+  // Check if the value of 'ticketInfo.entrantType' exists as a nested object in 'ticketData.general.priceInCents' using it as a key to access 'ticketData.general.priceInCents'.
+  if (!ticketData.general.priceInCents[ticketInfo.entrantType]) {
+
+    // Return an error message if not found
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.` 
   }
 
+  // Iterates through the 'ticketInfo.extras' array to check if any of the elements do not exist in the ticketData object, using the parameter of the callback function as a key to access the 'ticketData.extras" array. Assigns the value to 'notFoundExtra'.
   const notFoundExtra = ticketInfo.extras.find(extra => !ticketData.extras[extra])
 
-  if (notFoundExtra){
+  // If 'notFoundExtra' is truthy, return an error message.
+  if (notFoundExtra) {
     return `Extra type '${notFoundExtra}' cannot be found.`
   }
 
-  let extrasTotalPrice = 0
+  // Create a variable to store the total price of extras
+  let extrasTotalPrice = 0;
 
+  // If the length of 'ticketInfo.extras' is 0, no extras are in the array, so return the price for the ticket type and entrant type.
   if (ticketInfo.extras.length === 0) {
-    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    // Access the price in the ticketData object, using 'ticketInfo.ticketType' and 'ticketInfo.entrantType' as keys. 
+    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
   }
+
+  // If the length of 'ticketInfo.extras' is more than 0, calculate their total price and return the combined price.
   if (ticketInfo.extras.length > 0) {
+
+    // Loop through 'ticketInfo.extras' using the '.forEach()' method, and access their prices in the ticketData object, using the callback function parameter and 'ticketInfo.entrantType' as keys to access the specified prices. Increment the prices onto 'extrasTotalPrice'
+
     ticketInfo.extras.forEach(extra => extrasTotalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+
+    // Return the price of the ticket purchased.
     return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extrasTotalPrice
   }
 }
