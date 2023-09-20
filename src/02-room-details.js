@@ -78,7 +78,7 @@ function getConnectedRoomNamesById(rooms, id) {
       return `Room with ID of '${id}' could not be found.`; // Error message for room not found
     }
   
-    // Extract the IDs of connected rooms
+    // the IDs of connected rooms
     const connectedRoomIds = room.connectsTo;
     // Initialize an array to store connected room names
     const connectedRoomNames = [];
