@@ -141,7 +141,11 @@ function purchaseTickets(ticketData, purchases) {
     const ticketType = purchase.ticketType.toLowerCase(); 
     const entrantType = purchase.entrantType.toLowerCase(); 
     let extrasStr = "";
-  }   
+
+    if (purchase.extras.length > 0) {
+      const existingExtras = purchase.extras.filter(extra => ticketData.extras[extra.toLowerCase()]);
+    }   
+  }
 }
 
 // Do not change anything below this line.
