@@ -25,6 +25,8 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
+
+
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   //Created variable called 'dinosaurSearchId'
   let dinosaurSearchId = null
@@ -72,24 +74,36 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
       "Kit Hopkins Education Wing"
     ]
  */
+
+
 function getConnectedRoomNamesById(rooms, id) {
+  //use the '.find()' method to iterate through the 'rooms' array, and find the first value of the 'room.roomId' object property that is equal to the value of 'id' in the parameters. Assigns that entire object to 'foundRoom'.
   let foundRoom = rooms.find(room => room.roomId === id)
 
+  //if 'foundRoom' is falsy, a room was not found, and an error message is returned.
   if (!foundRoom) {
     return `Room with ID of '${id}' could not be found.`
   }
 
+  //3 variables are created that will be used in the following code, assigned two arrays and a value 'null' respectively.
   let connectedRoomsArr = []
   let roomIdArr = []
   let errorRoom = null
 
+  //The '.forEach()' method iterates through the 'rooms' array.
   rooms.forEach(room => {
+
+    //If the array 'foundRoom.connectsTo' inside the 'foundRoom' object includes the value of 'room.roomId', push the room name into 'connectedRoomsArr'.
     if (foundRoom.connectsTo.includes(room.roomId)) {
       connectedRoomsArr.push(room.name)
     }
+    
+    //Push the ID of each room iterated through into 'roomIdArr'.
     roomIdArr.push(room.roomId)
   })
-  foundRoom.connectsTo.some(connectRoomId => {
+
+  //Iterate through the 'foundRoom.connectsTo' array using the .some() method.
+  foundRoom.connectsTo.forEach(connectRoomId => {
     if (!roomIdArr.includes(connectRoomId)) {
       errorRoom = connectRoomId
     }
