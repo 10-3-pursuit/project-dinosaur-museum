@@ -54,7 +54,47 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Check if the ticket type exists in the ticket data
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  // Check if all extras exist in the ticket data
+  for (const extra of ticketInfo.extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra type '${extra}' cannot be found.`;
+    }
+  }
+
+  // Check if the entrant type exists in the ticket data for the specified ticket type
+  const ticketTypeData = ticketData[ticketInfo.ticketType];
+  if (!ticketTypeData.priceInCents.hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  // Calculate the ticket price based on the entrant type
+  const ticketPrice = ticketTypeData.priceInCents[ticketInfo.entrantType];
+
+  // Calculate the total price by adding the prices of selected extras
+// Initialize totalPrice with the base ticket price
+const totalPrice = ticketInfo.extras.reduce((accumulator, extra) => {
+  // Get the extra data for the current extra
+  const extraData = ticketData.extras[extra];
+
+  // Check if extraData and priceInCents exist 
+  if (extraData && extraData.priceInCents) {
+    // If all conditions are met, add the extra price to the accumulator
+    return accumulator + extraData.priceInCents[ticketInfo.entrantType];
+  }
+
+  // If any condition fails, return the current accumulator without adding extra price
+  return accumulator;
+}, ticketPrice);
+
+  return totalPrice;
+}
+  
 
 /**
  * purchaseTickets()
@@ -109,7 +149,55 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+
+function purchaseTickets(ticketData, purchases) {
+  let totalCost = 0;
+  const purchaseDetails = [];
+
+  for (const purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+
+    // Check if the result from calculateTicketPrice is a string (indicating an error)
+    if (typeof ticketPrice === "string") {
+      return ticketPrice; // Return the error message
+    }
+
+    // Format the purchase details for this ticket, including extras if present
+    const formattedEntrantType = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1); 
+    const formattedTicketType = purchase.ticketType.charAt(0).toUpperCase() + purchase.ticketType.slice(1); 
+    
+    let formattedExtras = [];
+    if (purchase.extras.length > 0) {
+      formattedExtras = purchase.extras.map(extra => extra.charAt(0).toUpperCase() + extra.slice(1).toLowerCase() + " Access"); 
+      // Capitalize only the first character and convert the rest to lowercase, then i added " Access" to them
+    }
+
+    let formattedPurchase = `${formattedEntrantType} ${formattedTicketType} Admission: $${(ticketPrice / 100).toFixed(2)}`;
+    
+    if (formattedExtras.length > 0) {
+      formattedPurchase += ` (${formattedExtras.join(", ")})`; // Extras will only have the first character capitalized
+    }
+
+    // Add the purchase details to the array
+    purchaseDetails.push(formattedPurchase);
+
+    // Add the ticket price to the total cost
+    totalCost += ticketPrice;
+  }
+
+  // Format the receipt
+  const receiptHeader = "Thank you for visiting the Dinosaur Museum!";
+  const receiptSeparator = "-------------------------------------------";
+  const receiptFooter = `TOTAL: $${(totalCost / 100).toFixed(2)}`;
+
+  // Combine all parts of the receipt
+  const receipt = [receiptHeader, receiptSeparator, ...purchaseDetails, receiptSeparator, receiptFooter].join("\n");
+
+  return receipt;
+}
+
+
 
 // Do not change anything below this line.
 module.exports = {
