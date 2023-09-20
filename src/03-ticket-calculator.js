@@ -136,6 +136,8 @@ function purchaseTickets(ticketData, purchases) {
 let ticketTypeFalse = null
 let entrantTypeFalse = null 
 let extraTypeFalse = null
+let netPrice = 0
+let extrasTotalPrice = 0
 
 purchases.forEach(purchase => {
 if (!ticketData[purchase.ticketType]){
@@ -164,6 +166,39 @@ purchases.forEach(purchase => {
 if (extraTypeFalse) {
   return `Extra type '${extraTypeFalse}' cannot be found.`
   }
+
+let receiptText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------`
+
+purchases.forEach(purchase => {
+  const capitalizedEntrantType = purchase.entrantType.charAt(0).toUpperCase() + purchase.entrantType.slice(1)
+  let capitalizedExtraString = ''
+  let indivExtra = null
+
+  if (purchase.extras.length === 0) {
+    netPrice += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
+
+    receiptText += `\n${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${((ticketData[purchase.ticketType].priceInCents[purchase.entrantType]) / 100).toFixed(2)}`
+  }
+  if (purchase.extras.length > 0) {
+    netPrice += ticketData[purchase.ticketType].priceInCents[purchase.entrantType]
+    purchase.extras.forEach(extra => {
+      if (purchase.extras.indexOf(extra) !== 0){
+        capitalizedExtraString += `, `
+      }
+      capitalizedExtraString += `${extra.charAt(0).toUpperCase() + extra.slice(1)} Access`
+      
+      extrasTotalPrice += ticketData.extras[extra].priceInCents[purchase.entrantType]
+      indivExtra += ticketData.extras[extra].priceInCents[purchase.entrantType]
+
+    })
+    receiptText += `\n${capitalizedEntrantType} ${ticketData[purchase.ticketType].description}: $${((ticketData[purchase.ticketType].priceInCents[purchase.entrantType] + indivExtra) / 100).toFixed(2)} (${capitalizedExtraString})`
+    indivExtra = 0
+
+  }
+})
+netPrice += extrasTotalPrice
+receiptText += `\n-------------------------------------------\nTOTAL: $${(netPrice / 100).toFixed(2)}`
+return receiptText
 }
 
 

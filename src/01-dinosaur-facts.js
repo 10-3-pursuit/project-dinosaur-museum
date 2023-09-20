@@ -115,8 +115,7 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   dinosaurs.forEach(dinosaur => {
     // Check if the 'dinosaur.mya' array has more than one element using '.length'.
     if (dinosaur.mya.length > 1) {
-      /* Check if value of 'mya' in the parameters is equal to or inbetween the two values of the elements 
-      in the array 'dinosaur.mya'. */
+      /* Check if value of 'mya' in the parameters is equal to or inbetween the two values of the elements in the array 'dinosaur.mya'. */
       if (dinosaur.mya[0] >= mya && dinosaur.mya[1] <= mya) {
         // Check if 'key' is in the parameters and that dinosaur[key] is NOT undefined.
         if (key && dinosaur[key] !== undefined) {
