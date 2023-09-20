@@ -88,9 +88,8 @@ function getConnectedRoomNamesById(rooms, id) {
   })
   if (errorRoom) {
     return `Room with ID of '${errorRoom}' could not be found.`
-  } else {
-    return connectedRoomsArr
   }
+  return connectedRoomsArr
 }
 
 module.exports = {
