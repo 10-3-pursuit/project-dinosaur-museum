@@ -158,6 +158,8 @@ function purchaseTickets(ticketData, purchases) {
     if (typeof ticketPrice === 'string') {
       return ticketPrice;
     }
+
+    totalCost += ticketPrice;
   }
 }
 
