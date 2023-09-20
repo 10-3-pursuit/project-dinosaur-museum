@@ -167,6 +167,8 @@ function purchaseTickets(ticketData, purchases) {
 
     receipt += `${entrantTypeFormat} ${ticketTypeFormat} Admission: $${(ticketPrice / 100).toFixed(2)}${extrasStr}\n`;
   }
+
+  receipt += "-------------------------------------------\n";
 }
 
 // Do not change anything below this line.
