@@ -54,7 +54,30 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  if (!ticketData[ticketInfo.ticketType]){
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`
+  }
+  if (!ticketData.general.priceInCents[ticketInfo.entrantType]){
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`
+  }
+
+  const notFoundExtra = ticketInfo.extras.find(extra => !ticketData.extras[extra])
+
+  if (notFoundExtra){
+    return `Extra type '${notFoundExtra}' cannot be found.`
+  }
+
+  let extrasTotalPrice = 0
+
+  if (ticketInfo.extras.length === 0) {
+    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+  }
+  if (ticketInfo.extras.length > 0) {
+    ticketInfo.extras.forEach(extra => extrasTotalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType])
+    return ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType] + extrasTotalPrice
+  }
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +132,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+let ticketTypeFalse = null
+let entrantTypeFalse = null 
+let extraTypeFalse = null
+
+purchases.forEach(purchase => {
+if (!ticketData[purchase.ticketType]){
+  ticketTypeFalse = purchase.ticketType
+  }
+if (!ticketData.general.priceInCents[purchase.entrantType]){
+  entrantTypeFalse = purchase.entrantType
+  }
+})
+
+if (ticketTypeFalse) {
+  return `Ticket type '${ticketTypeFalse}' cannot be found.`
+}
+
+if (entrantTypeFalse) {
+  return `Entrant type '${entrantTypeFalse}' cannot be found.`
+}
+
+purchases.forEach(purchase => {
+  const notFoundExtra = purchase.extras.find(extra => !ticketData.extras[extra])
+  if (notFoundExtra) {
+    extraTypeFalse = notFoundExtra
+  }
+})
+
+if (extraTypeFalse) {
+  return `Extra type '${extraTypeFalse}' cannot be found.`
+  }
+}
+
 
 // Do not change anything below this line.
 module.exports = {

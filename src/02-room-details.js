@@ -68,13 +68,13 @@ function getConnectedRoomNamesById(rooms, id) {
   let foundRoom = rooms.find(room => room.roomId === id)
 
   if (!foundRoom) {
-      return `Room with ID of '${id}' could not be found.`
+    return `Room with ID of '${id}' could not be found.`
   }
 
   let connectedRoomsArr = []
   let roomIdArr = []
   let errorRoom = null
-  
+
   rooms.forEach(room => {
     if (foundRoom.connectsTo.includes(room.roomId)) {
       connectedRoomsArr.push(room.name)
