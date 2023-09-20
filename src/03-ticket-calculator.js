@@ -54,7 +54,22 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const {ticketType, entrantType, extras} = ticketInfo;
+  if(!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+  }
+  if(!ticketData[ticketType].priceInCents[entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  const tixCosts = extras.reduce((sum, extra) => {
+    if(!ticketData.extras[extra]) {
+      return `Extra '${extra}' cannot be found.`;
+    }
+    return sum + ticketData.extras[extra].priceInCents[entrantType];
+  }, 0);
+  return tixCosts + ticketData[ticketType].priceInCents[entrantType];
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +124,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let fullReceipt = 0
+   const dinoHeader = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+   let receipt = ''
+   for(let purchase of purchases){
+ 
+     const entrantInfo = purchase.entrantType
+     const ticketTypeInfo = purchase.ticketType
+     let purchaseCost = calculateTicketPrice(ticketData, purchase)
+     
+     if(typeof purchaseCost === 'string'){
+       return purchaseCost
+     }
+     fullReceipt += purchaseCost;
+     const extrasDescript = [];
+     for(let extra of purchase.extras) {
+      if(ticketData.extras[extra]) {
+        extrasDescript.push(ticketData.extras[extra].description);
+      }
+     }
+
+}
+}
 
 // Do not change anything below this line.
 module.exports = {
