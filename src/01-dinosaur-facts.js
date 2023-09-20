@@ -82,7 +82,7 @@ function getDinosaurDescription(dinosaurs, id) {
 
   // Loop through each dinosaur in the 'dinosaurs' array.
   for (let dino of dinosaurs) {
-    // Destructure the properties of the current dinosaur.
+    // Destructure the properties of the current dinosaur. (wanted to practice destructuring)
     const { dinosaurId, name, pronunciation, period, mya, info } = dino;
 
     // Check if the current dinosaur's ID matches the input 'id'.
@@ -127,32 +127,33 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Initialize an empty array to store the IDs or key values of dinosaurs that were alive during the specified time period (mya).
   const dinoAliveDuringMya = [];
 
+  // Loop through each dinosaur in the provided 'dinosaurs' array.
   for (const dinosaur of dinosaurs) {
-    // Check if the dinosaur's mya period matches the specified range.
+    // Check if the dinosaur's 'mya' array has two values, indicating a range of existence.
     if (
       dinosaur.mya.length === 2 &&
       dinosaur.mya[0] >= mya &&
       mya >= dinosaur.mya[1]
     ) {
-      const dinoKeys = Object.keys(dinosaur);
-      // If the key exists, push its value; otherwise, push the dinosaur ID.
-      dinoAliveDuringMya.push(
-        dinoKeys.includes(key) ? dinosaur[key] : dinosaur.dinosaurId
-      );
-    } else if (
+      // If the dinosaur existed during the specified 'mya' range, add its 'key' value (if available) or 'dinosaurId' to the result.
+      // If 'key' doesn't exist, use 'dinosaurId' as the default value.
+      dinoAliveDuringMya.push(dinosaur[key] || dinosaur.dinosaurId);
+    }
+    // Check if the dinosaur's 'mya' array has a single value, indicating a specific point in time.
+    else if (
       dinosaur.mya.length === 1 &&
       (dinosaur.mya[0] === mya || mya === dinosaur.mya[0] - 1)
     ) {
-      const dinoKeys = Object.keys(dinosaur);
-      // If the key exists, push its value; otherwise, push the dinosaur ID.
-      dinoAliveDuringMya.push(
-        dinoKeys.includes(key) ? dinosaur[key] : dinosaur.dinosaurId
-      );
+      // If the dinosaur existed during the specified 'mya' period (single value), add its 'key' value (if available) or 'dinosaurId' to the result.
+      // If 'key' doesn't exist, use 'dinosaurId' as the default value.
+      dinoAliveDuringMya.push(dinosaur[key] || dinosaur.dinosaurId);
     }
   }
 
+  // Return the array containing the IDs or key values of dinosaurs that met the specified criteria.
   return dinoAliveDuringMya;
 }
 
