@@ -144,8 +144,16 @@ function purchaseTickets(ticketData, purchases) {
         extrasDescript.push(ticketData.extras[extra].description);
       }
      }
+     if(purchase.extras.length > 0) {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(purchaseCost/100).toFixed(2)} (${extrasDescript.join(", ")})\n`
+    } else {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(purchaseCost/100).toFixed(2)}\n`
+
+     }
 
 }
+const receiptTotal = `---------------------\nTOTAL: $${(fullReceipt/100).toFixed((2))}`;
+return `${dinoHeader}${receipt}${receiptTotal}`;
 }
 
 // Do not change anything below this line.

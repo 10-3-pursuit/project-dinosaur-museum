@@ -23,13 +23,18 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  //> { Brachiosaurus: 98.43 }
  */
 function getLongestDinosaur(dinosaurs) {
+  //immediate I'm thinking the .forEach method and numericals and comparisons
   let longestDino = dinosaurs[0];
+  //create my variable, compare it starting off at zero
   dinosaurs.forEach((dinosaur) => {
+    //this is where you iterate through the array of different dinosaur objects
     if(dinosaur.lengthInMeters > longestDino.lengthInMeters) {
+      //now for the logic, the real test of your code - using the key keys and dotting into them
       longestDino = dinosaur;
     }
   });
   return {[longestDino.name]: longestDino.lengthInMeters * 3.281};
+  //now it's about specifics and instructions, using proper format, punctuation and calculations
 }
 
 /**
