@@ -26,19 +26,27 @@ const exampleRoomData = require("../data/rooms");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  //Created variable called 'dinosaurSearchId'
   let dinosaurSearchId = null
+  //Variable 'whereIsDinosaur' created with a default message in case 'dinosaurName' in the parameters cannot be found
   let whereIsDinosaur = `Dinosaur with name '${dinosaurName}' cannot be found.`
 
+  //'.forEach()' method will iterate through the 'dinoasurs' array, each element being an object represented by the callback function parameter 'dinosaur'.
   dinosaurs.forEach(dinosaur => {
+    //If the value of 'dinosaurName' equals the value of 'dinosaur.name' in the object,'dinosaurSearchId' will be set equal to the value of 'dinosaur.dinosaurId'.
     if (dinosaurName === dinosaur.name) {
       dinosaurSearchId = dinosaur.dinosaurId
+      //The 'whereIsDinosaur' default message is now changed, since the value of 'dinosaurName' was found in the object.
       whereIsDinosaur = `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
     }
   })
+  // Use the '.find()' method to discover the room in the 'rooms' array of objects where the value of 'dinosaurSearchId' is found among the 'room.dinosaurs' array, using '.includes()'.
   roomWithDinosaur = rooms.find(room => room.dinosaurs.includes(dinosaurSearchId))
+    //If 'roomWithDinosaur' is truthy, the default message is replaced with the value of 'roomWithDinosaur.Name'.
     if (roomWithDinosaur){
       whereIsDinosaur = roomWithDinosaur.name
     }
+  //Will return either one of the error messages, or the room name where the 'dinosaurName' is found.  
   return whereIsDinosaur
 }
 
