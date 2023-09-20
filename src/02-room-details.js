@@ -25,7 +25,28 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  const dinoNameIdObj ={}; //make another object to reference dinosaur names along with their ids
+  // to get dino names need to iterate through dinosaur array
+  for (const dino of dinosaurs) {
+  // "pushes" dino.name as key into dinoNameIdObj object with dino.dinosaurId as value (which are the dinosaur names and IDs found in dinosaurs input)
+    dinoNameIdObj[dino.name] = dino.dinosaurId;
+  } 
+  //exit loop now that there is an object to reference instead dinoNameIdObj which is easier to extract and use in function since we need to get room using dinosaurNames that match up with their id numbers which in turn match up with corresponding rooms
+  let dinosaurId;
+  if (dinoNameIdObj.hasOwnProperty(dinosaurName)) { // checks if object has dinosaurName as a key if it does
+    dinosaurId = dinoNameIdObj[dinosaurName]; // value of dinosaurId can be accessed with dinosaurName input as the key
+  } else {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.` // error message if corresponding dino can't be accessed AT ALL (because input doesn't match referenced data)
+  } console.log (dinosaurId);
+  // to get room names must iterate through rooms array
+  for (const room of rooms) {
+    if (room.dinosaurs.includes(dinosaurId)) { // room.dinosaurs is an array so .includes() can be used to find a specific value in this case dinosaurId (a string)
+      return room.name; // name of room dino can be found
+    }
+  }
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`; //error statement after function finishes loop bc otherwise will exit function after first iteration without checking other rooms
+};
 
 /**
  * getConnectedRoomNamesById()
