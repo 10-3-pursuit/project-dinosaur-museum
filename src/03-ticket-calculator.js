@@ -56,6 +56,10 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {}
 
+
+    
+  
+
 /**
  * purchaseTickets()
  * ---------------------
@@ -110,6 +114,13 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     //> "Ticket type 'discount' cannot be found."
  */
 function purchaseTickets(ticketData, purchases) {}
+  
+  
+
+    
+  
+
+  
 
 // Do not change anything below this line.
 module.exports = {
