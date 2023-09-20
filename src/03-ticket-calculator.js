@@ -54,7 +54,33 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // retrieve ticket type data to access extras without errors
+  const ticketTypeData = ticketData[ticketInfo.ticketType];
+  // if ticket type data doesn't exist, return an error message
+  if (!ticketTypeData) {
+    return `ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+  // if entrant type data for the ticket type doesn't exist, return an error message
+  if (!ticketTypeData.priceInCents[ticketInfo.entrantType]) {
+    return `entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+  // initialize total price with the base price for the entrant type
+  let totalPrice = ticketTypeData.priceInCents[ticketInfo.entrantType];
+  // iterate through the list of extras
+  for (let extra of ticketInfo.extras) {
+    // check if the extra type exists in ticket data
+    if (ticketData.extras[extra]) {
+      // add the extra's price for the entrant type to the total price
+      totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
+    } else {
+      // if the extra type doesn't exist, return an error message
+      return `extra type '${extra}' cannot be found.`;
+    }
+  }
+  // return the total price
+  return totalPrice;
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +135,40 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  // initialize variables to track the total cost, receipt details, and error messages
+  let totalCost = 0;
+  const receiptDetails = [];
+  const errorMessages = [];
+  // iterate through each purchase in the list of purchases
+  for (const purchase of purchases) {
+    // validate the purchase; get a validation error if any
+    const validationError = validatePurchase(ticketData, purchase);
+    // if there is no validation error
+    if (!validationError) {
+      // calculate the ticket price for the purchase
+      const ticketPrice = calculateTicketPrice(ticketData, purchase);
+      // update the total cost
+      totalCost += ticketPrice;
+
+      // format the purchase details with the ticket price
+      const formattedDetails = formatTicketPurchase(purchase, ticketPrice);
+      // add the formatted details to the receipt
+      receiptDetails.push(formattedDetails);
+    } else {
+      // if there is a validation error, add it to the list of error messages
+      errorMessages.push(validationError);
+    }
+  }
+  // if there are error messages, join them with newlines and return
+  if (errorMessages.length > 0) {
+    return errorMessages.join('\n');
+  }
+  // format the receipt with the receipt details and total cost
+  const formattedReceipt = formatReceipt(receiptDetails, totalCost);
+  // return the formatted receipt
+  return formattedReceipt;
+}
 
 // Do not change anything below this line.
 module.exports = {

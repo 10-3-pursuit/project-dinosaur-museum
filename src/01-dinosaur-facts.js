@@ -22,7 +22,26 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // an empty object to store the longest dinosaur
+  let longestDinosaur = {}
+  // a variable to keep track of the current longest dinosaur length
+  let currentDinoLength = 0
+  // go through the dinosaurs array
+  for (let i = 0; i < dinosaurs.length; i++) {
+    // Check if the length of the current dinosaur is greater than the current longest
+    if (dinosaurs[i].lengthInMeters > currentDinoLength) {
+      // Updates currentDinoLength
+      currentDinoLength = dinosaurs[i].lengthInMeters
+      // Create a new object with the current dinosaur's name as the key and its length in feet as the value, and assign it to longestDinosaur
+      longestDinosaur = {
+        [dinosaurs[i].name]: dinosaurs[i].lengthInMeters * 3.281
+      }
+    }
+  }
+  // Return the object containing the longest dinosaur
+  return longestDinosaur
+}
 
 /**
  * getDinosaurDescription()
@@ -44,7 +63,18 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  // use .find() method to search for a dinosaur in the array if the 'dinosaurId' matches the 'id'
+  const foundDino = dinosaurs.find((dinosaur) => dinosaur.dinosaurId === id)
+  // check if a dinosaur with the 'id' was found
+  if (foundDino) {
+  // if a matching dinosaur was found, construct a description string including the dinosaur's name, pronunciation, information, period, and mya
+    return `${foundDino.name} (${foundDino.pronunciation})\n${foundDino.info} It lived in the ${foundDino.period} period, over ${foundDino.mya[foundDino.mya.length-1]} million years ago.`
+  } else {
+  // if no matching dinosaur was found, return an error message
+    return `A dinosaur with an ID of '${id}' cannot be found.`
+  }
+}
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +101,34 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const dinoInPeriod = [];
+  // iterate through dinosaurs array 
+  for (let i = 0; i < dinosaurs.length; i++) {
+    // get the current dinosaur object from the array
+    const dino = dinosaurs[i];
+
+    // check if the mya has two values
+    if (dino.mya.length > 1) {
+      if (dino.mya[0] >= mya && dino.mya[1] <= mya) {
+        if (key && dino[key] !== undefined) {
+          dinoInPeriod.push(dino[key]); // push the value of dinosaur[key] into the dinoInPeriod
+        } else {
+          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into dinoInPeriod
+        }
+      }
+    } else if (dino.mya.length === 1) {
+      if (mya >= dino.mya[0] - 1 && mya <= dino.mya[0]) {
+        if (key && dino[key] !== undefined) {
+          dinoInPeriod.push(dino[key]); // push the value of dinosaur[key] into dinoInPeriod
+        } else {
+          dinoInPeriod.push(dino.dinosaurId); // push dinosaurId into dinoInPeriod
+        }
+      }
+    }
+  }
+  return dinoInPeriod; // return dinoInPeriod with either the dinosaur ID's or the key
+}
 
 module.exports = {
   getLongestDinosaur,
