@@ -22,29 +22,53 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  if (dinosaurs.length === 0) {
+    return {}; // Return an empty object if there are no dinosaurs
+  } 
 
-/**
+  let longestDinosaur = null;
+
+  for (const dinosaur of dinosaurs) {
+    const lengthInFeet = dinosaur.lengthInMeters; // Convert meters to feet
+
+    if (longestDinosaur === null || lengthInFeet > longestDinosaur.lengthInFeet) {
+      longestDinosaur = {
+        name: dinosaur.name,
+        lengthInFeet: lengthInFeet ,
+      };
+    }
+  }
+
+  // Return an object with the longest dinosaur's name and length in feet
+  return { [longestDinosaur.name]: longestDinosaur.lengthInFeet * 3.281 };
+}
+/*
  * getDinosaurDescription()
  * ---------------------
- * Returns a formatted description of a dinosaur. If the dinosaur cannot be found, returns an error message.
+ * Returns a formatted description of a dinosaur. If the dinosaur cannot be found or has more than one value in the `mya` array, returns an error message.
  *
  * NOTE: Carefully view the test output and example below to see how the returned string should be formatted.
  *
  * NOTE: The `\n` represents a new line in text.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {Object[]} dinosaurs - An array of dinosaur objects.
  * @param {string} id - The unique identifier for the dinosaur.
- * @returns {string} A detailed description of the dinosaur.
- *
- * EXAMPLE:
- *  getDinosaurDescription(dinosaurs, "U9vuZmgKwUr");
- *  //> "Xenoceratops (ZEE-no-SEH-ruh-tops)\nXenoceratops had horns and a bony frill with elaborate ornamentation of projections, knobs, and spikes. It lived in the Early Cretaceous period, over 77.5 million years ago."
- *
- *  getDinosaurDescription(dinosaurs, "incorrect-id");
- *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
+ * @returns {string} A detailed description of the dinosaur or an error message.
  */
-function getDinosaurDescription(dinosaurs, id) {}
+
+function getDinosaurDescription(dinosaurs, id) {
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.dinosaurId === id) {
+      const yearsAgo = Math.min(...dinosaur.mya);
+      return `${dinosaur.name} (${dinosaur.pronunciation})\n${dinosaur.info} It lived in the ${dinosaur.period} period, over ${yearsAgo} million years ago.`;
+    }
+  }
+
+  return `A dinosaur with an ID of '${id}' cannot be found.`;
+}
+
+
 
 /**
  * getDinosaursAliveMya()
@@ -71,7 +95,48 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  // Create an array to collect the IDs or key values of dinosaurs that match the criteria
+  const collectionOfDinosaurs = [];
+
+  // Loop through each dinosaur in the provided array
+  for (const dinosaur of dinosaurs) {
+    // Check if the dinosaur has only one `mya` value
+    if (dinosaur.mya.length === 1) {
+      // Get the single `mya` value for this dinosaur
+      const year = dinosaur.mya[0];
+
+      // Check if the provided `mya` matches the dinosaur's `mya` or is 1 MYA less
+      if (mya === year || mya === year - 1) {
+        // If a `key` is provided and the dinosaur has that property, add its value
+        if (key && dinosaur[key]) {
+          collectionOfDinosaurs.push(dinosaur[key]);
+        } else {
+          // Otherwise, add the dinosaur's ID
+          collectionOfDinosaurs.push(dinosaur.dinosaurId);
+        }
+      }
+    } else {
+      // If the dinosaur has a range of `mya` values, check if the provided `mya` falls within that range
+      const [maxMya, minMya] = dinosaur.mya;
+      // Doesn't work as intended if the values aren't max,min in the data (IMPORTANT TO REMEMBER!) 
+      if (mya >= minMya && mya <= maxMya) {
+        // If a `key` is provided and the dinosaur has that property, add its value
+        if (key && dinosaur[key]) {
+          collectionOfDinosaurs.push(dinosaur[key]);
+        } else {
+          // Otherwise, add the dinosaur's ID
+          collectionOfDinosaurs.push(dinosaur.dinosaurId);
+        } 
+      }
+    }
+  }
+
+  // Return the collection of IDs or key values that match the criteria
+  return collectionOfDinosaurs;
+}
+
+
 
 module.exports = {
   getLongestDinosaur,
