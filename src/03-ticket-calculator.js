@@ -136,6 +136,12 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 function purchaseTickets(ticketData, purchases) {
   let totalCost = 0;
   let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  for (const purchase of purchases) {
+    const ticketType = purchase.ticketType.toLowerCase(); 
+    const entrantType = purchase.entrantType.toLowerCase(); 
+    
+  }   
 }
 
 // Do not change anything below this line.
