@@ -142,14 +142,14 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   const aliveDinos = dinosaurs.filter((dino) => {
     if (dino.mya.length === 1 ) {
       if (mya <= dino.mya[0] && mya >= dino.mya[0] - 1) {
-        return dino
+        return dino;
       }
 
 
     } else if (dino.mya.length ===2 ) {
 
       if(mya <= dino.mya[0] && mya >= dino.mya[1]) {
-        return dino
+        return dino;
        }
       }
      
