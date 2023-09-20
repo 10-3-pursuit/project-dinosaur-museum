@@ -64,7 +64,20 @@ if (!foundDinosaurRoom) {
     ]
  */
 function getConnectedRoomNamesById(rooms, id) {
+  let existingRoom = rooms.find(room => room.roomId === id)
 
+  if (!existingRoom) {
+    return `Room with ID of '${id}' could not be found.`
+    }
+    
+    const connectedRoomsId = existingRoom.connectsTo
+    const allRoomId = rooms.map(room => room.roomId)
+    const wrongId = connectedRoomsId.filter(roomsId => !allRoomId.includes(roomsId))
+    const connectedRooms = rooms.filter(room => connectedRoomsId.includes(room.roomId))
+   if (connectedRooms.length !== connectedRoomsId.length) {   
+    return `Room with ID of '${wrongId[0]}' could not be found.`
+   } 
+    return connectedRooms.map(room => room.name)
  }
 
 
