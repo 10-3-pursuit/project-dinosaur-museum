@@ -147,7 +147,13 @@ function purchaseTickets(ticketData, purchases) {
       if (existingExtras.length > 0) {
         extrasStr = ` (${existingExtras.map(extra => ticketData.extras[extra.toLowerCase()].description).join(", ")})`;
       }
-    }   
+    }
+    
+    const ticketPrice = calculateTicketPrice(ticketData, {
+      ticketType,
+      entrantType,
+      extras: purchase.extras.map(extra => extra.toLowerCase())
+    });
   }
 }
 
