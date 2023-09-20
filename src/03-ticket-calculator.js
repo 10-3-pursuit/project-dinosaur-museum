@@ -169,6 +169,7 @@ function purchaseTickets(ticketData, purchases) {
   }
 
   receipt += "-------------------------------------------\n";
+  receipt += `TOTAL: $${(totalCost / 100).toFixed(2)}`;
 }
 
 // Do not change anything below this line.
