@@ -135,7 +135,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
  */
 function purchaseTickets(ticketData, purchases) {
   let totalCost = 0;
- 
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
 }
 
 // Do not change anything below this line.
