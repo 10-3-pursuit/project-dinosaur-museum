@@ -22,7 +22,27 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  //guard clause if there are no dinos
+  if(!dinosaurs || dinosaurs.length === 0){
+    return {};
+  }
+  //keep track of the biggest dino in ft
+  let biggestDino = {name:"", heightInFeet: 0};
+
+  // .map
+  dinosaurs.map((dino) =>{
+    // need to convert into ft
+  let heightInFeet = dino.lengthInMeters * 3.281;
+    //find biggest
+  if(heightInFeet > biggestDino.heightInFeet){
+    biggestDino = { name: dino.name, heightInFeet};
+  }
+  
+ });
+ //return and fill in the blanks
+    return {[biggestDino.name]: biggestDino.heightInFeet};
+};
 
 /**
  * getDinosaurDescription()
@@ -44,7 +64,27 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  //guard clause
+  // if(!dinosaurs.id){
+  //   return "A dinosaur with an ID of 'incorrect-id' cannot be found.";
+  // }
+
+    let dinosFound = null;
+
+    dinosaurs.forEach((dino) =>{
+      if(dino.dinosaurId === id){
+        dinosFound = dino;
+      }
+    });
+    
+    if(dinosFound){
+      return `${dinosFound.name} (${dinosFound.pronunciation})\n${dinosFound.info} It lived in the ${dinosFound.period} period, over ${dinosFound.mya[dinosFound.mya.length-1]} million years ago.`
+    };
+  
+    return `A dinosaur with an ID of '${id}' cannot be found.`;
+
+};
 
 /**
  * getDinosaursAliveMya()
