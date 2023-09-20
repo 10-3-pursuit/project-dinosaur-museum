@@ -22,7 +22,7 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {
+function getLongestDinosaur(dinosaurs) { 
 
   //Created an empty object to hold the data for our "longestDino"
   let longestDino = {};
@@ -40,6 +40,7 @@ function getLongestDinosaur(dinosaurs) {
   const firstlongestDino = newSortedArray.find((dino) => dino.lengthInMeters === newSortedArray[newSortedArray.length - 1].lengthInMeters);   
 
     for (dino of newSortedArray) {
+      //take this line out to optimize code! This isn't necessary
       if (dino) {
         if (dino.lengthInMeters === firstlongestDino.lengthInMeters) {
         //this sets the key of obj longestDino to the first longest dino's name and set it equal to a value of the length of the dino converted to feet fixed to the second decimal place
@@ -121,8 +122,9 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
    //created a variable for max mya in a given dino's mya array
    let maxMYA = Math.max(...dino.mya);
    //created a variable for the min mya   
-   let minMYA = Math.min(...dino.mya);
+   let minMYA = Math.min(...dino.mya); 
     //created conditional for range of dino mya years, if mya is in range of dino mya will move onto next condition 
+    //use ampersand b/c we want to find a number within this particular range, using an or wouldn't allow the MYA to fall into range 
     if (maxMYA >= mya && minMYA <= mya) {
       //created conditonal that checks if a key parameter is given, and if dino has that same key 
       if (key && dino[key]) {
@@ -134,9 +136,8 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
       } 
       //created conditional for cases where dino only has one mya value    
     } else if (dino.mya.length === 1) {
-      let singleMYA = dino.mya
         //created conditional to check if dino.mya is equal to mya or mya - 1 
-        if (singleMYA === maxMYA || singleMYA === minMYA || singleMYA.includes(mya - 1)) {
+        if (minMYA === mya || mya === minMYA - 1) { 
           //checks if key is equal to a dino key 
           if (key && dino[key]) {
             //pushes dino[key] to result array
@@ -151,48 +152,36 @@ function getDinosaursAliveMya(dinosaurs, mya, key) {
   return results;  
 };       
 
-//   //created an empty array to later push into the dinos who are alive during the given mya 
-//   let arrayOfDinosAlive = []; 
-//   //created a list of accepted keys 
-//   const trueKeys = ["dinosaurId", "name", "pronunciation", "meaningOfName", "diet", "lengthInMeters", "period", "mya", "info"] 
 
-//   // if (mya) {
-//     for (dino of dinosaurs) {
-//       //created a variable equal to dino.mya 
-//       const dinoPrime = [...dino.mya]  
-      // if (dinoPrime.length > 1) { 
-        // //created a variable for max mya in a given dino's mya array
-        // const maxMYA = Math.max(dinoPrime)
-        // //created a variable for the min mya 
-        // const minMYA = Math.min(dinoPrime)
-        // if (maxMYA >= mya || minMYA <= mya) {
-//           if (key) {
-//             if (trueKeys.includes(key)) {
-//               arrayOfDinosAlive.push(dino.key)
-//             }
-//           } else {
-//               arrayOfDinosAlive.push(dino.dinosaurId)
-//           }
-//         } 
-//       //created an else if for the dino's with only one mya value 
-//       } else if (dinoPrime.length === 1) {
-//           if (dinoPrime === mya || dinoPrime === (mya - 1)) {
-//             if (key) {
-//               if (trueKeys.includes(key)) {
-//                 arrayOfDinosAlive.push(dino.key)
-// //               } 
-//             } else {
-//               arrayOfDinosAlive.push(dino.dinosaurId)
-//             }
-//           }
-//       }  
+// function getDinosaursAliveMya(dinosaurs, mya, key) {
+//   //created a variable for out output
+//   const results = [];
+//   for (const dino of dinosaurs) {
+//     //created a variable for max mya in a given dino's mya array
+//     let maxMYA = Math.max(...dino.mya);
+//     //created a variable for the min mya
+//     let minMYA = Math.min(...dino.mya);
+//     //created conditional for range of dino mya years, if mya is in range of dino mya will move onto next condition
+//     //use ampersand b/c we want to find a number within this particular range, using an or wouldn't allow the MYA to fall into range
+//     if (maxMYA >= mya && minMYA <= mya) {
+//       //created conditonal that checks if a key parameter is given, and if dino has that same key
+//       if (key && dino[key]) {
+//         //pushes dino[key] to result array
+//         results.push(dino[key]);
+//       } else {
+//         //if if doesn't pass then this will push the dino Id to results array
+//         results.push(dino.dinosaurId);
+//       }
+//       //created conditional for cases where dino only has one mya value
+//     } else if (
+//       dino.mya.length === 1 &&
+//       (maxMYA === mya || mya === minMYA - 1)
+//     ) {
+//       results.push(dino[key] || dino.dinosaurId);
 //     }
-//   // }      
-//   return arrayOfDinosAlive;   
-// }; 
-
-// dino.mya === mya || dino.mya === (mya - 1)
-// --use this for when a dino only has one mya element in their mya array
+//   }
+//   return results;
+// }
 
 module.exports = {
   getLongestDinosaur,
