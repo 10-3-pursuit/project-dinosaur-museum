@@ -25,7 +25,27 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  // Loop through the dinosaurs array
+  for (const dinosaur of dinosaurs) {
+    if (dinosaur.name === dinosaurName) {
+      // If the dinosaur is found, find the room with a matching ID
+      const room = rooms.find((room) => room.dinosaurs.includes(dinosaur.dinosaurId));
+
+      if (room) {
+        // If a room is found, return its name
+        return room.name;
+      } else {
+        // If no room is found, return an error message
+        return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+      }
+    }
+  }
+
+  // If the dinosaur is not found, return an error message
+  return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +69,32 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+
+    function getConnectedRoomNamesById(rooms, id) {
+      const connectedRooms = [];
+    
+      const initialRoom = rooms.find((room) => room.roomId === id);
+    
+      if (!initialRoom) {
+        return `Room with ID of '${id}' could not be found.`;
+      }
+    
+      if (Array.isArray(initialRoom.connects)) {
+        for (const connectedId of initialRoom.connects) {
+          const connectedRoom = rooms.find((room) => room.roomId === connectedId);
+          if (connectedRoom) {
+            connectedRooms.push(connectedRoom.name);
+          }
+        }
+      }
+    
+      if (connectedRooms.length === 0) {
+        return `Room with ID of 'incorrect-id' could not be found.`;
+      } else {
+        return connectedRooms;
+      }
+    }
+   
 
 module.exports = {
   getRoomByDinosaurName,
