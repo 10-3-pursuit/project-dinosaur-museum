@@ -54,7 +54,36 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  // Check if ticket type is valid
+  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
+    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
+  }
+
+  // Check if entrant type is valid
+  if (!ticketData[ticketInfo.ticketType].prices.hasOwnProperty(ticketInfo.entrantType)) {
+    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  }
+
+  // Check if extras are valid
+  for (const extra of ticketInfo.extras) {
+    if (!ticketData.extras.hasOwnProperty(extra)) {
+      return `Extra '${extra}' cannot be found.`;
+    }
+  }
+
+  // Calculate the ticket price
+  let totalPrice = ticketData[ticketInfo.ticketType].prices[ticketInfo.entrantType];
+
+  // Add the cost of extras
+  for (const extra of ticketInfo.extras) {
+    totalPrice += ticketData.extras[extra];
+  }
+
+  return totalPrice;
+}
+
 
 /**
  * purchaseTickets()
@@ -109,7 +138,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+// function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalCost = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  for (const purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+
+    // Check for errors
+    if (typeof ticketPrice === 'string') {
+      return ticketPrice; // Return error message
+    }
+
+    totalCost += ticketPrice;
+    receipt += `${purchase.entrantType} ${purchase.ticketType} Admission: $${(ticketPrice / 100).toFixed(2)} (${purchase.extras.join(', ')})\n`;
+  }
+
+  receipt += "-------------------------------------------\n";
+  receipt += `TOTAL: $${(totalCost / 100).toFixed(2)}`;
+  
+  return receipt;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
