@@ -33,6 +33,8 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
    
     const foundRoom = rooms.find((room) => room.dinosaurs.includes(dinosaur.dinosaurId));
 
+    
+
     if (foundRoom) {
       return foundRoom.name;
     } else {
@@ -47,7 +49,6 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 
     
 
-console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pterodactyl"))
 
 
 
@@ -74,24 +75,29 @@ console.log(getRoomByDinosaurName(exampleDinosaurData, exampleRoomData, "Pteroda
     ]
  */
     function getConnectedRoomNamesById(rooms, id) {
-      
       const foundRoom = rooms.find((room) => room.roomId === id);
     
       if (foundRoom) {
-       
-        const connectedRooms = rooms.filter((room) =>
-          foundRoom.connectsTo.includes(room.roomId)
-        );
-    
-        
-        const connectedRoomNames = connectedRooms.map((room) => room.name);
-        return connectedRoomNames;
+        const connectedRoomNames = foundRoom.connectsTo.map((connectedRoomId) => {
+          const connectedRoom = rooms.find((room) => room.roomId === connectedRoomId);
+          if (connectedRoom) {
+            return connectedRoom.name;
+          } else if (connectedRoom !== true) {
+            return `Room with ID of '${connectedRoomId}' could not be found.`;
+          }
+        });
 
+    
+        return connectedRoomNames;
       } else {
         return `Room with ID of '${id}' could not be found.`;
       }
     }
     
+  
+    
+    
+    getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra");
 
 module.exports = {
   getRoomByDinosaurName,
