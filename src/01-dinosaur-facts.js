@@ -102,29 +102,48 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
+  const aliveInMya = [];
   for (let i = 0; i < dinosaurs.length; i++) {
+    if ((mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1)|| (mya >= dinosaurs[i].mya[1] && mya <=dinosaurs[i].mya[0])) 
+    // if (mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0] - 1) {
+    //   if (key) {
+    //     aliveInMya.push(dinosaurs[i][key])
 
-    if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya + 1) {
-      if (key) {
-        aliveInMya.push(dinosaurs[i][key])
-
-      } else {
-        aliveInMya.push(dinosaurs[i].dinosaurId)
-      }
-    } else {
-      if (dinosaurs[i].mya[1] <= mya && dinosaurs[i].mya[0] >= mya) {
-        if (key) {
+    //   } else {
+    //     aliveInMya.push(dinosaurs[i].dinosaurId)
+    //   }
+    // } else {
+    //   if (mya >= dinosaurs[i].mya[1] && mya <= dinosaurs[i].mya[0]) 
+      {
+        if (dinosaurs[i][key]) {
           aliveInMya.push(dinosaurs[i][key])
         } else {
-          aliveInMya.push(dinosaurs[i].dinosaurId)
+          aliveInMya.push(dinosaurs[i]["dinosaurId"])
         }
       }
     }
+    return aliveInMya;
   }
-  return aliveInMya
-}
+  
+
 
 // Example usage remains the same as in the previous response.
+
+// function getDinosaursAliveMya(dinosaurs, mya, key) {
+//   let dinosAlive = []
+
+//   for (let i = 0; i < dinosaurs.length; i++) {
+//     const dino = dinosaurs[i];
+//     if ((mya === dinosaurs[i].mya[0] || mya === dinosaurs[i].mya[0]-1)|| (mya >= dinosaurs[i].mya[1] && mya <=dinosaurs[i].mya[0])) {
+//       if (dinosaurs[i][key]){
+//         dinosAlive.push(dinosaurs[i][key])
+//       } else {
+//         dinosAlive.push(dinosaurs[i]["dinosaurId"]);
+//       }
+//     } 
+//   }
+// return dinosAlive
+// }
 
 
 module.exports = {
