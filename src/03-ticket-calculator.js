@@ -130,7 +130,22 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  for(let ticket of purchases) {
+    if(Object.keys(ticketData).includes(ticket.ticketType) === false && ticket.ticketType !== 'extras') {
+      return `Ticket type '${ticket.ticketType}' cannot be found.`
+    }
+    if(Object.keys(ticketData[ticket.ticketType].priceInCents).includes(ticket.entrantType) === false) {
+      return`Entrant type '${ticket.entrantType}' cannot be found.`
+    }
+    for(let extra of ticket.extras) {
+      if(Object.keys(ticketData.extras).includes(extra) === false) {
+        return`Extra type '${extra}' cannot be found.`
+      }
+    }
+  }
+  
+}
 
 // Do not change anything below this line.
 module.exports = {
