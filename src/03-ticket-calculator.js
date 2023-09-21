@@ -56,14 +56,20 @@ const exampleTicketData = require("../data/tickets");
  */
 function calculateTicketPrice(ticketData, ticketInfo) {
   const ticketTypes = Object.keys(ticketData)
-  if(!ticketTypes.includes(ticketInfo.ticketDescription)){
+  if(!ticketTypes.includes(ticketInfo.ticketType)){
     return ' ERROR'
   }
-  const ticketDesc = Object.keys(ticketData)
-  if(!ticketDesc.includes(ticketInfo.ticketDescription)){
+  const entrantTypes = Object.keys(ticketData)
+  if(!entrantTypes.includes(ticketInfo.entrantType)){
     return 'ERROR2'
   }
-  
+  const extras1 = Object.keys(ticketData.extras)
+  for(const extra of ticketInfo.extras){
+    if(!extras1.includes(extra)){
+      return 'ERROR3'
+    }
+  }
+
 }
 
 /**

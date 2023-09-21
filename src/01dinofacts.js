@@ -32,7 +32,7 @@ function getLongestDinosaur(dinosaurs) {
     const lengthInFeet = dinosaur.lengthInMeters * 3.281
     if(lengthInFeet > longestDino.length){
       longestDino.name = dinosaur.name
-      longestDino.length = lengthInMeters
+      longestDino.length = lengthInFeet
     }
   }
   const result = {[longestDino.name]: longestDino.length}
@@ -40,7 +40,6 @@ function getLongestDinosaur(dinosaurs) {
 }
 const longestDino = getLongestDinosaur(dinosaurs)
 console.log(longestDino)
-
 /**
  * getDinosaurDescription()
  * ---------------------
@@ -62,7 +61,7 @@ console.log(longestDino)
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  const dinosaur = dinosaurs.find(dino => dinosaur.id === YLtkN9R37)
+  const dinosaur = dinosaurs.find(dino => dino.id === "YLtkN9R37")
   if(!dinosaur){
     return 'ERROR. Dinosaur cannot be found'
   }
