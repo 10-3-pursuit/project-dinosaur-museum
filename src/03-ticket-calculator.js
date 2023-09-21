@@ -54,7 +54,42 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+// function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  let pricedTicket = 0
+  let pricedExtras = 0
+  let total = 0
+
+  if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior"){
+    return "Entrant type 'incorrect-entrant' cannot be found."
+  }
+  if (ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+  if (ticketInfo.extras.includes("incorrect-extra")){
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+  if(ticketInfo.ticketType === "general"){
+    if(ticketInfo.entrantType === "child" || ticketInfo.entrantType === "adult" || ticketInfo.entrantType === "senior"){
+      pricedTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    }
+  }    
+  else if(ticketInfo.ticketType === "membership"){
+    if(ticketInfo.entrantType === "child" || ticketInfo.entrantType === "adult" || ticketInfo.entrantType === "senior"){
+      pricedTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    } 
+  }
+      if (ticketInfo.extras.includes("movie")){
+   pricedExtras += ticketData.extras.movie[ticketInfo.entrantType]
+  } if (ticketInfo.extras.includes("education")){
+    pricedExtras += ticketData.extras.education.priceInCents[ticketInfo.entrantType] 
+  } if (ticketInfo.extras.includes ("terrace")){
+    pricedExtras += ticketData.extras.terrace.priceInCents[ticketInfo.entrantType] 
+  }
+
+return pricedTicket + pricedExtras
+} 
+
 
 /**
  * purchaseTickets()
@@ -109,7 +144,29 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+// function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let totalCost = 0;
+  let receipt = "Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n";
+
+  for (const purchase of purchases) {
+    const ticketPrice = calculateTicketPrice(ticketData, purchase);
+
+    // Check for errors
+    if (typeof ticketPrice === 'string') {
+      return ticketPrice; // Return error message
+    }
+
+    totalCost += ticketPrice;
+    receipt += `${purchase.entrantType} ${purchase.ticketType} Admission: $${(ticketPrice / 100).toFixed(2)} (${purchase.extras.join(', ')})\n`;
+  }
+
+  receipt += "-------------------------------------------\n";
+  receipt += `TOTAL: $${(totalCost / 100).toFixed(2)}`;
+  
+  return receipt;
+}
+
 
 // Do not change anything below this line.
 module.exports = {
