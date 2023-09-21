@@ -66,7 +66,7 @@ function calculateTicketPrice(ticketData, ticketInfo) {
   }
   const tixCosts = extras.reduce((sum, extra) => {
     if(!ticketData.extras[extra]) {
-      return `Extra '${extra}' cannot be found.`;
+      return `Extra type '${extra}' cannot be found.`;
       //creating a new variable above, the focus to decifer a sum of the costs, we use the .reduce method, still factoring the error message if the extras value isn't correct or missing
     }
     return sum + ticketData.extras[extra].priceInCents[entrantType];
@@ -156,7 +156,7 @@ function purchaseTickets(ticketData, purchases) {
      }
 
 }
-const receiptTotal = `---------------------\nTOTAL: $${(fullReceipt/100).toFixed((2))}`;
+const receiptTotal = `-------------------------------------------\nTOTAL: $${(fullReceipt/100).toFixed((2))}`;
 return `${dinoHeader}${receipt}${receiptTotal}`;
 }
 
