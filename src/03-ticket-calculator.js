@@ -54,7 +54,26 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const {ticketType, entrantType, extras} = ticketInfo;
+  //five parameters for this function, and similarly to previous ones, an error message is generated if info is off 
+  if(!ticketData[ticketType]) {
+    return `Ticket type '${ticketType}' cannot be found.`;
+    //for the next three forms of logic, the 'no' symbol is used within each 'if' statement, to purposefully generate an error message for each of the three ticket type values
+  }
+  if(!ticketData[ticketType].priceInCents[entrantType]) {
+    return `Entrant type '${entrantType}' cannot be found.`;
+  }
+  const tixCosts = extras.reduce((sum, extra) => {
+    if(!ticketData.extras[extra]) {
+      return `Extra type '${extra}' cannot be found.`;
+      //creating a new variable above, the focus to decifer a sum of the costs, we use the .reduce method, still factoring the error message if the extras value isn't correct or missing
+    }
+    return sum + ticketData.extras[extra].priceInCents[entrantType];
+  }, 0);
+  //to calculate the total cost with extras, initialize the 0 within that extras.reduce function above. Kinda got stuck here for a while.
+  return tixCosts + ticketData[ticketType].priceInCents[entrantType];
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +128,37 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+  let fullReceipt = 0
+   const dinoHeader = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+   let receipt = ''
+   for(let purchase of purchases){
+ 
+     const entrantInfo = purchase.entrantType
+     const ticketTypeInfo = purchase.ticketType
+     let purchaseCost = calculateTicketPrice(ticketData, purchase)
+     
+     if(typeof purchaseCost === 'string'){
+       return purchaseCost
+     }
+     fullReceipt += purchaseCost;
+     const extrasDescript = [];
+     for(let extra of purchase.extras) {
+      if(ticketData.extras[extra]) {
+        extrasDescript.push(ticketData.extras[extra].description);
+      }
+     }
+     if(purchase.extras.length > 0) {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(purchaseCost/100).toFixed(2)} (${extrasDescript.join(", ")})\n`
+    } else {
+      receipt += `${entrantInfo.charAt(0).toUpperCase()}${entrantInfo.slice(1)} ${ticketData[ticketTypeInfo].description}: $${(purchaseCost/100).toFixed(2)}\n`
+
+     }
+
+}
+const receiptTotal = `-------------------------------------------\nTOTAL: $${(fullReceipt/100).toFixed((2))}`;
+return `${dinoHeader}${receipt}${receiptTotal}`;
+}
 
 // Do not change anything below this line.
 module.exports = {
