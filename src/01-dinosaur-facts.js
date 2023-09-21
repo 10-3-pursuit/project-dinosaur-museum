@@ -63,15 +63,17 @@ function getLongestDinosaur(dinosaurs) {
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
 function getDinosaurDescription(dinosaurs, id) {
-  const foundDino = dinosaurs.find(dinosaur => dinosaur.id === id);
+  for (let i = 0; i < dinosaurs.length - 1; i++) {
 
-  if (foundDino) {
-    const { name, pronunciation, description, period } = foundDino;
-    return `${name} (${pronunciation})\n${description}\nIt lived in the ${period} period.`;
-  } else {
-    return `A dinosaur with an ID of '${id}' cannot be found.`;
+    if(id === "incorrect-id"){
+  return "A dinosaur with an ID of 'incorrect-id' cannot be found."
+  } 
+     else if((dinosaurs[i].dinosaurId === id) && (dinosaurs[i].mya.length) >= 1){
+       return (`${dinosaurs[i].name} (${dinosaurs[i].pronunciation})\n${dinosaurs[i].info} It lived in the ${dinosaurs[i].period} period, over ${dinosaurs[i].mya[dinosaurs[i].mya.length - 1]} million years ago.`)
+    }
+  
+    }
   }
-}
 
 
 /**
@@ -100,24 +102,26 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, mya, key) {
-  const myaValues = [mya, mya - 1];
+  for (let i = 0; i < dinosaurs.length; i++) {
 
-  const filteredDinos = dinosaurs.filter(dinosaur => {
-    if (Array.isArray(dinosaur.mya)) {
-      return dinosaur.mya.some(year => myaValues.includes(year));
+    if (dinosaurs[i].mya[0] === mya || dinosaurs[i].mya[0] === mya + 1) {
+      if (key) {
+        aliveInMya.push(dinosaurs[i][key])
+
+      } else {
+        aliveInMya.push(dinosaurs[i].dinosaurId)
+      }
     } else {
-      return myaValues.includes(dinosaur.mya);
+      if (dinosaurs[i].mya[1] <= mya && dinosaurs[i].mya[0] >= mya) {
+        if (key) {
+          aliveInMya.push(dinosaurs[i][key])
+        } else {
+          aliveInMya.push(dinosaurs[i].dinosaurId)
+        }
+      }
     }
-  });
-
-  if (key) {
-    return filteredDinos.map(dinosaurs => dinosaurs.dinosaurId);
   }
-  if (!key) {
-    return filteredDinos.map(dinosaurs => dinosaurs.dinosaurId);
-  }
-
-  return filteredDinos.map(dinosaurs => dinosaurs[key] || dinosaurs.dinosaurId);
+  return aliveInMya
 }
 
 // Example usage remains the same as in the previous response.

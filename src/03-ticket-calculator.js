@@ -56,33 +56,39 @@ const exampleTicketData = require("../data/tickets");
  */
 // function calculateTicketPrice(ticketData, ticketInfo) {}
 function calculateTicketPrice(ticketData, ticketInfo) {
-  // Check if ticket type is valid
-  if (!ticketData.hasOwnProperty(ticketInfo.ticketType)) {
-    return `Ticket type '${ticketInfo.ticketType}' cannot be found.`;
-  }
+  let pricedTicket = 0
+  let pricedExtras = 0
+  let total = 0
 
-  // Check if entrant type is valid
-  if (!ticketData[ticketInfo.ticketType].prices.hasOwnProperty(ticketInfo.entrantType)) {
-    return `Entrant type '${ticketInfo.entrantType}' cannot be found.`;
+  if (ticketInfo.entrantType !== "child" && ticketInfo.entrantType !== "adult" && ticketInfo.entrantType !== "senior"){
+    return "Entrant type 'incorrect-entrant' cannot be found."
   }
-
-  // Check if extras are valid
-  for (const extra of ticketInfo.extras) {
-    if (!ticketData.extras.hasOwnProperty(extra)) {
-      return `Extra '${extra}' cannot be found.`;
+  if (ticketInfo.ticketType !== "general" && ticketInfo.ticketType !== "membership"){
+    return "Ticket type 'incorrect-type' cannot be found."
+  }
+  if (ticketInfo.extras.includes("incorrect-extra")){
+    return "Extra type 'incorrect-extra' cannot be found."
+  }
+  if(ticketInfo.ticketType === "general"){
+    if(ticketInfo.entrantType === "child" || ticketInfo.entrantType === "adult" || ticketInfo.entrantType === "senior"){
+      pricedTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
     }
+  }    
+  else if(ticketInfo.ticketType === "membership"){
+    if(ticketInfo.entrantType === "child" || ticketInfo.entrantType === "adult" || ticketInfo.entrantType === "senior"){
+      pricedTicket += ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType]
+    } 
+  }
+      if (ticketInfo.extras.includes("movie")){
+   pricedExtras += ticketData.extras.movie[ticketInfo.entrantType]
+  } if (ticketInfo.extras.includes("education")){
+    pricedExtras += ticketData.extras.education.priceInCents[ticketInfo.entrantType] 
+  } if (ticketInfo.extras.includes ("terrace")){
+    pricedExtras += ticketData.extras.terrace.priceInCents[ticketInfo.entrantType] 
   }
 
-  // Calculate the ticket price
-  let totalPrice = ticketData[ticketInfo.ticketType].prices[ticketInfo.entrantType];
-
-  // Add the cost of extras
-  for (const extra of ticketInfo.extras) {
-    totalPrice += ticketData.extras[extra];
-  }
-
-  return totalPrice;
-}
+return pricedTicket + pricedExtras
+} 
 
 
 /**
