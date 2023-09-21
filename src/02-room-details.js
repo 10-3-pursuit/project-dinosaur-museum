@@ -28,7 +28,7 @@ const exampleRoomData = require("../data/rooms");
 function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
   //this function carries 3 parameters, but the main clue is `to find` rooms with dinosaurs, and edge case message if no dinosaur found
   const findingDino = dinosaurs.find((dinosaur) => dinosaur.name === dinosaurName);
-  //created my clever variable, then used an obvious high-order native array method to iterate, making sure to immediate drum up a match to keys and parameter
+  //created my clever variable, then used an obvious higher-order native array method to iterate, making sure to immediate drum up a match to keys and parameter
   if(!findingDino) {
   
     return `Dinosaur with name '${dinosaurName}' cannot be found.`; //if there's no dinosaur found, return exact error message provided
@@ -39,7 +39,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
     return roomers.name;
     //the room name could either be the return, or that error message if there's no dinosaur to match a room
   } else {
-    return `Dinosaur with name '${dinosaurName}' cannot be found in any room.`;
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
   }
 }
 
@@ -68,7 +68,7 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
 function getConnectedRoomNamesById(rooms, id) {
   const interconnected = rooms.find((room) => room.roomId === id);
   if(!interconnected) {
-    return `Room with ID '${id}' cannot be found.`;
+    return `Room with ID of '${id}' could not be found.`;
   }
   const connected = interconnected.connectsTo;
   const connectRooms = connected.map((roomId) => rooms.find((room) => room.roomId === roomId).name);

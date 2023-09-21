@@ -29,7 +29,7 @@ function getLongestDinosaur(dinosaurs) {
   dinosaurs.forEach((dinosaur) => {
     //this is where you iterate through the array of different dinosaur objects
     if(dinosaur.lengthInMeters > longestDino.lengthInMeters) {
-      //now for the logic, the real test of your code - using the key keys and dotting into them
+      //now for the logic, the real test of your code - using the key keys and dotting into info
       longestDino = dinosaur;
     }
   });
