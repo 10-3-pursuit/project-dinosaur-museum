@@ -58,29 +58,32 @@ function calculateTicketPrice(ticketData, ticketInfo) {
 
   //Edge cases
 
+  //If statement when ticket type doesn't match
   if(!ticketData.hasOwnProperty(ticketInfo.ticketType)){
     return `Ticket type 'incorrect-type' cannot be found.`;
   }
+
+  // If statement if the entrant type doesn't match
   if(!ticketData[ticketInfo.ticketType].priceInCents.hasOwnProperty(ticketInfo.entrantType)){
     return `Entrant type 'incorrect-entrant' cannot be found.`;
   }
 
+  //Declare total price of ticket
   let totalPrice = ticketData[ticketInfo.ticketType].priceInCents[ticketInfo.entrantType];
 
+  // Iterate through the ticketInfo.extras since its an array
   for (const extra of ticketInfo.extras) {
     // Check if the extra type exists in the ticketData
     if (!ticketData.extras.hasOwnProperty(extra)) {
       return `Extra type 'incorrect-extra' cannot be found.`;
     }
 
-    // Add the extra price to the total
+    // Add the extra to the ticket total
     totalPrice += ticketData.extras[extra].priceInCents[ticketInfo.entrantType];
   }
 
+  //Return total price for ticket
   return totalPrice;
-
-
-
 }
 
 /**
@@ -136,7 +139,23 @@ function calculateTicketPrice(ticketData, ticketInfo) {
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+function purchaseTickets(ticketData, purchases) {
+      //Edge cases
+    
+      //Iterate through array of objects that is purchases
+      for(let purchase of purchases){
+        if(!ticketData.hasOwnProperty(purchase.ticketType)){
+          return `Ticket type 'incorrect-type' cannot be found.`;
+        }
+        if(!ticketData[purchase.ticketType].priceInCents.hasOwnProperty(purchase.entrantType)){
+          return `Entrant type 'incorrect-entrant' cannot be found.`;
+        }
+      }
+    
+    
+      //If ticket type cannot be found 'incorrect'
+    
+    }
 
 // Do not change anything below this line.
 module.exports = {
