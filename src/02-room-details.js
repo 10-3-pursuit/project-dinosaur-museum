@@ -25,7 +25,32 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  
+  const dinosaur = dinosaurs.find((dino) => dino.name.toLowerCase() === dinosaurName.toLowerCase());
+
+  if (dinosaur) {
+   
+    const foundRoom = rooms.find((room) => room.dinosaurs.includes(dinosaur.dinosaurId));
+
+    
+
+    if (foundRoom) {
+      return foundRoom.name;
+    } else {
+      return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`;
+    }
+  } else {
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+}
+
+
+
+    
+
+
+
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +74,30 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+    function getConnectedRoomNamesById(rooms, id) {
+      const foundRoom = rooms.find((room) => room.roomId === id);
+    
+      if (foundRoom) {
+        const connectedRoomNames = foundRoom.connectsTo.map((connectedRoomId) => {
+          const connectedRoom = rooms.find((room) => room.roomId === connectedRoomId);
+          if (connectedRoom) {
+            return connectedRoom.name;
+          } else if (connectedRoom !== true) {
+            return `Room with ID of '${connectedRoomId}' could not be found.`;
+          }
+        });
+
+    
+        return connectedRoomNames;
+      } else {
+        return `Room with ID of '${id}' could not be found.`;
+      }
+    }
+    
+  
+    
+    
+    getConnectedRoomNamesById(exampleRoomData, "A6QaYdyKra");
 
 module.exports = {
   getRoomByDinosaurName,
