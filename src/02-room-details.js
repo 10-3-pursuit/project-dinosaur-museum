@@ -25,7 +25,24 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  const findDino = dinosaurs.find((dinosaur) => dinosaur.name === dinosaurName);
+
+  //Checks if there's no dinosaurs with that name
+  if(!findDino){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`;
+  }
+
+  // Look through the rooms for the room the dinosaur is kept
+  for(let room of rooms){
+    if(room.dinosaurs.includes(findDino.dinosaurId)){
+      return room.name;
+    }
+  }
+
+  // If it can't find any room then it returns this statement
+  return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+}
 
 /**
  * getConnectedRoomNamesById()
@@ -49,7 +66,38 @@ function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
       "Kit Hopkins Education Wing"
     ]
  */
-function getConnectedRoomNamesById(rooms, id) {}
+function getConnectedRoomNamesById(rooms, id) {
+  // Declare empty array to push connectsTo rooms in
+  let arrayConnectsTo = [];
+
+  // Iterate through the rooms and find the first one that matches the given id
+  const connectedRooms = rooms.find((room) => room.roomId === id);
+
+  //If connectedRooms is falsy return error message
+  if(!connectedRooms){
+    return `Room with ID of 'incorrect-id' could not be found.`
+  }
+  
+  // When room is found store the connected rooms in to this variable
+  const connectedRoomIds = connectedRooms.connectsTo;
+
+  //Iterate through the connectedRoom id's
+  for(const roomId of connectedRoomIds) {
+    //Find the room that matches the roomId
+    const connectedRoom = rooms.find((room) => room.roomId === roomId);
+
+    if (connectedRoom) {
+      arrayConnectsTo.push(connectedRoom.name);
+    }
+    else{
+      return `Room with ID of 'incorrect-id' could not be found.`;
+    }
+  }
+
+  //return array;
+  return arrayConnectsTo;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
