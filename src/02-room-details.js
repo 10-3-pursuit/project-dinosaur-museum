@@ -25,31 +25,65 @@ const exampleRoomData = require("../data/rooms");
  *  getRoomByDinosaurName(dinosaurs, rooms, "Pterodactyl");
  *  //> "Dinosaur with name 'Pterodactyl' cannot be found."
  */
-function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {}
+function getRoomByDinosaurName(dinosaurs, rooms, dinosaurName) {
+  const locatedDino = dinosaurs.find((dino) => dino.name === dinosaurName)
+  
+  if(!locatedDino){
+    return `Dinosaur with name '${dinosaurName}' cannot be found.`
+  }
+  const locatedRoom = rooms.find((room) => room.dinosaurs.includes(locatedDino.dinosaurId))
+  
+  if(!locatedRoom){
+    return `Dinosaur with name '${dinosaurName}' cannot be found in any rooms.`
+  }
+  return locatedRoom.name
+}
 
 /**
  * getConnectedRoomNamesById()
  * ---------------------
  * Returns an array of strings, where each string is the name of a room connected to the given room. If a room ID cannot be found, an error message is returned.
- *
- * @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
- * @param {string} id - A unique room identifier.
- * @returns {string|string[]} An array of room names, or an error message.
- *
- * EXAMPLE:
- *  getConnectedRoomNamesById(rooms, "aIA6tevTne");
- *  //> ["Ticket Center"]
- *
- * EXAMPLE:
- *  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
- *  //> [
-      "Entrance Room",
-      "Coat Check Room",
-      "Ellis Family Hall",
-      "Kit Hopkins Education Wing"
-    ]
- */
-function getConnectedRoomNamesById(rooms, id) {}
+*
+* @param {Object[]} rooms - An array of room objects. See the `data/rooms.js` file for an example of the input.
+* @param {string} id - A unique room identifier.
+* @returns {string|string[]} An array of room names, or an error message.
+*
+* EXAMPLE:
+*  getConnectedRoomNamesById(rooms, "aIA6tevTne");
+*  //> ["Ticket Center"]
+*
+* EXAMPLE:
+*  getConnectedRoomNamesById(rooms, "A6QaYdyKra");
+*  //> [
+  "Entrance Room",
+  "Coat Check Room",
+  "Ellis Family Hall",
+  "Kit Hopkins Education Wing"
+]
+*/
+function getConnectedRoomNamesById(rooms, id) {
+
+  const room = rooms.find((element) => element.roomId === id);
+  // console.log(room);
+  
+  if(!room){
+    return `Room with ID of '${id}' could not be found.`
+  }
+  
+  const connectedRoomIDs = room.connectsTo;
+  const connectedRoomNames = rooms
+    .filter((element) => connectedRoomIDs.includes(element.roomId))
+    .map((element) => element.name);
+
+  const invalid = connectedRoomIDs.find((roomId) => !rooms.some((element)=> element.roomId === roomId))
+
+  if(invalid){
+    return `Room with ID of '${invalid}' could not be found.`
+  }
+
+  return connectedRoomNames;
+
+}
 
 module.exports = {
   getRoomByDinosaurName,
