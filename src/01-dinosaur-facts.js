@@ -22,7 +22,38 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) { 
+
+  //Created an empty object to hold the data for our "longestDino"
+  let longestDino = {};
+
+  //Created a f(x) to sort in ascending order based on "lengthInMeters" values
+  //Used spread operator to make a shallow copy of array so it doesn't mutate and mess with other tests
+  const sortInAscendingOrder = ([...dinosaurs]) => {
+    //Used sort method for numbers
+    return dinosaurs.sort((a,b) => {return a.lengthInMeters - b.lengthInMeters}
+      )};
+
+  //Created a new array of dino's in ascending order
+  const newSortedArray = sortInAscendingOrder(dinosaurs);
+  //Created a variable equal to the object of the first longest dino in the array
+  const firstlongestDino = newSortedArray.find((dino) => dino.lengthInMeters === newSortedArray[newSortedArray.length - 1].lengthInMeters);   
+
+    for (dino of newSortedArray) {
+      //take this line out to optimize code! This isn't necessary
+      if (dino) {
+        if (dino.lengthInMeters === firstlongestDino.lengthInMeters) {
+        //this sets the key of obj longestDino to the first longest dino's name and set it equal to a value of the length of the dino converted to feet fixed to the second decimal place
+        //The Number() method was used since the output showed the length in feet in quotes so to cancel that I used this method
+        longestDino[dino.name] = Number((dino.lengthInMeters * 3.281).toFixed(2))
+        //break the f(x) so it doesn't return the other longest dinosaurs, that aren't the first instance
+        break; 
+        }
+      }
+    }
+
+  return longestDino; 
+};
 
 /**
  * getDinosaurDescription()
@@ -43,9 +74,22 @@ function getLongestDinosaur(dinosaurs) {}
  *
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
- */
-function getDinosaurDescription(dinosaurs, id) {}
-
+ */ 
+function getDinosaurDescription(dinosaurs, id) {
+  //created the defaut dino description to be the error message
+  let dinoDescription = "A dinosaur with an ID of 'incorrect-id' cannot be found."; 
+      //created a condition that will update dino description based on if the id given matched that of one of the dinos
+      for (dino of dinosaurs) {  
+        // create a variable that returns smaller mya number 
+        const mostRecentMYA = (Math.min(...dino.mya)); 
+        //created a condition that checks if dino id matches id given, if this is true, dinoDescription will update with correct string information
+        if (dino.dinosaurId === id) { 
+          dinoDescription = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${mostRecentMYA} million years ago.`
+        } 
+      }  
+  return dinoDescription; 
+};   
+ 
 /**
  * getDinosaursAliveMya()
  * ---------------------
@@ -69,9 +113,46 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  //> ["Dracorex"]
  *
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
- *  //> ["WHQcpcOj0G"]
+ *  //> ["WHQcpcOj0G"] 
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, mya, key) {
+  //created a variable for out output
+  const results = []; 
+  for (const dino of dinosaurs) { 
+   //created a variable for max mya in a given dino's mya array
+   let maxMYA = Math.max(...dino.mya);
+   //created a variable for the min mya   
+   let minMYA = Math.min(...dino.mya); 
+    //created conditional for range of dino mya years, if mya is in range of dino mya will move onto next condition 
+    //use ampersand b/c we want to find a number within this particular range, using an or wouldn't allow the MYA to fall into range 
+    if (maxMYA >= mya && minMYA <= mya) {
+      //created conditonal that checks if a key parameter is given, and if dino has that same key 
+      if (key && dino[key]) {
+        //pushes dino[key] to result array 
+        results.push(dino[key]);
+      } else {
+        //if if doesn't pass then this will push the dino Id to results array 
+        results.push(dino.dinosaurId);
+      } 
+      //created conditional for cases where dino only has one mya value    
+    } else if (dino.mya.length === 1) {
+        //created conditional to check if dino.mya is equal to mya or mya - 1 
+        if (minMYA === mya || mya === minMYA - 1) { 
+          //checks if key is equal to a dino key 
+          if (key && dino[key]) {
+            //pushes dino[key] to result array
+            results.push(dino[key]);
+          } else {
+            //if if doesn't pass then this will push the dino Id to results array
+            results.push(dino.dinosaurId);
+          }
+        }
+    }
+  }
+  return results;  
+};       
+
+
 
 module.exports = {
   getLongestDinosaur,
