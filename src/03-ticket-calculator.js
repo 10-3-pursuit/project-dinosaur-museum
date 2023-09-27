@@ -54,7 +54,28 @@ const exampleTicketData = require("../data/tickets");
     calculateTicketPrice(tickets, ticketInfo);
     //> "Entrant type 'kid' cannot be found."
  */
-function calculateTicketPrice(ticketData, ticketInfo) {}
+function calculateTicketPrice(ticketData, ticketInfo) {
+  const ticketType = ticketInfo.ticketType
+  if(Object.keys(ticketData).includes(ticketType) === false && ticketType !== 'extras') {
+    return `Ticket type '${ticketType}' cannot be found.`
+  }
+  const entrantType = ticketInfo.entrantType
+  if(Object.keys(ticketData[ticketType].priceInCents).includes(entrantType) === false) {
+    return `Entrant type '${entrantType}' cannot be found.`
+  }
+  const extras = ticketInfo.extras
+  for(let extra of extras) {
+    if(Object.keys(ticketData['extras']).includes(extra) === false) {
+      return `Extra type '${extra}' cannot be found.`
+    }
+  }
+  let totalPrice = 0
+  totalPrice += ticketData[ticketType].priceInCents[entrantType]
+  extras.forEach(extra => {
+    totalPrice += ticketData.extras[extra].priceInCents[entrantType]
+  })
+  return totalPrice
+}
 
 /**
  * purchaseTickets()
@@ -109,7 +130,58 @@ function calculateTicketPrice(ticketData, ticketInfo) {}
     purchaseTickets(tickets, purchases);
     //> "Ticket type 'discount' cannot be found."
  */
-function purchaseTickets(ticketData, purchases) {}
+
+
+const castToCase = (word) => {
+  const letterArr = word.split('')
+  let capLetter = letterArr.shift().toUpperCase()
+  return capLetter.concat(letterArr.join(''))
+}
+
+const createLineItem = (ticketData, ticket) => {
+  let formattedExtras = ''
+  if(ticket.extras.length > 0) {
+    formattedExtras = ` (${(ticket.extras.map(extra => castToCase(extra))).join(' Access, ')} Access)`
+  } 
+  return `${castToCase(ticket.entrantType)} ${castToCase(ticket.ticketType)} Admission: $${(calculateTicketPrice(ticketData, ticket)/100).toFixed(2)}${formattedExtras}\n`
+}
+
+const createTotal = (ticketData, ticket) => {
+  let totalPrice = 0
+  ticket.forEach(price => totalPrice += calculateTicketPrice(ticketData, price))
+  return `TOTAL: $${(totalPrice/100).toFixed(2)}`
+}
+
+const printReceipt = (ticketData, purchases) => {
+  let receiptText = `Thank you for visiting the Dinosaur Museum!\n-------------------------------------------\n`
+  purchases.forEach(ticket => receiptText += createLineItem(ticketData, ticket))
+  receiptText += `-------------------------------------------\n`
+  receiptText += createTotal(ticketData, purchases)
+  return receiptText
+}
+
+
+
+
+function purchaseTickets(ticketData, purchases) {
+  for(let ticket of purchases) {
+    const ticketType = ticket.ticketType
+    if(Object.keys(ticketData).includes(ticketType) === false && ticketType !== 'extras') {
+      return `Ticket type '${ticketType}' cannot be found.`
+    }
+    const entrantType = ticket.entrantType
+    if(Object.keys(ticketData[ticket.ticketType].priceInCents).includes(entrantType) === false) {
+      return`Entrant type '${entrantType}' cannot be found.`
+    }
+    const extras = ticket.extras
+    for(let extra of extras) {
+      if(Object.keys(ticketData.extras).includes(extra) === false) {
+        return`Extra type '${extra}' cannot be found.`
+      }
+    }
+  }
+  return printReceipt(ticketData, purchases)
+}
 
 // Do not change anything below this line.
 module.exports = {
