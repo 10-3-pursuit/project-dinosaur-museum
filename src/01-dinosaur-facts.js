@@ -118,20 +118,45 @@ function getDinosaurDescription(dinosaurs, id) {
  *  //> ["WHQcpcOj0G"]
  */
 function getDinosaursAliveMya(dinosaurs, millionya, key) {
-  //only return the id of the dinosaurs that were alive during the time period (mya)
-  //return an array
-  // for each dino, if the time period matches mya, return dino.id
-  // if dino.key !== undefined, return dino.key
+  // returns an array of all dinosaurs that were alive at the given millionya
+  // for each dino, if dino.mya is only one number millionya has to be equal to of -1 than mya. return info
+  // for each dino, if dino.mya has two numbers and millionya is between the two numbers of mya, return info
+  // if the given key exists in the data, return the key value in the new array
+  // if the given key does not exist in the data, return the ID of the dino instead
+  // if there is no key, return the ID of the dino
+  let validDinos = []
   let aliveArr = []
   dinosaurs.forEach(function(dino){
-    if ((dino.millionya === dino.mya) && (dino.key !== undefined)){
-      aliveArr.push(dino.key)
-    } else if (dino.millionya === dino.mya){
-      aliveArr.push(dino.millionya)
+   if (dino.mya.length === 2){
+    // if array.length is 2, then the given value must fit between the two values of the array
+   if (millionya <= dino.mya[0] && millionya >= dino.mya[1]){
+    validDinos.push(dino)
+   } 
+   }
+   if (dino.mya.length === 1){
+    if (millionya === dino.mya[0] || millionya === (dino.mya[0]) -1 ){
+     validDinos.push(dino)
     }
+   }
   })
+  // now we check for keys
+   // if there is no key, push the id of the dino into aliveArr
+   // if the key doesn't exist, push the id of the dino ino aliveArr
+   // if the key of the dinos in validDinos matches a key in the data, push the key value into aliveArr
+   
+    for (const dino of validDinos) {
+      if (dino[key]){
+        aliveArr.push(dino[key]);
+
+    } else {
+      aliveArr.push(dino.dinosaurId);
+    }
+   }
+   console.log(aliveArr)
   return aliveArr
+  
 }
+
 
 module.exports = {
   getLongestDinosaur,
