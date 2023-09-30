@@ -22,7 +22,35 @@ const exampleDinosaurData = require('../data/dinosaurs');
  *  getLongestDinosaur(dinosaurs);
  *  //> { Brachiosaurus: 98.43 }
  */
-function getLongestDinosaur(dinosaurs) {}
+function getLongestDinosaur(dinosaurs) {
+  // we need to aquire all of the dinosaur lengths, convert them to feet, and return the longest one
+  // store the dinosaur names and lengths in an object
+  //compare all of the lengths of the dinosaurs and return the longest one IN FEET
+  //remeber how to push data into an object
+
+  let dinoLength = 0
+  //iterator that updates the longest length
+  let longestDino = ""
+  //longest dino as a string to prevent the object adding a new key over and over instead of updating the name
+  let dinoObj = {}
+  // the object that we need to return
+  if (dinosaurs.length === 0 ){
+    return dinoObj
+  // no dinosaurs edge case
+  }
+  dinosaurs.forEach(function(dino){
+    if (dino.lengthInMeters > dinoLength){
+      dinoLength = dino.lengthInMeters
+      longestDino = dino.name
+      // for each dino in the dinosaurs object, if the length of the dino is greater than the current
+      //dino length, update the dino length or longest dino and the name of longest dino
+    }
+  })
+  dinoObj[longestDino] = (dinoLength)*3.281
+  // this is how you push data into an object manually
+  // the object AT ([]) the key you want is EQUAL to the value you want
+  return dinoObj
+}
 
 /**
  * getDinosaurDescription()
@@ -44,19 +72,37 @@ function getLongestDinosaur(dinosaurs) {}
  *  getDinosaurDescription(dinosaurs, "incorrect-id");
  *  //> "A dinosaur with an ID of 'incorrect-id' cannot be found."
  */
-function getDinosaurDescription(dinosaurs, id) {}
+function getDinosaurDescription(dinosaurs, id) {
+  let statement = `A dinosaur with an ID of '${id}' cannot be found.`
+  dinosaurs.forEach(function(dino){
+    if (dino.dinosaurId === id) {
+    statement = `${dino.name} (${dino.pronunciation})\n${dino.info} It lived in the ${dino.period} period, over ${dino.mya[dino.mya.length -1]} million years ago.`
+    }
+  })
+  return statement
+}
 
 /**
  * getDinosaursAliveMya()
  * ---------------------
- * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") value. If a `key` argument is provided when the function is called, returns the value of that key for each dinosaur alive at that time. Otherwise, returns the ID.
+ * Returns an array of dinosaurs who were alive at the given `mya` (i.e. "millions of years ago") 
+ * value. If a `key` argument is provided when the function is called, returns the value of that 
+ * key for each dinosaur alive at that time. Otherwise, returns the ID.
  *
- * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the dinosaur's information will be returned if `29` is entered or `28` is entered.
+ * If the dinosaur only has a single value for `mya`, allows for the `mya` value to be equal to 
+ * the given value or one less. For example, if a dinosaur has a `mya` value of `[29]`, the 
+ * dinosaur's information will be returned if `29` is entered or `28` is entered.
  *
- * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file for an example of the input.
+ * @param {Object[]} dinosaurs - An array of dinosaur objects. See the `data/dinosaurs.js` file 
+ * for an example of the input.
+ * 
  * @param {number} mya - "Millions of years ago."
- * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the `mya` value given, will return the value of the supplied key. Otherwise, returns the ID.
- * @returns {*[]} An array of values, which depend on the key given. The array should only include data of dinosaurs who lived during the given time period.
+ * 
+ * @param {string} key - An optional parameter. If included, for dinosaurs that lived during the 
+ * `mya` value given, will return the value of the supplied key. Otherwise, returns the ID.
+ * 
+ * @returns {*[]} An array of values, which depend on the key given. The array should only include 
+ * data of dinosaurs who lived during the given time period.
  *
  * EXAMPLE:
  *  getDinosaursAliveMya(dinosaurs, 150);
@@ -71,7 +117,46 @@ function getDinosaurDescription(dinosaurs, id) {}
  *  getDinosaursAliveMya(dinosaurs, 65, "unknown-key");
  *  //> ["WHQcpcOj0G"]
  */
-function getDinosaursAliveMya(dinosaurs, mya, key) {}
+function getDinosaursAliveMya(dinosaurs, millionya, key) {
+  // returns an array of all dinosaurs that were alive at the given millionya
+  // for each dino, if dino.mya is only one number millionya has to be equal to of -1 than mya. return info
+  // for each dino, if dino.mya has two numbers and millionya is between the two numbers of mya, return info
+  // if the given key exists in the data, return the key value in the new array
+  // if the given key does not exist in the data, return the ID of the dino instead
+  // if there is no key, return the ID of the dino
+  let validDinos = []
+  let aliveArr = []
+  dinosaurs.forEach(function(dino){
+   if (dino.mya.length === 2){
+    // if array.length is 2, then the given value must fit between the two values of the array
+   if (millionya <= dino.mya[0] && millionya >= dino.mya[1]){
+    validDinos.push(dino)
+   } 
+   }
+   if (dino.mya.length === 1){
+    if (millionya === dino.mya[0] || millionya === (dino.mya[0]) -1 ){
+     validDinos.push(dino)
+    }
+   }
+  })
+  // now we check for keys
+   // if there is no key, push the id of the dino into aliveArr
+   // if the key doesn't exist, push the id of the dino ino aliveArr
+   // if the key of the dinos in validDinos matches a key in the data, push the key value into aliveArr
+   
+    for (const dino of validDinos) {
+      if (dino[key]){
+        aliveArr.push(dino[key]);
+
+    } else {
+      aliveArr.push(dino.dinosaurId);
+    }
+   }
+   console.log(aliveArr)
+  return aliveArr
+  
+}
+
 
 module.exports = {
   getLongestDinosaur,
